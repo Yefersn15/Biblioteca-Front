@@ -1,34 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getAll, remove } from '../../services/api/autores.api';
-import { useToast } from '../../context/ToastContext';
-import { useConfirm } from '../../context/ConfirmContext';
+import { useAutoresAdmin } from './hooks/useAutoresAdmin';
+import AutorRow from './components/AutorRow';
 
 const AutoresAdmin = () => {
-  const toast = useToast();
-  const confirm = useConfirm();
-  const [autores, setAutores] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const cargar = async () => {
-    setLoading(true);
-    const { items } = await getAll({ limit: 200 });
-    setAutores(items);
-    setLoading(false);
-  };
-
-  useEffect(() => { cargar(); }, []);
-
-  const handleEliminar = async (autor) => {
-    if (!(await confirm(`¿Eliminar a "${autor.nombre} ${autor.apellido || ''}"?`))) return;
-    try {
-      await remove(autor.id);
-      toast.success('Autor eliminado');
-      cargar();
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
+  const { autores, loading, handleEliminar } = useAutoresAdmin();
 
   return (
     <div>
@@ -56,24 +31,7 @@ const AutoresAdmin = () => {
           </thead>
           <tbody>
             {autores.map((a) => (
-              <tr key={a.id}>
-                <td>
-                  {a.fotografiaUrl && (
-                    <img src={a.fotografiaUrl} alt="" style={{ width: 36, height: 36, objectFit: 'cover', borderRadius: '50%' }} />
-                  )}
-                </td>
-                <td>{a.nombre} {a.apellido}</td>
-                <td>{a.nacionalidad}</td>
-                <td>{a.generoLiterario}</td>
-                <td>
-                  <Link to={`/admin/autores/editar/${a.id}`} className="btn btn-sm btn-outline-primary me-1">
-                    <i className="fas fa-edit"></i>
-                  </Link>
-                  <button className="btn btn-sm btn-outline-danger" onClick={() => handleEliminar(a)}>
-                    <i className="fas fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
+              <AutorRow key={a.id} autor={a} onEliminar={handleEliminar} />
             ))}
           </tbody>
         </table>
