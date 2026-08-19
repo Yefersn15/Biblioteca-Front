@@ -102,9 +102,11 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
               </div>
               <div className="mt-3 d-flex gap-2">
                 <button type="submit" className="btn btn-primary" disabled={guardando}>
-                  {guardando ? 'Guardando...' : 'Guardar'}
+                  <i className="fas fa-save me-1"></i>{guardando ? 'Guardando...' : 'Guardar'}
                 </button>
-                <button type="button" className="btn btn-secondary" onClick={() => setEditando(null)}>Cancelar</button>
+                <button type="button" className="btn btn-secondary" onClick={() => setEditando(null)}>
+                  <i className="fas fa-times me-1"></i>Cancelar
+                </button>
               </div>
             </form>
           </div>
