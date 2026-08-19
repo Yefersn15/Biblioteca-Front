@@ -1,23 +1,15 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getBanners } from '../../services/api/banners.api';
-import { getLibrosPopulares } from '../../services/api/libros.api';
 import BannerCollage from '../banners/components/BannerCollage';
-import { formatAutores } from '../../utils/formatAutores';
 import { useConfiguracion } from '../../context/ConfiguracionContext';
 import HomeLoginCard from './HomeLoginCard';
 import { formatearHorario } from '../../utils/horario';
+import { useHome } from './hooks/useHome';
+import LibroCard from './components/LibroCard';
 
 const Home = () => {
   const { nombreInstitucion, direccion, telefono, email, horario, mapaEmbedUrl, colorPrimario } = useConfiguracion();
   const horarioFormateado = formatearHorario(horario);
-  const [banners, setBanners] = useState([]);
-  const [libros, setLibros] = useState([]);
-
-  useEffect(() => {
-    getBanners().then(setBanners).catch(() => setBanners([]));
-    getLibrosPopulares(6).then(setLibros);
-  }, []);
+  const { banners, libros } = useHome();
 
   return (
     <div>
@@ -48,25 +40,7 @@ const Home = () => {
         ) : (
           <div className="row g-4">
             {libros.map((libro) => (
-              <div className="col-6 col-md-4 col-lg-2" key={libro.id}>
-                <Link to={`/catalogo/${libro.id}`} className="text-decoration-none text-dark">
-                  <div className="card h-100 shadow-sm">
-                    <div style={{ aspectRatio: '2 / 3', background: '#e9ecef', overflow: 'hidden' }}>
-                      {libro.portadaUrl ? (
-                        <img src={libro.portadaUrl} alt={libro.titulo} className="w-100 h-100" style={{ objectFit: 'cover' }} />
-                      ) : (
-                        <div className="d-flex align-items-center justify-content-center h-100 text-muted">
-                          <i className="fas fa-book fa-2x"></i>
-                        </div>
-                      )}
-                    </div>
-                    <div className="card-body p-2">
-                      <div className="small fw-bold text-truncate">{libro.titulo}</div>
-                      <div className="small text-muted text-truncate">{formatAutores(libro)}</div>
-                    </div>
-                  </div>
-                </Link>
-              </div>
+              <LibroCard key={libro.id} libro={libro} />
             ))}
           </div>
         )}
