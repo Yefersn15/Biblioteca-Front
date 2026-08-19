@@ -19,12 +19,13 @@ const ENLACES_ADMIN = [
 
 const AdminLayout = () => {
   const { user, isAdmin, logout } = useAuth();
-  const { nombreInstitucion, logoUrl, colorPrimario } = useConfiguracion();
+  const { nombreInstitucion, logoUrl, temaResuelto } = useConfiguracion();
   const { posicion, compacto, setPosicion, toggleCompacto } = useAdminLayoutPrefs();
   const navigate = useNavigate();
-  const acento = colorPrimario || '#0d6efd';
   const enlaces = isAdmin ? [...ENLACES_BASE, ...ENLACES_ADMIN] : ENLACES_BASE;
   const esLateral = posicion === 'lateral';
+  const esOscuro = temaResuelto.encabezadoTexto === '#ffffff';
+  const resaltadoActivo = esOscuro ? 'rgba(255,255,255,.15)' : 'rgba(0,0,0,.06)';
 
   const handleLogout = () => {
     logout();
@@ -32,22 +33,22 @@ const AdminLayout = () => {
   };
 
   const marca = (
-    <Link to="/" className="d-flex align-items-center text-dark text-decoration-none fw-bold">
+    <Link to="/" className="tema-encabezado-link d-flex align-items-center text-decoration-none fw-bold">
       {logoUrl ? (
         <img src={logoUrl} alt="" height={28} style={{ objectFit: 'contain' }} />
       ) : (
-        <i className="fas fa-book-open" style={{ color: acento }}></i>
+        <i className="fas fa-book-open"></i>
       )}
       {!compacto && <span className="ms-2 text-truncate">{nombreInstitucion}</span>}
     </Link>
   );
 
   const enlaceClase = ({ isActive }) =>
-    `nav-link text-dark d-flex align-items-center ${isActive ? 'fw-bold' : ''} ${esLateral ? '' : 'px-3'}`;
+    `nav-link d-flex align-items-center ${isActive ? 'fw-bold' : ''} ${esLateral ? '' : 'px-3'}`;
   const enlaceEstilo = ({ isActive }) =>
     esLateral
-      ? { borderLeft: `3px solid ${isActive ? acento : 'transparent'}`, backgroundColor: isActive ? '#f8f9fa' : undefined }
-      : { borderBottom: `3px solid ${isActive ? acento : 'transparent'}` };
+      ? { borderLeft: `3px solid ${isActive ? temaResuelto.acento : 'transparent'}`, backgroundColor: isActive ? resaltadoActivo : undefined }
+      : { borderBottom: `3px solid ${isActive ? temaResuelto.acento : 'transparent'}` };
 
   const menu = (vertical) => (
     <nav className={vertical ? 'nav flex-column' : 'nav'}>
@@ -88,7 +89,7 @@ const AdminLayout = () => {
 
   const menuUsuario = (
     <div className="dropdown">
-      <button className="btn btn-link text-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+      <button className="btn btn-link tema-encabezado-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
         <i className="fas fa-user-circle me-1"></i>{user?.nombres} · {user?.rol}
       </button>
       <ul className="dropdown-menu dropdown-menu-end">
@@ -103,7 +104,7 @@ const AdminLayout = () => {
   if (!esLateral) {
     return (
       <div>
-        <nav className="navbar navbar-expand navbar-light bg-white border-bottom px-3">
+        <nav className="navbar navbar-expand tema-encabezado border-bottom px-3">
           <div className="d-flex align-items-center gap-4 flex-grow-1 overflow-hidden">
             {marca}
             {menu(false)}
@@ -122,14 +123,14 @@ const AdminLayout = () => {
 
   return (
     <div className="d-flex" style={{ minHeight: '100vh' }}>
-      <aside className="bg-white border-end p-3" style={{ width: compacto ? 70 : 230, flexShrink: 0, transition: 'width .15s' }}>
+      <aside className="tema-encabezado border-end p-3" style={{ width: compacto ? 70 : 230, flexShrink: 0, transition: 'width .15s' }}>
         <div className="mb-4">{marca}</div>
         {menu(true)}
       </aside>
 
       <div className="flex-grow-1">
-        <nav className="navbar navbar-light bg-white border-bottom px-4 d-flex justify-content-between">
-          <span className="text-muted">Panel de administración</span>
+        <nav className="navbar tema-encabezado border-bottom px-4 d-flex justify-content-between">
+          <span className="tema-encabezado-link">Panel de administración</span>
           <div className="d-flex align-items-center gap-2">
             {controlesLayout}
             {menuUsuario}

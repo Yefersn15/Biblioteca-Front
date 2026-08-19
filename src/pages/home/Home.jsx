@@ -7,7 +7,7 @@ import { useHome } from './hooks/useHome';
 import LibroCard from './components/LibroCard';
 
 const Home = () => {
-  const { nombreInstitucion, direccion, telefono, email, horario, mapaEmbedUrl, colorPrimario } = useConfiguracion();
+  const { nombreInstitucion, direccion, telefono, email, horario, mapaEmbedUrl } = useConfiguracion();
   const horarioFormateado = formatearHorario(horario);
   const { banners, libros } = useHome();
 
@@ -54,7 +54,7 @@ const Home = () => {
 
           <div className="col-md-4">
             <div className="card h-100">
-              <div className="card-header bg-white border-bottom" style={{ color: colorPrimario || undefined }}>
+              <div className="card-header bg-white border-bottom text-tema-acento">
                 <i className="fas fa-circle-info me-2"></i>{nombreInstitucion}
               </div>
               <div className="card-body">

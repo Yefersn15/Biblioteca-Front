@@ -3,15 +3,73 @@
   --border2: #ced4da;
   --accent: #0d6efd;
   --surface3: #e9ecef;
+
+  /* Tema de marca personalizable (ver src/utils/tema.js). Estos valores por
+     defecto son el "lienzo en blanco": sin personalizar, el sitio se ve
+     igual que antes de que existiera esta funcionalidad. */
+  --tema-fondo: #ffffff;
+  --tema-fondo-texto: #212529;
+  --tema-encabezado: #ffffff;
+  --tema-encabezado-texto: #212529;
+  --tema-acento: #0d6efd;
+  --tema-acento-texto: #ffffff;
 }
 
 body {
   margin: 0;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background-color: #ffffff;
-  color: #212529;
+  background-color: var(--tema-fondo);
+  color: var(--tema-fondo-texto);
 }
 
 .min-vh-content {
   min-height: calc(100vh - 220px);
+}
+
+/* Marco de la página (navbar público, navbar+sidebar admin, footer): toman
+   el color de "encabezado" del tema. Las superficies de contenido (.card,
+   .table, formularios) NO se tocan, siguen blancas para mantener legibilidad. */
+.tema-encabezado {
+  background-color: var(--tema-encabezado) !important;
+  color: var(--tema-encabezado-texto) !important;
+}
+
+.tema-encabezado .nav-link,
+.tema-encabezado .navbar-brand,
+.tema-encabezado .tema-encabezado-link {
+  color: inherit !important;
+}
+
+/* Acentos de marca: botones primarios, enlaces, elementos decorativos.
+   Los botones semánticos (btn-success/danger/warning/info) NO se tocan. */
+.btn-primary {
+  background-color: var(--tema-acento);
+  border-color: var(--tema-acento);
+  color: var(--tema-acento-texto);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--tema-acento);
+  border-color: var(--tema-acento);
+  color: var(--tema-acento-texto);
+  filter: brightness(0.92);
+}
+
+/* Sin !important a propósito: un enlace con una clase de color explícita
+   (text-dark, text-white, text-muted, nav-link dentro de .tema-encabezado...)
+   debe poder seguir ganando esa decisión de diseño puntual. */
+a:not(.btn):not(.nav-link):not(.navbar-brand):not(.tema-encabezado-link) {
+  color: var(--tema-acento);
+}
+
+.text-primary,
+.text-tema-acento {
+  color: var(--tema-acento) !important;
+}
+
+.tema-acento-bg {
+  background-color: var(--tema-acento) !important;
+  color: var(--tema-acento-texto) !important;
 }

@@ -1,4 +1,3 @@
-import { useConfiguracion } from '../../context/ConfiguracionContext';
 import { usePerfilForm } from './hooks/usePerfilForm';
 import DatosPersonalesForm from './components/DatosPersonalesForm';
 import DocumentoUbicacionForm from './components/DocumentoUbicacionForm';
@@ -7,15 +6,13 @@ import SeguridadForm from './components/SeguridadForm';
 const ROL_LABEL = { ADMIN: 'Administrador', BIBLIOTECARIO: 'Bibliotecario', USUARIO: 'Usuario' };
 
 const Perfil = () => {
-  const { colorPrimario } = useConfiguracion();
-  const acento = colorPrimario || '#0d6efd';
   const { user, esAdmin, form, setField, password, setPassword, guardando, handleSubmit } = usePerfilForm();
 
   return (
     <div className="container py-4" style={{ maxWidth: 900 }}>
       {/* Encabezado con banner + avatar */}
       <div className="card mb-4 overflow-hidden border-0 shadow-sm">
-        <div style={{ height: 110, background: acento }} />
+        <div className="tema-acento-bg" style={{ height: 110 }} />
         <div className="d-flex flex-column flex-sm-row align-items-center align-items-sm-end px-4" style={{ marginTop: -48 }}>
           {form.avatar ? (
             <img
@@ -34,7 +31,7 @@ const Perfil = () => {
           )}
           <div className="ms-sm-3 mt-2 mt-sm-0 pb-sm-1 text-center text-sm-start">
             <h4 className="mb-0">{user.nombres} {user.apellidos}</h4>
-            <span className="badge" style={{ backgroundColor: acento }}>{ROL_LABEL[user.rol]}</span>
+            <span className="badge tema-acento-bg">{ROL_LABEL[user.rol]}</span>
           </div>
         </div>
         <div style={{ height: 20 }} />

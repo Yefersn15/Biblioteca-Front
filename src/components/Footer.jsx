@@ -7,7 +7,7 @@ const Footer = () => {
   const tieneContacto = direccion || telefono || email || horarioFormateado.length > 0;
 
   return (
-    <footer className="bg-light border-top py-4 mt-5 text-secondary">
+    <footer className="tema-encabezado border-top py-4 mt-5">
       <div className="container">
         {tieneContacto && (
           <div className="row text-center text-md-start mb-3 gy-2 small">

@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { getConfiguracion } from '../services/api/configuracion.api';
+import { resolverTema, aplicarTemaCss } from '../utils/tema';
 
 const DEFECTO = {
   nombreInstitucion: 'Biblioteca Web',
@@ -10,7 +11,7 @@ const DEFECTO = {
   email: '',
   horario: [],
   mapaEmbedUrl: '',
-  colorPrimario: '',
+  tema: { modo: 'NINGUNO', paletaId: null, colores: null },
 };
 
 const ConfiguracionContext = createContext(DEFECTO);
@@ -25,8 +26,14 @@ export const ConfiguracionProvider = ({ children }) => {
     recargar().finally(() => setLoading(false));
   }, []);
 
+  const temaResuelto = useMemo(() => resolverTema(config.tema), [config.tema]);
+
+  useEffect(() => {
+    aplicarTemaCss(temaResuelto);
+  }, [temaResuelto]);
+
   return (
-    <ConfiguracionContext.Provider value={{ ...config, loading, recargar }}>
+    <ConfiguracionContext.Provider value={{ ...config, loading, recargar, temaResuelto }}>
       {children}
     </ConfiguracionContext.Provider>
   );

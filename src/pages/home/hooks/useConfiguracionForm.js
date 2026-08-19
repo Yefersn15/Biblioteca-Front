@@ -25,7 +25,7 @@ export const useConfiguracionForm = () => {
         email: config.email || '',
         horario: config.horario?.length ? config.horario : [],
         mapaEmbedUrl: config.mapaEmbedUrl || '',
-        colorPrimario: config.colorPrimario || '',
+        tema: config.tema || { modo: 'NINGUNO', paletaId: null, colores: null },
       });
     }
   }, [config.loading]);

@@ -1,5 +1,6 @@
 import ImageUploadField from '../../components/upload/ImageUploadField';
 import HorarioBuilder from './components/HorarioBuilder';
+import SelectorTema from './components/SelectorTema';
 import { useConfiguracionForm } from './hooks/useConfiguracionForm';
 
 // Si el admin pega el <iframe> completo que da "Insertar un mapa" en Google
@@ -28,7 +29,7 @@ const ConfiguracionAdmin = () => {
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="row g-3">
-              <div className="col-md-8">
+              <div className="col-12">
                 <label className="form-label">Nombre de la institución/biblioteca *</label>
                 <input
                   type="text"
@@ -38,19 +39,10 @@ const ConfiguracionAdmin = () => {
                   onChange={(e) => setForm({ ...form, nombreInstitucion: e.target.value })}
                 />
               </div>
-              <div className="col-md-4">
-                <label className="form-label">Color principal</label>
-                <div className="d-flex gap-2 align-items-center">
-                  <input
-                    type="color"
-                    className="form-control form-control-color"
-                    value={form.colorPrimario || '#212529'}
-                    onChange={(e) => setForm({ ...form, colorPrimario: e.target.value })}
-                  />
-                  <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setForm({ ...form, colorPrimario: '' })}>
-                    Usar por defecto
-                  </button>
-                </div>
+
+              <div className="col-12">
+                <label className="form-label d-block">Paleta de color del sitio</label>
+                <SelectorTema value={form.tema} onChange={(tema) => setForm({ ...form, tema })} />
               </div>
 
               <div className="col-12">
