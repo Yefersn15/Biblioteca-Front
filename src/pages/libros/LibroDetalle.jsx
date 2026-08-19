@@ -1,41 +1,17 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { getLibro } from '../../services/api/libros.api';
-import { solicitarPrestamo } from '../../services/api/prestamos.api';
-import { useAuth } from '../../context/AuthContext';
-import { useToast } from '../../context/ToastContext';
-
-const hoyMasDias = (dias) => {
-  const fecha = new Date();
-  fecha.setDate(fecha.getDate() + dias);
-  return fecha.toISOString().slice(0, 10);
-};
+import { Link } from 'react-router-dom';
+import { useLibroDetalle } from './hooks/useLibroDetalle';
 
 const LibroDetalle = () => {
-  const { id } = useParams();
-  const { user } = useAuth();
-  const toast = useToast();
-  const [libro, setLibro] = useState(null);
-  const [fechaDevolucion, setFechaDevolucion] = useState(hoyMasDias(14));
-  const [solicitando, setSolicitando] = useState(false);
-  const [solicitado, setSolicitado] = useState(false);
-
-  useEffect(() => {
-    getLibro(id).then(setLibro);
-  }, [id]);
-
-  const handleSolicitar = async () => {
-    setSolicitando(true);
-    try {
-      await solicitarPrestamo({ libroId: libro.id, fechaDevolucionEstimada: fechaDevolucion });
-      toast.success('Préstamo solicitado, queda pendiente de aprobación');
-      setSolicitado(true);
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setSolicitando(false);
-    }
-  };
+  const {
+    user,
+    libro,
+    fechaDevolucion,
+    setFechaDevolucion,
+    fechaMinima,
+    solicitando,
+    solicitado,
+    handleSolicitar,
+  } = useLibroDetalle();
 
   if (!libro) {
     return <div className="text-center py-5"><div className="spinner-border text-primary" role="status"></div></div>;
@@ -112,7 +88,7 @@ const LibroDetalle = () => {
                   <input
                     type="date"
                     className="form-control"
-                    min={hoyMasDias(1)}
+                    min={fechaMinima}
                     value={fechaDevolucion}
                     onChange={(e) => setFechaDevolucion(e.target.value)}
                   />

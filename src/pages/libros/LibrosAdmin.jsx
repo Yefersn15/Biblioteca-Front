@@ -1,36 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getLibros, eliminarLibro } from '../../services/api/libros.api';
-import { useToast } from '../../context/ToastContext';
-import { useConfirm } from '../../context/ConfirmContext';
-import { formatAutores } from '../../utils/formatAutores';
+import { useLibrosAdmin } from './hooks/useLibrosAdmin';
+import LibroRow from './components/LibroRow';
 
 const LibrosAdmin = () => {
-  const toast = useToast();
-  const confirm = useConfirm();
-  const [libros, setLibros] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-
-  const cargar = async () => {
-    setLoading(true);
-    const { items } = await getLibros({ limit: 100, search: search || undefined });
-    setLibros(items);
-    setLoading(false);
-  };
-
-  useEffect(() => { cargar(); }, [search]);
-
-  const handleEliminar = async (libro) => {
-    if (!(await confirm(`¿Eliminar "${libro.titulo}"? Se ocultará del catálogo público.`))) return;
-    try {
-      await eliminarLibro(libro.id);
-      toast.success('Libro eliminado');
-      cargar();
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
+  const { libros, loading, search, setSearch, handleEliminar } = useLibrosAdmin();
 
   return (
     <div>
@@ -68,30 +41,7 @@ const LibrosAdmin = () => {
           </thead>
           <tbody>
             {libros.map((libro) => (
-              <tr key={libro.id}>
-                <td>
-                  {libro.portadaUrl && (
-                    <img src={libro.portadaUrl} alt="" style={{ width: 36, height: 48, objectFit: 'cover' }} />
-                  )}
-                </td>
-                <td>{libro.titulo}</td>
-                <td>{formatAutores(libro)}</td>
-                <td>{libro.tipo}</td>
-                <td>{libro.copiasDisponibles} / {libro.copiasTotales}</td>
-                <td>
-                  <span className={`badge ${libro.estado ? 'bg-success' : 'bg-secondary'}`}>
-                    {libro.estado ? 'Activo' : 'Inactivo'}
-                  </span>
-                </td>
-                <td>
-                  <Link to={`/admin/libros/editar/${libro.id}`} className="btn btn-sm btn-outline-primary me-1">
-                    <i className="fas fa-edit"></i>
-                  </Link>
-                  <button className="btn btn-sm btn-outline-danger" onClick={() => handleEliminar(libro)}>
-                    <i className="fas fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
+              <LibroRow key={libro.id} libro={libro} onEliminar={handleEliminar} />
             ))}
           </tbody>
         </table>
