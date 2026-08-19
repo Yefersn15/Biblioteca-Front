@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getPrestamos } from '../../services/api/prestamos.api';
+import { useMisPrestamos } from './hooks/useMisPrestamos';
 
 const ESTADO_BADGE = {
   PENDIENTE: 'bg-warning text-dark',
@@ -10,15 +9,7 @@ const ESTADO_BADGE = {
 };
 
 const MisPrestamos = () => {
-  const [prestamos, setPrestamos] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getPrestamos({ limit: 100 }).then(({ items }) => {
-      setPrestamos(items);
-      setLoading(false);
-    });
-  }, []);
+  const { prestamos, loading } = useMisPrestamos();
 
   return (
     <div className="container py-4">
