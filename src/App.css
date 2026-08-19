@@ -1,0 +1,75 @@
+.banner-collage {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e9ecef;
+}
+
+.banner-collage-cell {
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-collage-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.banner-collage-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e9ecef;
+  color: #adb5bd;
+  font-size: 1.5rem;
+}
+
+.banner-collage-text {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  color: #fff;
+  max-width: 55%;
+}
+
+.banner-collage-text h3 {
+  font-weight: 700;
+  margin: 0;
+}
+
+.banner-collage-text p {
+  margin: 0;
+}
+
+.banner-collage-text-left {
+  left: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.65), transparent);
+}
+
+.banner-collage-text-right {
+  right: 0;
+  text-align: right;
+  align-items: flex-end;
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.65), transparent);
+}
+
+.banner-collage-text-center {
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+  text-align: center;
+  max-width: 75%;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+}

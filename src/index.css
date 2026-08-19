@@ -1,0 +1,17 @@
+:root {
+  --border: #dee2e6;
+  --border2: #ced4da;
+  --accent: #0d6efd;
+  --surface3: #e9ecef;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: #ffffff;
+  color: #212529;
+}
+
+.min-vh-content {
+  min-height: calc(100vh - 220px);
+}
