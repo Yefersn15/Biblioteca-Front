@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { getConfiguracion } from '../services/api/configuracion.api';
 import { resolverTema, aplicarTemaCss } from '../utils/tema';
+import { useModoOscuro } from '../hooks/useModoOscuro';
 
 const DEFECTO = {
   nombreInstitucion: 'Biblioteca Web',
@@ -26,14 +27,16 @@ export const ConfiguracionProvider = ({ children }) => {
     recargar().finally(() => setLoading(false));
   }, []);
 
-  const temaResuelto = useMemo(() => resolverTema(config.tema), [config.tema]);
+  const { modoOscuro, toggleModoOscuro } = useModoOscuro();
+
+  const temaResuelto = useMemo(() => resolverTema(config.tema, modoOscuro), [config.tema, modoOscuro]);
 
   useEffect(() => {
     aplicarTemaCss(temaResuelto);
   }, [temaResuelto]);
 
   return (
-    <ConfiguracionContext.Provider value={{ ...config, loading, recargar, temaResuelto }}>
+    <ConfiguracionContext.Provider value={{ ...config, loading, recargar, temaResuelto, modoOscuro, toggleModoOscuro }}>
       {children}
     </ConfiguracionContext.Provider>
   );

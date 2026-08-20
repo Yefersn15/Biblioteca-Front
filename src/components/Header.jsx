@@ -4,7 +4,7 @@ import { useConfiguracion } from '../context/ConfiguracionContext';
 
 const Header = () => {
   const { user, isStaff, logout } = useAuth();
-  const { nombreInstitucion, logoUrl, temaResuelto } = useConfiguracion();
+  const { nombreInstitucion, logoUrl, temaResuelto, modoOscuro, toggleModoOscuro } = useConfiguracion();
   const navigate = useNavigate();
   const esOscuro = temaResuelto.encabezadoTexto === '#ffffff';
 
@@ -37,6 +37,16 @@ const Header = () => {
           </ul>
 
           <ul className="navbar-nav align-items-lg-center">
+            <li className="nav-item">
+              <button
+                type="button"
+                className="nav-link btn btn-link"
+                onClick={toggleModoOscuro}
+                title={modoOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+              >
+                <i className={`fas ${modoOscuro ? 'fa-sun' : 'fa-moon'}`}></i>
+              </button>
+            </li>
             {user ? (
               <li className="nav-item dropdown">
                 <button className="nav-link dropdown-toggle btn btn-link" data-bs-toggle="dropdown">

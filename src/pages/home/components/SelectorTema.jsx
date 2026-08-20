@@ -5,12 +5,25 @@ import { resolverTema, aplicarTemaCss } from '../../../utils/tema';
 import { useConfiguracion } from '../../../context/ConfiguracionContext';
 
 const TEMA_NINGUNO = { modo: 'NINGUNO', paletaId: null, colores: null };
-const COLORES_PERSONALIZADO_INICIAL = { fondo: '#eef5f9', encabezado: '#0b3d5c', acento: '#1f8fce' };
+const COLORES_PERSONALIZADO_INICIAL = {
+  fondo: '#eef5f9',
+  superficie: '#e3eff5',
+  encabezado: '#0b3d5c',
+  acento: '#1f8fce',
+  secundario: '#2ba58c',
+};
+const ROLES = [
+  { rol: 'fondo', label: 'Fondo' },
+  { rol: 'superficie', label: 'Superficie (cards, tablas)' },
+  { rol: 'encabezado', label: 'Encabezado y pie' },
+  { rol: 'acento', label: 'Acento primario' },
+  { rol: 'secundario', label: 'Acento secundario' },
+];
 
 // Selector de tema del sitio: galería de paletas predefinidas + modo
-// personalizado (3 colores: fondo, encabezado, acento). Controlado, igual
-// que HorarioBuilder: recibe el `tema` guardado y devuelve la forma completa
-// lista para persistir vía onChange.
+// personalizado (5 colores: fondo, superficie, encabezado, acento,
+// secundario). Controlado, igual que HorarioBuilder: recibe el `tema`
+// guardado y devuelve la forma completa lista para persistir vía onChange.
 const SelectorTema = ({ value, onChange }) => {
   const tema = value || TEMA_NINGUNO;
   const { temaResuelto } = useConfiguracion();
@@ -31,7 +44,15 @@ const SelectorTema = ({ value, onChange }) => {
     aplicarTemaCss(resolverTema(tema));
     return () => aplicarTemaCss(temaGuardadoRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tema.modo, tema.paletaId, tema.colores?.fondo, tema.colores?.encabezado, tema.colores?.acento]);
+  }, [
+    tema.modo,
+    tema.paletaId,
+    tema.colores?.fondo,
+    tema.colores?.superficie,
+    tema.colores?.encabezado,
+    tema.colores?.acento,
+    tema.colores?.secundario,
+  ]);
 
   const elegirNinguno = () => onChange(TEMA_NINGUNO);
 
@@ -59,9 +80,10 @@ const SelectorTema = ({ value, onChange }) => {
             className={`w-100 border rounded p-2 text-start bg-white ${tema.modo === 'NINGUNO' ? 'border-primary border-2' : ''}`}
             onClick={elegirNinguno}
           >
-            <div className="d-flex rounded-1 overflow-hidden mb-2" style={{ height: 28 }}>
-              <div className="flex-grow-1 bg-white border-end" />
-              <div className="flex-grow-1 bg-white" />
+            <div className="d-flex rounded-1 overflow-hidden mb-2 border" style={{ height: 28 }}>
+              {[0, 1, 2, 3, 4].map((i) => (
+                <div key={i} className={`flex-grow-1 bg-white ${i < 4 ? 'border-end' : ''}`} />
+              ))}
             </div>
             <small className="fw-semibold">Ninguna</small>
             <div className="text-muted" style={{ fontSize: '.72rem' }}>Por defecto</div>
@@ -77,8 +99,10 @@ const SelectorTema = ({ value, onChange }) => {
             >
               <div className="d-flex rounded-1 overflow-hidden mb-2" style={{ height: 28 }}>
                 <div className="flex-grow-1" style={{ background: paleta.fondo }} />
+                <div className="flex-grow-1" style={{ background: paleta.superficie }} />
                 <div className="flex-grow-1" style={{ background: paleta.encabezado }} />
                 <div className="flex-grow-1" style={{ background: paleta.acento }} />
+                <div className="flex-grow-1" style={{ background: paleta.secundario }} />
               </div>
               <small className="fw-semibold">{paleta.nombre}</small>
             </button>
@@ -97,11 +121,7 @@ const SelectorTema = ({ value, onChange }) => {
 
         {tema.modo === 'PERSONALIZADO' && (
           <div className="d-flex flex-wrap gap-3 mt-3">
-            {[
-              { rol: 'fondo', label: 'Fondo' },
-              { rol: 'encabezado', label: 'Encabezado y pie' },
-              { rol: 'acento', label: 'Acento (botones, enlaces)' },
-            ].map(({ rol, label }) => (
+            {ROLES.map(({ rol, label }) => (
               <div key={rol}>
                 <label className="form-label small mb-1 d-block">{label}</label>
                 <input

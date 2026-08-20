@@ -19,7 +19,7 @@ const ENLACES_ADMIN = [
 
 const AdminLayout = () => {
   const { user, isAdmin, logout } = useAuth();
-  const { nombreInstitucion, logoUrl, temaResuelto } = useConfiguracion();
+  const { nombreInstitucion, logoUrl, temaResuelto, modoOscuro, toggleModoOscuro } = useConfiguracion();
   const { posicion, compacto, setPosicion, toggleCompacto } = useAdminLayoutPrefs();
   const navigate = useNavigate();
   const enlaces = isAdmin ? [...ENLACES_BASE, ...ENLACES_ADMIN] : ENLACES_BASE;
@@ -87,6 +87,17 @@ const AdminLayout = () => {
     </div>
   );
 
+  const botonModoOscuro = (
+    <button
+      type="button"
+      className="btn btn-sm tema-encabezado-link border-0"
+      onClick={toggleModoOscuro}
+      title={modoOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+    >
+      <i className={`fas ${modoOscuro ? 'fa-sun' : 'fa-moon'}`}></i>
+    </button>
+  );
+
   const menuUsuario = (
     <div className="dropdown">
       <button className="btn btn-link tema-encabezado-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
@@ -110,6 +121,7 @@ const AdminLayout = () => {
             {menu(false)}
           </div>
           <div className="d-flex align-items-center gap-2">
+            {botonModoOscuro}
             {controlesLayout}
             {menuUsuario}
           </div>
@@ -132,6 +144,7 @@ const AdminLayout = () => {
         <nav className="navbar tema-encabezado border-bottom px-4 d-flex justify-content-between">
           <span className="tema-encabezado-link">Panel de administración</span>
           <div className="d-flex align-items-center gap-2">
+            {botonModoOscuro}
             {controlesLayout}
             {menuUsuario}
           </div>

@@ -9,10 +9,14 @@
      igual que antes de que existiera esta funcionalidad. */
   --tema-fondo: #ffffff;
   --tema-fondo-texto: #212529;
+  --tema-superficie: #ffffff;
+  --tema-superficie-texto: #212529;
   --tema-encabezado: #ffffff;
   --tema-encabezado-texto: #212529;
   --tema-acento: #0d6efd;
   --tema-acento-texto: #ffffff;
+  --tema-secundario: #6c757d;
+  --tema-secundario-texto: #ffffff;
 }
 
 body {
@@ -74,6 +78,31 @@ a:not(.btn):not(.nav-link):not(.navbar-brand):not(.tema-encabezado-link) {
   color: var(--tema-acento-texto) !important;
 }
 
+/* Segundo acento: botones outline y resaltados de menor jerarquía que el
+   acento principal. Los botones semánticos (outline-danger/success/etc.)
+   NO se tocan, solo outline-primary. */
+.btn-outline-primary {
+  border-color: var(--tema-secundario);
+  color: var(--tema-secundario);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  background-color: var(--tema-secundario);
+  border-color: var(--tema-secundario);
+  color: var(--tema-secundario-texto);
+}
+
+.text-tema-secundario {
+  color: var(--tema-secundario) !important;
+}
+
+.tema-secundario-bg {
+  background-color: var(--tema-secundario) !important;
+  color: var(--tema-secundario-texto) !important;
+}
+
 /* Campos de formulario: el foco (borde + sombra) usa el acento del tema en
    vez del azul fijo de Bootstrap, para que combinen con la paleta elegida. */
 .form-control:focus,
@@ -83,12 +112,12 @@ a:not(.btn):not(.nav-link):not(.navbar-brand):not(.tema-encabezado-link) {
 }
 
 /* Superficies de contenido (cards, tablas, formularios, menús, modales):
-   toman el tono de "fondo" del tema, igual que el body — en paletas
-   predefinidas es un tinte muy pálido (el cambio es sutil, a propósito),
-   pero en modo personalizado con colores más fuertes sí combinan de
-   verdad. El texto usa el mismo contraste calculado que el body, así que
-   sigue siendo legible sea cual sea el color elegido. !important porque
-   varias de estas superficies llevan `bg-white` fijo en el markup. */
+   toman el tono de "superficie" del tema — un paso más marcado que el
+   fondo general de la página, para que se note como una capa propia pero
+   siga combinando con la paleta. El texto usa el contraste calculado sobre
+   esa superficie, así que sigue siendo legible sea cual sea el color
+   elegido. !important porque varias de estas superficies llevan `bg-white`
+   fijo en el markup. */
 .card,
 .card-header,
 .card-body,
@@ -96,8 +125,8 @@ a:not(.btn):not(.nav-link):not(.navbar-brand):not(.tema-encabezado-link) {
 .table,
 .modal-content,
 .dropdown-menu {
-  background-color: var(--tema-fondo) !important;
-  border-color: color-mix(in srgb, var(--tema-encabezado) 18%, var(--tema-fondo));
+  background-color: var(--tema-superficie) !important;
+  border-color: color-mix(in srgb, var(--tema-encabezado) 18%, var(--tema-superficie));
 }
 
 .card,
@@ -105,27 +134,34 @@ a:not(.btn):not(.nav-link):not(.navbar-brand):not(.tema-encabezado-link) {
 .card-footer,
 .modal-content,
 .form-label {
-  color: var(--tema-fondo-texto);
+  color: var(--tema-superficie-texto);
 }
 
 .dropdown-item {
-  color: var(--tema-fondo-texto);
+  color: var(--tema-superficie-texto);
 }
 
 .table {
-  --bs-table-bg: var(--tema-fondo);
-  --bs-table-color: var(--tema-fondo-texto);
-  --bs-table-striped-bg: color-mix(in srgb, var(--tema-encabezado) 6%, var(--tema-fondo));
-  --bs-table-hover-bg: color-mix(in srgb, var(--tema-encabezado) 10%, var(--tema-fondo));
+  --bs-table-bg: var(--tema-superficie);
+  --bs-table-color: var(--tema-superficie-texto);
+  --bs-table-striped-bg: color-mix(in srgb, var(--tema-encabezado) 6%, var(--tema-superficie));
+  --bs-table-hover-bg: color-mix(in srgb, var(--tema-encabezado) 10%, var(--tema-superficie));
 }
 
 .form-control,
 .form-select {
-  background-color: var(--tema-fondo);
-  color: var(--tema-fondo-texto);
-  border-color: color-mix(in srgb, var(--tema-encabezado) 25%, var(--tema-fondo));
+  background-color: var(--tema-superficie);
+  color: var(--tema-superficie-texto);
+  border-color: color-mix(in srgb, var(--tema-encabezado) 25%, var(--tema-superficie));
 }
 
 .form-control::placeholder {
-  color: color-mix(in srgb, var(--tema-fondo-texto) 50%, transparent);
+  color: color-mix(in srgb, var(--tema-superficie-texto) 50%, transparent);
+}
+
+/* Bootstrap fija text-muted a un gris que no se adapta al tema — en modo
+   oscuro queda casi invisible sobre superficies oscuras. Se deriva del
+   texto legible de la superficie en vez de un gris fijo. */
+.text-muted {
+  color: color-mix(in srgb, var(--tema-superficie-texto) 62%, transparent) !important;
 }
