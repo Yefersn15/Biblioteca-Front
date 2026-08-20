@@ -32,7 +32,7 @@ body {
 
 /* Marco de la página (navbar público, navbar+sidebar admin, footer): toman
    el color de "encabezado" del tema. Las superficies de contenido (.card,
-   .table, formularios) NO se tocan, siguen blancas para mantener legibilidad. */
+   .table, formularios) también combinan con la paleta — ver más abajo. */
 .tema-encabezado {
   background-color: var(--tema-encabezado) !important;
   color: var(--tema-encabezado-texto) !important;
@@ -148,15 +148,36 @@ a:not(.btn):not(.nav-link):not(.navbar-brand):not(.tema-encabezado-link) {
   --bs-table-hover-bg: color-mix(in srgb, var(--tema-encabezado) 10%, var(--tema-superficie));
 }
 
+/* Los campos de entrada usan "fondo" (no "superficie") a propósito: son un
+   tono distinto al de la card que los contiene, para que no se confundan
+   con ella — quedan "hundidos" en vez de fundirse con el fondo de la card. */
 .form-control,
 .form-select {
-  background-color: var(--tema-superficie);
-  color: var(--tema-superficie-texto);
-  border-color: color-mix(in srgb, var(--tema-encabezado) 25%, var(--tema-superficie));
+  background-color: var(--tema-fondo);
+  color: var(--tema-fondo-texto);
+  border-color: color-mix(in srgb, var(--tema-encabezado) 25%, var(--tema-fondo));
 }
 
 .form-control::placeholder {
-  color: color-mix(in srgb, var(--tema-superficie-texto) 50%, transparent);
+  color: color-mix(in srgb, var(--tema-fondo-texto) 50%, transparent);
+}
+
+/* Checkbox/radio/switch: Bootstrap los deja blancos fijos sin importar el
+   tema. Sin marcar usan el mismo tono "hundido" que los demás campos;
+   marcados usan el acento. */
+.form-check-input {
+  background-color: var(--tema-fondo);
+  border-color: color-mix(in srgb, var(--tema-encabezado) 35%, var(--tema-fondo));
+}
+
+.form-check-input:checked {
+  background-color: var(--tema-acento);
+  border-color: var(--tema-acento);
+}
+
+.form-check-input:focus {
+  border-color: var(--tema-acento);
+  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--tema-acento) 25%, transparent);
 }
 
 /* Bootstrap fija text-muted a un gris que no se adapta al tema — en modo
