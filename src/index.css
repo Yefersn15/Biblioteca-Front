@@ -81,3 +81,51 @@ a:not(.btn):not(.nav-link):not(.navbar-brand):not(.tema-encabezado-link) {
   border-color: var(--tema-acento);
   box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--tema-acento) 25%, transparent);
 }
+
+/* Superficies de contenido (cards, tablas, formularios, menús, modales):
+   toman el tono de "fondo" del tema, igual que el body — en paletas
+   predefinidas es un tinte muy pálido (el cambio es sutil, a propósito),
+   pero en modo personalizado con colores más fuertes sí combinan de
+   verdad. El texto usa el mismo contraste calculado que el body, así que
+   sigue siendo legible sea cual sea el color elegido. !important porque
+   varias de estas superficies llevan `bg-white` fijo en el markup. */
+.card,
+.card-header,
+.card-body,
+.card-footer,
+.table,
+.modal-content,
+.dropdown-menu {
+  background-color: var(--tema-fondo) !important;
+  border-color: color-mix(in srgb, var(--tema-encabezado) 18%, var(--tema-fondo));
+}
+
+.card,
+.card-body,
+.card-footer,
+.modal-content,
+.form-label {
+  color: var(--tema-fondo-texto);
+}
+
+.dropdown-item {
+  color: var(--tema-fondo-texto);
+}
+
+.table {
+  --bs-table-bg: var(--tema-fondo);
+  --bs-table-color: var(--tema-fondo-texto);
+  --bs-table-striped-bg: color-mix(in srgb, var(--tema-encabezado) 6%, var(--tema-fondo));
+  --bs-table-hover-bg: color-mix(in srgb, var(--tema-encabezado) 10%, var(--tema-fondo));
+}
+
+.form-control,
+.form-select {
+  background-color: var(--tema-fondo);
+  color: var(--tema-fondo-texto);
+  border-color: color-mix(in srgb, var(--tema-encabezado) 25%, var(--tema-fondo));
+}
+
+.form-control::placeholder {
+  color: color-mix(in srgb, var(--tema-fondo-texto) 50%, transparent);
+}
