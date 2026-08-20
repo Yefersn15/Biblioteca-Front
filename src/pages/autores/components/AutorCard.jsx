@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 const AutorCard = ({ autor }) => (
-  <Link to={`/autores/${autor.id}`} className="text-decoration-none text-dark">
+  <Link to={`/catalogo/autores/${autor.id}`} className="text-decoration-none text-dark">
     <div className="card h-100 shadow-sm text-center">
       <div className="card-body">
         <img

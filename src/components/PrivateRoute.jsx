@@ -19,7 +19,7 @@ const PrivateRoute = ({ children, requireGuest, staffOnly }) => {
     if (!user) return children;
     // El staff siempre entra por el panel de administración; a un usuario
     // normal se le devuelve a la página desde la que lo mandamos a loguearse.
-    if (isStaff) return <Navigate to="/admin" replace />;
+    if (isStaff) return <Navigate to="/admin/dashboard" replace />;
     return <Navigate to={location.state?.from?.pathname || '/'} replace />;
   }
 

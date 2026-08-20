@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './Layout';
 import AdminLayout from './AdminLayout';
 import PrivateRoute from './PrivateRoute';
@@ -13,6 +13,9 @@ import LibroDetalle from '../pages/libros/LibroDetalle';
 import MisPrestamos from '../pages/prestamos/MisPrestamos';
 import AutoresPublicos from '../pages/autores/AutoresPublicos';
 import AutorPublico from '../pages/autores/AutorPublico';
+import EditorialesPublicas from '../pages/editoriales/EditorialesPublicas';
+import EditorialPublica from '../pages/editoriales/EditorialPublica';
+import CategoriasPublicas from '../pages/categorias/CategoriasPublicas';
 
 import AdminDashboard from '../pages/dashboard/AdminDashboard';
 import LibrosAdmin from '../pages/libros/LibrosAdmin';
@@ -34,9 +37,12 @@ const Rutas = () => (
     <Route element={<Layout />}>
       <Route path="/" element={<Home />} />
       <Route path="/catalogo" element={<CatalogoLibros />} />
+      <Route path="/catalogo/autores" element={<AutoresPublicos />} />
+      <Route path="/catalogo/autores/:id" element={<AutorPublico />} />
+      <Route path="/catalogo/editoriales" element={<EditorialesPublicas />} />
+      <Route path="/catalogo/editoriales/:id" element={<EditorialPublica />} />
+      <Route path="/catalogo/categorias" element={<CategoriasPublicas />} />
       <Route path="/catalogo/:id" element={<LibroDetalle />} />
-      <Route path="/autores" element={<AutoresPublicos />} />
-      <Route path="/autores/:id" element={<AutorPublico />} />
       <Route path="/login" element={<PrivateRoute requireGuest><Login /></PrivateRoute>} />
       <Route path="/registro" element={<PrivateRoute requireGuest><Register /></PrivateRoute>} />
       <Route path="/recuperar-password" element={<PrivateRoute requireGuest><ForgotPassword /></PrivateRoute>} />
@@ -48,7 +54,8 @@ const Rutas = () => (
       path="/admin"
       element={<PrivateRoute staffOnly><AdminLayout /></PrivateRoute>}
     >
-      <Route index element={<AdminDashboard />} />
+      <Route index element={<Navigate to="dashboard" replace />} />
+      <Route path="dashboard" element={<AdminDashboard />} />
       <Route path="libros" element={<LibrosAdmin />} />
       <Route path="libros/nuevo" element={<LibroForm />} />
       <Route path="libros/editar/:id" element={<LibroForm />} />

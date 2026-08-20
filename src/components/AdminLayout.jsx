@@ -4,7 +4,7 @@ import { useConfiguracion } from '../context/ConfiguracionContext';
 import { useAdminLayoutPrefs } from '../hooks/useAdminLayoutPrefs';
 
 const ENLACES_BASE = [
-  { to: '/admin', label: 'Inicio', icon: 'fa-gauge', end: true },
+  { to: '/admin/dashboard', label: 'Inicio', icon: 'fa-gauge', end: true },
   { to: '/admin/libros', label: 'Libros', icon: 'fa-book' },
   { to: '/admin/autores', label: 'Autores', icon: 'fa-feather' },
   { to: '/admin/editoriales', label: 'Editoriales', icon: 'fa-building' },

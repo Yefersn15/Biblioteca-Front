@@ -33,7 +33,9 @@ const Header = () => {
           <ul className="navbar-nav me-auto">
             <li className="nav-item"><Link className="nav-link" to="/">Inicio</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/catalogo">Catálogo</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/autores">Autores</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/catalogo/autores">Autores</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/catalogo/editoriales">Editoriales</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/catalogo/categorias">Categorías</Link></li>
           </ul>
 
           <ul className="navbar-nav align-items-lg-center">
@@ -56,7 +58,7 @@ const Header = () => {
                   <li><Link className="dropdown-item" to="/perfil"><i className="fas fa-user me-2"></i>Mi perfil</Link></li>
                   <li><Link className="dropdown-item" to="/mis-prestamos"><i className="fas fa-right-left me-2"></i>Mis préstamos</Link></li>
                   {isStaff && (
-                    <li><Link className="dropdown-item" to="/admin"><i className="fas fa-gauge me-2"></i>Administración</Link></li>
+                    <li><Link className="dropdown-item" to="/admin/dashboard"><i className="fas fa-gauge me-2"></i>Administración</Link></li>
                   )}
                   <li><hr className="dropdown-divider" /></li>
                   <li><button className="dropdown-item text-danger" onClick={handleLogout}><i className="fas fa-right-from-bracket me-2"></i>Cerrar sesión</button></li>

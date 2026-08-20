@@ -47,7 +47,7 @@ export const useHomeLoginCard = () => {
     setLoading(true);
     try {
       const usuario = await login(email, password);
-      if (['ADMIN', 'BIBLIOTECARIO'].includes(usuario.rol)) navigate('/admin');
+      if (['ADMIN', 'BIBLIOTECARIO'].includes(usuario.rol)) navigate('/admin/dashboard');
     } catch (err) {
       setError(err.message);
     } finally {

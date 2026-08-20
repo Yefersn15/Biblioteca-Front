@@ -18,7 +18,7 @@ const AutorPublico = () => {
 
   return (
     <div className="container py-4">
-      <Link to="/autores" className="btn btn-link ps-0 mb-3"><i className="fas fa-arrow-left me-1"></i>Volver a autores</Link>
+      <Link to="/catalogo/autores" className="btn btn-link ps-0 mb-3"><i className="fas fa-arrow-left me-1"></i>Volver a autores</Link>
 
       <div className="row g-4 mb-4">
         <div className="col-md-3 text-center">

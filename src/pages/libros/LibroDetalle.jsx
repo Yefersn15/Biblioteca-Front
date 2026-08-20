@@ -39,10 +39,10 @@ const LibroDetalle = () => {
             {libro.autores?.map((a, i) => (
               <span key={a.id}>
                 {i > 0 && ', '}
-                <Link to={`/autores/${a.id}`}>{a.nombre} {a.apellido}</Link>
+                <Link to={`/catalogo/autores/${a.id}`}>{a.nombre} {a.apellido}</Link>
               </span>
             ))}
-            {libro.editorial && <> · <Link to={`/catalogo?editorialId=${libro.editorial.id}`}>{libro.editorial.nombre}</Link></>}
+            {libro.editorial && <> · <Link to={`/catalogo/editoriales/${libro.editorial.id}`}>{libro.editorial.nombre}</Link></>}
             {libro.anioPublicacion ? ` · ${libro.anioPublicacion}` : ''}
           </p>
           {(libro.idioma || libro.paginas) && (
