@@ -39,7 +39,7 @@ const Header = () => {
           <ul className="navbar-nav align-items-lg-center">
             {user ? (
               <li className="nav-item dropdown">
-                <button className="nav-link dropdown-toggle btn btn-link">
+                <button className="nav-link dropdown-toggle btn btn-link" data-bs-toggle="dropdown">
                   <i className="fas fa-user-circle me-1"></i>{user.nombres}
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end">
