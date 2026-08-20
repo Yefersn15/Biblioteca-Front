@@ -21,6 +21,7 @@ export const usePerfilForm = () => {
     barrio: user.barrio || '',
   });
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [guardando, setGuardando] = useState(false);
 
   const setField = (name, value) => {
@@ -29,6 +30,10 @@ export const usePerfilForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password && password !== confirmPassword) {
+      toast.error('Las contraseñas no coinciden');
+      return;
+    }
     setGuardando(true);
     try {
       const payload = { nombres: form.nombres, apellidos: form.apellidos, genero: form.genero, celular: form.celular, avatar: form.avatar };
@@ -44,6 +49,7 @@ export const usePerfilForm = () => {
       const usuarioActualizado = await actualizarUsuario(user.id, payload);
       actualizarUsuarioLocal(usuarioActualizado);
       setPassword('');
+      setConfirmPassword('');
       toast.success('Perfil actualizado');
     } catch (err) {
       toast.error(err.message);
@@ -52,5 +58,5 @@ export const usePerfilForm = () => {
     }
   };
 
-  return { user, esAdmin, form, setField, password, setPassword, guardando, handleSubmit };
+  return { user, esAdmin, form, setField, password, setPassword, confirmPassword, setConfirmPassword, guardando, handleSubmit };
 };

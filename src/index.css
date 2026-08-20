@@ -73,3 +73,11 @@ a:not(.btn):not(.nav-link):not(.navbar-brand):not(.tema-encabezado-link) {
   background-color: var(--tema-acento) !important;
   color: var(--tema-acento-texto) !important;
 }
+
+/* Campos de formulario: el foco (borde + sombra) usa el acento del tema en
+   vez del azul fijo de Bootstrap, para que combinen con la paleta elegida. */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--tema-acento);
+  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--tema-acento) 25%, transparent);
+}

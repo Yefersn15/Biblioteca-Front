@@ -23,7 +23,7 @@ const CatalogoLibros = () => {
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="mb-0">
-          <i className="fas fa-book me-2"></i>{nombreFiltroEditorial ? `Editorial: ${nombreFiltroEditorial}` : 'Catálogo'}
+          <i className="fas fa-book me-2 text-tema-acento"></i>{nombreFiltroEditorial ? `Editorial: ${nombreFiltroEditorial}` : 'Catálogo'}
         </h2>
         {hayFiltros && <button className="btn btn-sm btn-outline-secondary" onClick={limpiarFiltros}>Quitar filtros</button>}
       </div>

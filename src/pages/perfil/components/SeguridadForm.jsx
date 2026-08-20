@@ -1,5 +1,7 @@
 // src/pages/perfil/components/SeguridadForm.jsx
-const SeguridadForm = ({ email, password, setPassword }) => {
+const SeguridadForm = ({ email, password, setPassword, confirmPassword, setConfirmPassword }) => {
+  const noCoinciden = password && confirmPassword && password !== confirmPassword;
+
   return (
     <div className="card">
       <div className="card-header bg-white border-bottom">
@@ -10,9 +12,21 @@ const SeguridadForm = ({ email, password, setPassword }) => {
           <label className="form-label">Correo</label>
           <input type="email" className="form-control" value={email} disabled />
         </div>
-        <div>
+        <div className="mb-3">
           <label className="form-label">Nueva contraseña</label>
           <input type="password" className="form-control" minLength={8} placeholder="Dejar vacío para no cambiarla" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <div>
+          <label className="form-label">Verificar nueva contraseña</label>
+          <input
+            type="password"
+            className={`form-control ${noCoinciden ? 'is-invalid' : ''}`}
+            minLength={8}
+            placeholder="Repite la nueva contraseña"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          {noCoinciden && <div className="invalid-feedback">Las contraseñas no coinciden</div>}
         </div>
       </div>
     </div>

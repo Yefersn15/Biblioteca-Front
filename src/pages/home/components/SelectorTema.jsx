@@ -1,5 +1,8 @@
+import { useEffect, useRef } from 'react';
 import { PALETAS } from '../../../utils/paletas';
 import { contrasteTexto } from '../../../utils/color';
+import { resolverTema, aplicarTemaCss } from '../../../utils/tema';
+import { useConfiguracion } from '../../../context/ConfiguracionContext';
 
 const TEMA_NINGUNO = { modo: 'NINGUNO', paletaId: null, colores: null };
 const COLORES_PERSONALIZADO_INICIAL = { fondo: '#eef5f9', encabezado: '#0b3d5c', acento: '#1f8fce' };
@@ -10,6 +13,25 @@ const COLORES_PERSONALIZADO_INICIAL = { fondo: '#eef5f9', encabezado: '#0b3d5c',
 // lista para persistir vía onChange.
 const SelectorTema = ({ value, onChange }) => {
   const tema = value || TEMA_NINGUNO;
+  const { temaResuelto } = useConfiguracion();
+
+  // Vista previa en vivo: cada vez que cambia la selección (antes de guardar)
+  // se aplica de una vez a toda la página, para que el admin vea el efecto
+  // real en el encabezado/sidebar mientras elige. Si sale de esta página sin
+  // guardar, se restaura el tema realmente guardado (temaResuelto al montar).
+  const temaGuardadoRef = useRef(temaResuelto);
+  useEffect(() => {
+    // Se actualiza cada vez que el tema realmente guardado cambia (p. ej.
+    // tras un guardar exitoso), para que un "salir sin guardar" posterior
+    // restaure lo último persistido y no el valor de cuando se montó.
+    temaGuardadoRef.current = temaResuelto;
+  }, [temaResuelto]);
+
+  useEffect(() => {
+    aplicarTemaCss(resolverTema(tema));
+    return () => aplicarTemaCss(temaGuardadoRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tema.modo, tema.paletaId, tema.colores?.fondo, tema.colores?.encabezado, tema.colores?.acento]);
 
   const elegirNinguno = () => onChange(TEMA_NINGUNO);
 

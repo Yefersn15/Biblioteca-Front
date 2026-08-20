@@ -6,7 +6,7 @@ import SeguridadForm from './components/SeguridadForm';
 const ROL_LABEL = { ADMIN: 'Administrador', BIBLIOTECARIO: 'Bibliotecario', USUARIO: 'Usuario' };
 
 const Perfil = () => {
-  const { user, esAdmin, form, setField, password, setPassword, guardando, handleSubmit } = usePerfilForm();
+  const { user, esAdmin, form, setField, password, setPassword, confirmPassword, setConfirmPassword, guardando, handleSubmit } = usePerfilForm();
 
   return (
     <div className="container py-4" style={{ maxWidth: 900 }}>
@@ -45,7 +45,13 @@ const Perfil = () => {
 
           <div className="col-md-6 d-flex flex-column gap-4">
             <DocumentoUbicacionForm form={form} setField={setField} esAdmin={esAdmin} />
-            <SeguridadForm email={user.email} password={password} setPassword={setPassword} />
+            <SeguridadForm
+              email={user.email}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+            />
           </div>
         </div>
 
