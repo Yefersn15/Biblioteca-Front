@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const EditorialRow = ({ editorial, onEliminar }) => (
+const EditorialRow = ({ editorial, onEliminar, onToggleEstado }) => (
   <tr>
     <td>
       {editorial.logoUrl && (
@@ -17,6 +17,13 @@ const EditorialRow = ({ editorial, onEliminar }) => (
       <Link to={`/admin/editoriales/editar/${editorial.id}`} className="btn btn-sm btn-outline-primary me-1" title="Editar">
         <i className="fas fa-edit"></i>
       </Link>
+      <button
+        className={`btn btn-sm ${editorial.estado ? 'btn-outline-warning' : 'btn-outline-success'} me-1`}
+        onClick={() => onToggleEstado(editorial)}
+        title={editorial.estado ? 'Desactivar' : 'Activar'}
+      >
+        <i className={`fas fa-toggle-${editorial.estado ? 'off' : 'on'}`}></i>
+      </button>
       <button className="btn btn-sm btn-outline-danger" onClick={() => onEliminar(editorial)} title="Eliminar">
         <i className="fas fa-trash"></i>
       </button>

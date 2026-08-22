@@ -3,7 +3,16 @@ import { useEditorialesAdmin } from './hooks/useEditorialesAdmin';
 import EditorialRow from './components/EditorialRow';
 
 const EditorialesAdmin = () => {
-  const { editoriales, loading, search, setSearch, handleEliminar } = useEditorialesAdmin();
+  const {
+    editoriales,
+    loading,
+    search,
+    setSearch,
+    estadoFiltro,
+    setEstadoFiltro,
+    toggleEstado,
+    handleEliminar,
+  } = useEditorialesAdmin();
 
   return (
     <div>
@@ -14,13 +23,28 @@ const EditorialesAdmin = () => {
         </Link>
       </div>
 
-      <input
-        type="text"
-        className="form-control mb-3"
-        placeholder="Buscar por nombre..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div className="row g-2 mb-3">
+        <div className="col">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por nombre..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="col-auto">
+          <select
+            className="form-select"
+            value={estadoFiltro}
+            onChange={(e) => setEstadoFiltro(e.target.value)}
+          >
+            <option value="">Todas</option>
+            <option value="true">Habilitadas</option>
+            <option value="false">Inhabilitadas</option>
+          </select>
+        </div>
+      </div>
 
       {loading ? (
         <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>
@@ -38,7 +62,7 @@ const EditorialesAdmin = () => {
           </thead>
           <tbody>
             {editoriales.map((e) => (
-              <EditorialRow key={e.id} editorial={e} onEliminar={handleEliminar} />
+              <EditorialRow key={e.id} editorial={e} onEliminar={handleEliminar} onToggleEstado={toggleEstado} />
             ))}
           </tbody>
         </table>
