@@ -14,10 +14,11 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
   const [form, setForm] = useState({});
   const [guardando, setGuardando] = useState(false);
   const [search, setSearch] = useState('');
+  const [estadoFiltro, setEstadoFiltro] = useState('');
 
   const cargar = async () => {
     setLoading(true);
-    const { items } = await api.getAll({ search: search || undefined, limit: 100 });
+    const { items } = await api.getAll({ search: search || undefined, estado: estadoFiltro || undefined, limit: 100 });
     setItems(items);
     setLoading(false);
   };
@@ -25,7 +26,17 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
   useEffect(() => {
     const timeout = setTimeout(() => { cargar(); }, 300);
     return () => clearTimeout(timeout);
-  }, [search]);
+  }, [search, estadoFiltro]);
+
+  const toggleEstado = async (item) => {
+    try {
+      await api.update(item.id, { estado: !item.estado });
+      toast.success(`${titulo} ${item.estado ? 'inhabilitado' : 'habilitado'}`);
+      await cargar();
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   const abrirNuevo = () => {
     setForm(Object.fromEntries(fields.map((f) => [f.name, ''])));
@@ -117,14 +128,27 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
         </div>
       )}
 
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder={`Buscar ${titulo.toLowerCase()}...`}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+      <div className="mb-3 row g-2">
+        <div className="col-md-8">
+          <input
+            type="text"
+            className="form-control"
+            placeholder={`Buscar ${titulo.toLowerCase()}...`}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="col-md-4">
+          <select
+            className="form-select"
+            value={estadoFiltro}
+            onChange={(e) => setEstadoFiltro(e.target.value)}
+          >
+            <option value="">Todos</option>
+            <option value="true">Habilitados</option>
+            <option value="false">Inhabilitados</option>
+          </select>
+        </div>
       </div>
 
       {loading ? (
@@ -136,6 +160,7 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
           <thead>
             <tr>
               {fields.map((f) => <th key={f.name}>{f.label}</th>)}
+              <th>Estado</th>
               <th style={{ width: 120 }}></th>
             </tr>
           </thead>
@@ -143,6 +168,15 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
             {items.map((item) => (
               <tr key={item.id}>
                 {fields.map((f) => <td key={f.name}>{item[f.name]}</td>)}
+                <td>
+                  <button
+                    className={`btn btn-sm ${item.estado ? 'btn-outline-warning' : 'btn-outline-success'}`}
+                    onClick={() => toggleEstado(item)}
+                    title={item.estado ? 'Deshabilitar' : 'Habilitar'}
+                  >
+                    <i className={`fas fa-toggle-${item.estado ? 'off' : 'on'}`}></i>
+                  </button>
+                </td>
                 <td>
                   <button className="btn btn-sm btn-outline-primary me-1" onClick={() => abrirEditar(item)}>
                     <i className="fas fa-edit"></i>
