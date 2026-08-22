@@ -12,8 +12,8 @@ const LibrosAdmin = () => {
     setEditorialId,
     tipo,
     setTipo,
-    agotados,
-    setAgotados,
+    estadoFiltro,
+    setEstadoFiltro,
     editoriales,
     hayFiltros,
     limpiarFiltros,
@@ -54,15 +54,13 @@ const LibrosAdmin = () => {
             <option value="GUIA">Guía de aprendizaje</option>
           </select>
         </div>
-        <div className="col-auto form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="soloAgotados"
-            checked={agotados}
-            onChange={(e) => setAgotados(e.target.checked)}
-          />
-          <label className="form-check-label" htmlFor="soloAgotados">Solo agotados</label>
+        <div className="col-6 col-md-2" style={{ flex: '1 1 0' }}>
+          <select className="form-select" value={estadoFiltro} onChange={(e) => setEstadoFiltro(e.target.value)}>
+            <option value="">Todos</option>
+            <option value="habilitados">Habilitados</option>
+            <option value="inhabilitados">Inhabilitados</option>
+            <option value="agotados">Agotados</option>
+          </select>
         </div>
         {hayFiltros && (
           <div className="col-auto">
