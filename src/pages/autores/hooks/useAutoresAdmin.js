@@ -1,6 +1,6 @@
 // src/pages/autores/hooks/useAutoresAdmin.js
 import { useState, useEffect } from 'react';
-import { getAll, remove } from '../services/autoresService';
+import { getAll, update, remove } from '../services/autoresService';
 import { useToast } from '../../../context/ToastContext';
 import { useConfirm } from '../../../context/ConfirmContext';
 
@@ -10,17 +10,35 @@ export const useAutoresAdmin = () => {
   const [autores, setAutores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [nacionalidadFiltro, setNacionalidadFiltro] = useState('');
+  const [generoFiltro, setGeneroFiltro] = useState('');
+  const [estadoFiltro, setEstadoFiltro] = useState('');
 
   const cargar = async () => {
     setLoading(true);
-    const { items } = await getAll({ limit: 100, search: search || undefined });
+    const { items } = await getAll({
+      limit: 100,
+      search: search || undefined,
+      nacionalidad: nacionalidadFiltro || undefined,
+      generoLiterario: generoFiltro || undefined,
+      estado: estadoFiltro === '' ? undefined : estadoFiltro === 'true',
+    });
     setAutores(items);
     setLoading(false);
   };
 
   useEffect(() => {
     cargar();
-  }, [search]);
+  }, [search, nacionalidadFiltro, generoFiltro, estadoFiltro]);
+
+  const toggleEstado = async (autor) => {
+    try {
+      await update(autor.id, { estado: !autor.estado });
+      cargar();
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   const handleEliminar = async (autor) => {
     if (!(await confirm(`¿Eliminar a "${autor.nombre} ${autor.apellido || ''}"?`))) return;
@@ -33,5 +51,19 @@ export const useAutoresAdmin = () => {
     }
   };
 
-  return { autores, loading, search, setSearch, cargar, handleEliminar };
+  return {
+    autores,
+    loading,
+    search,
+    setSearch,
+    nacionalidadFiltro,
+    setNacionalidadFiltro,
+    generoFiltro,
+    setGeneroFiltro,
+    estadoFiltro,
+    setEstadoFiltro,
+    cargar,
+    toggleEstado,
+    handleEliminar,
+  };
 };

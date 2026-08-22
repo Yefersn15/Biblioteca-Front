@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const AutorRow = ({ autor, onEliminar }) => (
+const AutorRow = ({ autor, onEliminar, toggleEstado }) => (
   <tr>
     <td>
       {autor.fotografiaUrl && (
@@ -14,6 +14,13 @@ const AutorRow = ({ autor, onEliminar }) => (
       <Link to={`/admin/autores/editar/${autor.id}`} className="btn btn-sm btn-outline-primary me-1" title="Editar">
         <i className="fas fa-edit"></i>
       </Link>
+      <button
+        className={`btn btn-sm ${autor.estado ? 'btn-outline-warning' : 'btn-outline-success'} me-1`}
+        onClick={() => toggleEstado(autor)}
+        title={autor.estado ? 'Desactivar' : 'Activar'}
+      >
+        <i className={`fas fa-toggle-${autor.estado ? 'off' : 'on'}`}></i>
+      </button>
       <button className="btn btn-sm btn-outline-danger" onClick={() => onEliminar(autor)} title="Eliminar">
         <i className="fas fa-trash"></i>
       </button>
