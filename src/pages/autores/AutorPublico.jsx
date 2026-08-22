@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import { useAutorPublico } from './hooks/useAutorPublico';
 import AutorLibroCard from './components/AutorLibroCard';
 
-const RED_ICONS = { facebook: 'fa-facebook', twitter: 'fa-x-twitter', instagram: 'fa-instagram', portafolio: 'fa-globe' };
+const RED_ICONS = { facebook: 'fa-facebook', twitter: 'fa-x-twitter', instagram: 'fa-instagram', biografiaUrl: 'fa-book-open' };
 
 const AutorPublico = () => {
-  const { autor, libros, loading } = useAutorPublico();
+  const { autor, libros, generos, obrasDestacadas, loading } = useAutorPublico();
 
   if (loading) {
     return <div className="text-center py-5"><div className="spinner-border text-primary" role="status"></div></div>;
@@ -37,21 +37,29 @@ const AutorPublico = () => {
         <div className="col-md-9">
           <h2>{autor.nombre} {autor.apellido}</h2>
           <p className="text-muted mb-2">
-            {[autor.nacionalidad, autor.generoLiterario, autor.idiomaPrincipal].filter(Boolean).join(' · ')}
+            {[autor.nacionalidad, generos.map((g) => g.nombre).join(', '), autor.idiomaPrincipal].filter(Boolean).join(' · ')}
           </p>
           {redes.length > 0 && (
             <div className="mb-2">
               {redes.map(([red, url]) => (
                 <a key={red} href={url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline-secondary me-2">
-                  <i className={`fab ${RED_ICONS[red] || 'fa-link'}`}></i>
+                  <i className={`${red === 'biografiaUrl' ? 'fas' : 'fab'} ${RED_ICONS[red] || 'fa-link'}`}></i>
                 </a>
               ))}
             </div>
           )}
           <p>{autor.biografia}</p>
 
-          {autor.obrasDestacadas?.length > 0 && (
-            <p><strong>Obras destacadas:</strong> {autor.obrasDestacadas.join(', ')}</p>
+          {obrasDestacadas.length > 0 && (
+            <p>
+              <strong>Obras destacadas:</strong>{' '}
+              {obrasDestacadas.map((l, i) => (
+                <span key={l.id}>
+                  {i > 0 && ', '}
+                  <Link to={`/catalogo/${l.id}`}>{l.titulo}</Link>
+                </span>
+              ))}
+            </p>
           )}
           {autor.premios?.length > 0 && (
             <p><strong>Premios:</strong> {autor.premios.join(', ')}</p>

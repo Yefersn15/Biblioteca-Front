@@ -9,17 +9,18 @@ export const useAutoresAdmin = () => {
   const confirm = useConfirm();
   const [autores, setAutores] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
 
   const cargar = async () => {
     setLoading(true);
-    const { items } = await getAll({ limit: 200 });
+    const { items } = await getAll({ limit: 100, search: search || undefined });
     setAutores(items);
     setLoading(false);
   };
 
   useEffect(() => {
     cargar();
-  }, []);
+  }, [search]);
 
   const handleEliminar = async (autor) => {
     if (!(await confirm(`¿Eliminar a "${autor.nombre} ${autor.apellido || ''}"?`))) return;
@@ -32,5 +33,5 @@ export const useAutoresAdmin = () => {
     }
   };
 
-  return { autores, loading, cargar, handleEliminar };
+  return { autores, loading, search, setSearch, cargar, handleEliminar };
 };

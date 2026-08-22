@@ -3,7 +3,7 @@ import { useEditorialesAdmin } from './hooks/useEditorialesAdmin';
 import EditorialRow from './components/EditorialRow';
 
 const EditorialesAdmin = () => {
-  const { editoriales, loading, handleEliminar } = useEditorialesAdmin();
+  const { editoriales, loading, search, setSearch, handleEliminar } = useEditorialesAdmin();
 
   return (
     <div>
@@ -13,6 +13,14 @@ const EditorialesAdmin = () => {
           <i className="fas fa-plus me-1"></i>Nueva editorial
         </Link>
       </div>
+
+      <input
+        type="text"
+        className="form-control mb-3"
+        placeholder="Buscar por nombre..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
       {loading ? (
         <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>

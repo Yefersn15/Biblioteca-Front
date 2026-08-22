@@ -28,17 +28,34 @@ const LibroDetalle = () => {
         </div>
         <div className="col-md-8">
           <h2>{libro.titulo}</h2>
-          <p className="text-muted mb-1">
-            {libro.tipo} ·{' '}
-            {libro.autores?.map((a, i) => (
-              <span key={a.id}>
-                {i > 0 && ', '}
-                <Link to={`/catalogo/autores/${a.id}`}>{a.nombre} {a.apellido}</Link>
-              </span>
+          <div className="d-flex flex-wrap align-items-center gap-3 mb-2">
+            <span className="text-muted small text-uppercase">{libro.tipo}</span>
+            {libro.autores?.map((a) => (
+              <Link key={a.id} to={`/catalogo/autores/${a.id}`} className="d-flex align-items-center gap-2 text-decoration-none text-dark">
+                {a.fotografiaUrl ? (
+                  <img src={a.fotografiaUrl} alt="" className="rounded-circle" style={{ width: 28, height: 28, objectFit: 'cover' }} />
+                ) : (
+                  <span className="rounded-circle bg-light d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 28, height: 28 }}>
+                    <i className="fas fa-user text-muted" style={{ fontSize: 12 }}></i>
+                  </span>
+                )}
+                <span className="small">{a.nombre} {a.apellido}</span>
+              </Link>
             ))}
-            {libro.editorial && <> · <Link to={`/catalogo/editoriales/${libro.editorial.id}`}>{libro.editorial.nombre}</Link></>}
-            {libro.anioPublicacion ? ` · ${libro.anioPublicacion}` : ''}
-          </p>
+            {libro.editorial && (
+              <Link to={`/catalogo/editoriales/${libro.editorial.id}`} className="d-flex align-items-center gap-2 text-decoration-none text-dark">
+                {libro.editorial.logoUrl ? (
+                  <img src={libro.editorial.logoUrl} alt="" className="rounded-circle" style={{ width: 28, height: 28, objectFit: 'contain', background: '#fff' }} />
+                ) : (
+                  <span className="rounded-circle bg-light d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 28, height: 28 }}>
+                    <i className="fas fa-building text-muted" style={{ fontSize: 12 }}></i>
+                  </span>
+                )}
+                <span className="small">{libro.editorial.nombre}</span>
+              </Link>
+            )}
+            {libro.anioPublicacion && <span className="text-muted small">{libro.anioPublicacion}</span>}
+          </div>
           {(libro.idioma || libro.paginas) && (
             <p className="text-muted mb-1 small">
               {libro.idioma && `Idioma: ${libro.idioma}`}{libro.idioma && libro.paginas ? ' · ' : ''}{libro.paginas && `${libro.paginas} páginas`}
@@ -47,9 +64,6 @@ const LibroDetalle = () => {
           <div className="mb-3">
             {libro.categorias?.map((c) => (
               <Link to={`/catalogo?categoriaId=${c.id}`} className="badge bg-light text-dark border me-1 text-decoration-none" key={c.id}>{c.nombre}</Link>
-            ))}
-            {libro.etiquetas?.map((tag) => (
-              <span className="badge bg-secondary-subtle text-dark me-1" key={tag}>#{tag}</span>
             ))}
           </div>
           <p>{libro.descripcion || 'Sin descripción disponible.'}</p>

@@ -3,7 +3,7 @@ import { useAutoresAdmin } from './hooks/useAutoresAdmin';
 import AutorRow from './components/AutorRow';
 
 const AutoresAdmin = () => {
-  const { autores, loading, handleEliminar } = useAutoresAdmin();
+  const { autores, loading, search, setSearch, handleEliminar } = useAutoresAdmin();
 
   return (
     <div>
@@ -13,6 +13,14 @@ const AutoresAdmin = () => {
           <i className="fas fa-plus me-1"></i>Nuevo autor
         </Link>
       </div>
+
+      <input
+        type="text"
+        className="form-control mb-3"
+        placeholder="Buscar por nombre..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
       {loading ? (
         <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>

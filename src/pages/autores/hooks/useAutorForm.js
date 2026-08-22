@@ -2,19 +2,21 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getById, create, update } from '../services/autoresService';
+import { getAll as getCategorias } from '../../../services/api/categorias.api';
+import { getLibros } from '../../../services/api/libros.api';
 import { useToast } from '../../../context/ToastContext';
 
 const FORM_INICIAL = {
   nombre: '',
   apellido: '',
   nacionalidad: '',
-  generoLiterario: '',
+  generoLiterario: [],
   biografia: '',
   fotografiaUrl: '',
   idiomaPrincipal: '',
-  obrasDestacadas: '',
+  obrasDestacadas: [],
   premios: '',
-  redesSociales: { facebook: '', twitter: '', instagram: '', portafolio: '' },
+  redesSociales: { facebook: '', twitter: '', instagram: '', biografiaUrl: '' },
 };
 
 export const useAutorForm = () => {
@@ -24,24 +26,31 @@ export const useAutorForm = () => {
   const toast = useToast();
 
   const [form, setForm] = useState(FORM_INICIAL);
+  const [categorias, setCategorias] = useState([]);
+  const [librosPropios, setLibrosPropios] = useState([]);
   const [cargando, setCargando] = useState(editando);
   const [guardando, setGuardando] = useState(false);
 
   useEffect(() => {
+    getCategorias({ limit: 200 }).then(({ items }) => setCategorias(items));
+  }, []);
+
+  useEffect(() => {
     if (!editando) return;
-    getById(id).then((a) => {
+    Promise.all([getById(id), getLibros({ autorId: id, limit: 100 })]).then(([a, { items: libros }]) => {
       setForm({
         nombre: a.nombre,
         apellido: a.apellido || '',
         nacionalidad: a.nacionalidad || '',
-        generoLiterario: a.generoLiterario || '',
+        generoLiterario: a.generoLiterario || [],
         biografia: a.biografia || '',
         fotografiaUrl: a.fotografiaUrl || '',
         idiomaPrincipal: a.idiomaPrincipal || '',
-        obrasDestacadas: (a.obrasDestacadas || []).join(', '),
+        obrasDestacadas: a.obrasDestacadas || [],
         premios: (a.premios || []).join(', '),
-        redesSociales: { facebook: '', twitter: '', instagram: '', portafolio: '', ...(a.redesSociales || {}) },
+        redesSociales: { facebook: '', twitter: '', instagram: '', biografiaUrl: '', ...(a.redesSociales || {}) },
       });
+      setLibrosPropios(libros);
       setCargando(false);
     });
   }, [id]);
@@ -51,13 +60,21 @@ export const useAutorForm = () => {
   const setRedSocial = (red, value) =>
     setForm((prev) => ({ ...prev, redesSociales: { ...prev.redesSociales, [red]: value } }));
 
+  const toggleEnLista = (campo, valorId) => {
+    setForm((prev) => ({
+      ...prev,
+      [campo]: prev[campo].includes(valorId)
+        ? prev[campo].filter((i) => i !== valorId)
+        : [...prev[campo], valorId],
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setGuardando(true);
     try {
       const payload = {
         ...form,
-        obrasDestacadas: form.obrasDestacadas.split(',').map((s) => s.trim()).filter(Boolean),
         premios: form.premios.split(',').map((s) => s.trim()).filter(Boolean),
       };
       if (editando) {
@@ -75,5 +92,17 @@ export const useAutorForm = () => {
     }
   };
 
-  return { form, setField, setRedSocial, editando, cargando, guardando, handleSubmit, navigate };
+  return {
+    form,
+    setField,
+    setRedSocial,
+    toggleEnLista,
+    categorias,
+    librosPropios,
+    editando,
+    cargando,
+    guardando,
+    handleSubmit,
+    navigate,
+  };
 };

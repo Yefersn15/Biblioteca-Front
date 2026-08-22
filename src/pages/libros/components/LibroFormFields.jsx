@@ -96,16 +96,6 @@ const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, edit
         onChange={(e) => setForm({ ...form, archivoUrl: e.target.value })}
       />
     </div>
-    <div className="col-md-6">
-      <label className="form-label">Etiquetas (separadas por comas)</label>
-      <input
-        type="text"
-        className="form-control"
-        placeholder="ficción, clásico, bestseller"
-        value={form.etiquetas}
-        onChange={(e) => setForm({ ...form, etiquetas: e.target.value })}
-      />
-    </div>
 
     <div className="col-md-3">
       <label className="form-label">ISBN</label>

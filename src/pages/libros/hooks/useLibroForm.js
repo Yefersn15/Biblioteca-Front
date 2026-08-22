@@ -18,7 +18,6 @@ const FORM_INICIAL = {
   anioPublicacion: '',
   idioma: '',
   archivoUrl: '',
-  etiquetas: '',
   paginas: '',
   copiasTotales: 1,
   categoriaIds: [],
@@ -62,7 +61,6 @@ export const useLibroForm = () => {
           anioPublicacion: libro.anioPublicacion || '',
           idioma: libro.idioma || '',
           archivoUrl: libro.archivoUrl || '',
-          etiquetas: (libro.etiquetas || []).join(', '),
           paginas: libro.paginas || '',
           copiasTotales: libro.copiasTotales,
           categoriaIds: libro.categorias?.map((c) => c.id) || [],
@@ -98,7 +96,6 @@ export const useLibroForm = () => {
         idioma: form.idioma || undefined,
         archivoUrl: form.archivoUrl || undefined,
         paginas: form.paginas || undefined,
-        etiquetas: form.etiquetas ? form.etiquetas.split(',').map((t) => t.trim()).filter(Boolean) : [],
       };
       if (editando) {
         await actualizarLibro(id, payload);

@@ -13,15 +13,29 @@ export const useUsuariosAdmin = () => {
   const confirm = useConfirm();
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [searchDebounced, setSearchDebounced] = useState('');
+  const [rolFiltro, setRolFiltro] = useState('');
+  const [estadoFiltro, setEstadoFiltro] = useState('');
+
+  useEffect(() => {
+    const id = setTimeout(() => setSearchDebounced(search), 400);
+    return () => clearTimeout(id);
+  }, [search]);
 
   const cargar = async () => {
     setLoading(true);
-    const { items } = await getUsuarios({ limit: 100 });
+    const { items } = await getUsuarios({
+      limit: 100,
+      search: searchDebounced || undefined,
+      rol: rolFiltro || undefined,
+      estado: estadoFiltro || undefined,
+    });
     setUsuarios(items);
     setLoading(false);
   };
 
-  useEffect(() => { cargar(); }, []);
+  useEffect(() => { cargar(); }, [searchDebounced, rolFiltro, estadoFiltro]);
 
   const cambiarRol = async (usuario, rol) => {
     try {
@@ -57,6 +71,12 @@ export const useUsuariosAdmin = () => {
     usuarios,
     loading,
     usuarioActual,
+    search,
+    setSearch,
+    rolFiltro,
+    setRolFiltro,
+    estadoFiltro,
+    setEstadoFiltro,
     cargar,
     cambiarRol,
     toggleEstado,

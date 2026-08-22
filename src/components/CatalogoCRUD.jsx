@@ -13,15 +13,19 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
   const [editando, setEditando] = useState(null); // null = cerrado, {} = nuevo, {...} = editar
   const [form, setForm] = useState({});
   const [guardando, setGuardando] = useState(false);
+  const [search, setSearch] = useState('');
 
   const cargar = async () => {
     setLoading(true);
-    const { items } = await api.getAll({ limit: 100 });
+    const { items } = await api.getAll({ search: search || undefined, limit: 100 });
     setItems(items);
     setLoading(false);
   };
 
-  useEffect(() => { cargar(); }, []);
+  useEffect(() => {
+    const timeout = setTimeout(() => { cargar(); }, 300);
+    return () => clearTimeout(timeout);
+  }, [search]);
 
   const abrirNuevo = () => {
     setForm(Object.fromEntries(fields.map((f) => [f.name, ''])));
@@ -112,6 +116,16 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
           </div>
         </div>
       )}
+
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder={`Buscar ${titulo.toLowerCase()}...`}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
       {loading ? (
         <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>

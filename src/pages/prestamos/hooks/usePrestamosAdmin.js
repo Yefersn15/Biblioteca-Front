@@ -14,17 +14,24 @@ export const usePrestamosAdmin = () => {
   const [prestamos, setPrestamos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState('');
+  const [search, setSearch] = useState('');
+  const [searchDebounced, setSearchDebounced] = useState('');
   const [procesando, setProcesando] = useState(false);
   const [modal, setModal] = useState(null); // { tipo: 'aprobar'|'rechazar'|'devolver'|'observacion', prestamo, observaciones }
 
+  useEffect(() => {
+    const timer = setTimeout(() => setSearchDebounced(search.trim()), 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+
   const cargar = async () => {
     setLoading(true);
-    const { items } = await getPrestamos({ limit: 100, estado: filtro || undefined });
+    const { items } = await getPrestamos({ limit: 100, estado: filtro || undefined, search: searchDebounced || undefined });
     setPrestamos(items);
     setLoading(false);
   };
 
-  useEffect(() => { cargar(); }, [filtro]);
+  useEffect(() => { cargar(); }, [filtro, searchDebounced]);
 
   const abrirModal = (tipo, prestamo) =>
     setModal({ tipo, prestamo, observaciones: '', fechaDevolucionEstimada: hoyMasDias(14) });
@@ -54,6 +61,8 @@ export const usePrestamosAdmin = () => {
     loading,
     filtro,
     setFiltro,
+    search,
+    setSearch,
     procesando,
     modal,
     abrirModal,

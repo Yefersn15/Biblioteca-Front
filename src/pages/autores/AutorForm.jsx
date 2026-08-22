@@ -2,7 +2,19 @@ import { useAutorForm } from './hooks/useAutorForm';
 import AutorFormFields from './components/AutorFormFields';
 
 const AutorForm = () => {
-  const { form, setField, setRedSocial, editando, cargando, guardando, handleSubmit, navigate } = useAutorForm();
+  const {
+    form,
+    setField,
+    setRedSocial,
+    toggleEnLista,
+    categorias,
+    librosPropios,
+    editando,
+    cargando,
+    guardando,
+    handleSubmit,
+    navigate,
+  } = useAutorForm();
 
   if (cargando) {
     return <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>;
@@ -14,7 +26,15 @@ const AutorForm = () => {
       <div className="card">
         <div className="card-body">
           <form onSubmit={handleSubmit}>
-            <AutorFormFields form={form} setField={setField} setRedSocial={setRedSocial} />
+            <AutorFormFields
+              form={form}
+              setField={setField}
+              setRedSocial={setRedSocial}
+              toggleEnLista={toggleEnLista}
+              categorias={categorias}
+              librosPropios={librosPropios}
+              editando={editando}
+            />
 
             <div className="mt-4 d-flex gap-2">
               <button type="submit" className="btn btn-primary" disabled={guardando}>

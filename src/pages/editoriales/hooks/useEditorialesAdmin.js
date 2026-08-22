@@ -9,17 +9,18 @@ export const useEditorialesAdmin = () => {
   const confirm = useConfirm();
   const [editoriales, setEditoriales] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
 
   const cargar = async () => {
     setLoading(true);
-    const { items } = await getAll({ limit: 200 });
+    const { items } = await getAll({ limit: 100, search: search || undefined });
     setEditoriales(items);
     setLoading(false);
   };
 
   useEffect(() => {
     cargar();
-  }, []);
+  }, [search]);
 
   const handleEliminar = async (editorial) => {
     if (!(await confirm(`¿Eliminar "${editorial.nombre}"?`))) return;
@@ -32,5 +33,5 @@ export const useEditorialesAdmin = () => {
     }
   };
 
-  return { editoriales, loading, cargar, handleEliminar };
+  return { editoriales, loading, search, setSearch, cargar, handleEliminar };
 };

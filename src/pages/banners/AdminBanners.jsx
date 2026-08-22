@@ -3,7 +3,7 @@ import { useBannersAdmin } from './hooks/useBannersAdmin';
 import BannerCollage from './components/BannerCollage';
 
 const AdminBanners = () => {
-  const { banners, loading, handleDelete, handleToggleEstado } = useBannersAdmin();
+  const { banners, loading, search, setSearch, handleDelete, handleToggleEstado } = useBannersAdmin();
 
   return (
     <div className="container-fluid py-4">
@@ -15,6 +15,18 @@ const AdminBanners = () => {
         <Link to="/admin/banners/nuevo" className="btn btn-primary">
           <i className="fas fa-plus me-1"></i>Nuevo Banner
         </Link>
+      </div>
+
+      <div className="row g-2 mb-3">
+        <div className="col-md-4">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por título o texto..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
       {loading ? (
