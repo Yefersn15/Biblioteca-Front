@@ -9,6 +9,8 @@ export const useBannersAdmin = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [estadoFiltro, setEstadoFiltro] = useState('');
+  const [layoutFiltro, setLayoutFiltro] = useState('');
 
   // Debounce: espera 300ms sin cambios antes de disparar la búsqueda, para
   // no hacer una petición por cada tecla presionada.
@@ -19,14 +21,19 @@ export const useBannersAdmin = () => {
 
   const cargarBanners = async () => {
     setLoading(true);
-    const data = (await getBanners({ search: debouncedSearch || undefined })) || [];
+    const data = (await getBanners({
+      search: debouncedSearch || undefined,
+      estado: estadoFiltro === '' ? undefined : estadoFiltro === 'true',
+      layout: layoutFiltro || undefined,
+      limit: 100,
+    })) || [];
     setBanners(data);
     setLoading(false);
   };
 
   useEffect(() => {
     cargarBanners();
-  }, [debouncedSearch]);
+  }, [debouncedSearch, estadoFiltro, layoutFiltro]);
 
   const handleDelete = async (id) => {
     if (!(await confirm('¿Eliminar este banner?'))) return;
@@ -39,5 +46,17 @@ export const useBannersAdmin = () => {
     await cargarBanners();
   };
 
-  return { banners, loading, search, setSearch, cargarBanners, handleDelete, handleToggleEstado };
+  return {
+    banners,
+    loading,
+    search,
+    setSearch,
+    estadoFiltro,
+    setEstadoFiltro,
+    layoutFiltro,
+    setLayoutFiltro,
+    cargarBanners,
+    handleDelete,
+    handleToggleEstado,
+  };
 };
