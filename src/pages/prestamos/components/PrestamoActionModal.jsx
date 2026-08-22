@@ -1,7 +1,7 @@
 // src/pages/prestamos/components/PrestamoActionModal.jsx
 const TITULOS = { aprobar: 'Aprobar préstamo', rechazar: 'Rechazar préstamo', devolver: 'Registrar devolución' };
 
-const PrestamoActionModal = ({ modal, procesando, onClose, onChangeObservaciones, onConfirm }) => {
+const PrestamoActionModal = ({ modal, procesando, onClose, onChangeObservaciones, onChangeFechaDevolucion, onConfirm }) => {
   if (!modal) return null;
 
   if (modal.tipo === 'observacion') {
@@ -37,6 +37,19 @@ const PrestamoActionModal = ({ modal, procesando, onClose, onChangeObservaciones
             <p>
               <strong>{modal.prestamo.libro?.titulo}</strong> — {modal.prestamo.usuario?.nombres} {modal.prestamo.usuario?.apellidos}
             </p>
+            {modal.tipo === 'aprobar' && (
+              <div>
+                <label className="form-label">Fecha de devolución estimada</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  min={modal.prestamo.fechaPrestamo}
+                  value={modal.fechaDevolucionEstimada}
+                  onChange={(e) => onChangeFechaDevolucion(e.target.value)}
+                />
+                <small className="text-muted">No puede ser anterior al día de la solicitud ({modal.prestamo.fechaPrestamo}).</small>
+              </div>
+            )}
             {(modal.tipo === 'rechazar' || modal.tipo === 'devolver') && (
               <div>
                 <label className="form-label">Observaciones (opcional)</label>

@@ -1,17 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useLibroDetalle } from './hooks/useLibroDetalle';
+import { useLibrosRelacionados } from './hooks/useLibrosRelacionados';
+import LibroCard from './components/LibroCard';
 
 const LibroDetalle = () => {
-  const {
-    user,
-    libro,
-    fechaDevolucion,
-    setFechaDevolucion,
-    fechaMinima,
-    solicitando,
-    solicitado,
-    handleSolicitar,
-  } = useLibroDetalle();
+  const { user, libro, solicitando, solicitado, handleSolicitar } = useLibroDetalle();
+  const relacionados = useLibrosRelacionados(libro);
 
   if (!libro) {
     return <div className="text-center py-5"><div className="spinner-border text-primary" role="status"></div></div>;
@@ -81,26 +75,25 @@ const LibroDetalle = () => {
           ) : solicitado ? (
             <div className="alert alert-success">Solicitud enviada. Revisa el estado en <Link to="/mis-prestamos">Mis préstamos</Link>.</div>
           ) : (
-            <div className="card d-inline-block">
-              <div className="card-body">
-                <label className="form-label">Fecha de devolución estimada</label>
-                <div className="d-flex gap-2">
-                  <input
-                    type="date"
-                    className="form-control"
-                    min={fechaMinima}
-                    value={fechaDevolucion}
-                    onChange={(e) => setFechaDevolucion(e.target.value)}
-                  />
-                  <button className="btn btn-primary text-nowrap" disabled={solicitando} onClick={handleSolicitar}>
-                    {solicitando ? 'Solicitando...' : 'Solicitar préstamo'}
-                  </button>
-                </div>
-              </div>
-            </div>
+            <button className="btn btn-primary" disabled={solicitando} onClick={handleSolicitar}>
+              {solicitando ? 'Solicitando...' : 'Solicitar préstamo'}
+            </button>
           )}
         </div>
       </div>
+
+      {relacionados.length > 0 && (
+        <div className="mt-5">
+          <h4 className="mb-3">Libros relacionados</h4>
+          <div className="row g-4">
+            {relacionados.map((r) => (
+              <div className="col-6 col-md-3 col-lg-2" key={r.id}>
+                <LibroCard libro={r} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

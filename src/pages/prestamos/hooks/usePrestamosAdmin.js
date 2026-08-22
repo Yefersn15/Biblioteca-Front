@@ -3,6 +3,12 @@ import { useState, useEffect } from 'react';
 import { getPrestamos, aprobarPrestamo, rechazarPrestamo, devolverPrestamo } from '../services/prestamosService';
 import { useToast } from '../../../context/ToastContext';
 
+const hoyMasDias = (dias) => {
+  const fecha = new Date();
+  fecha.setDate(fecha.getDate() + dias);
+  return fecha.toISOString().slice(0, 10);
+};
+
 export const usePrestamosAdmin = () => {
   const toast = useToast();
   const [prestamos, setPrestamos] = useState([]);
@@ -20,16 +26,18 @@ export const usePrestamosAdmin = () => {
 
   useEffect(() => { cargar(); }, [filtro]);
 
-  const abrirModal = (tipo, prestamo) => setModal({ tipo, prestamo, observaciones: '' });
+  const abrirModal = (tipo, prestamo) =>
+    setModal({ tipo, prestamo, observaciones: '', fechaDevolucionEstimada: hoyMasDias(14) });
   const cerrarModal = () => setModal(null);
   const verObservacion = (prestamo) => setModal({ tipo: 'observacion', prestamo });
   const cambiarObservaciones = (observaciones) => setModal((prev) => ({ ...prev, observaciones }));
+  const cambiarFechaDevolucion = (fechaDevolucionEstimada) => setModal((prev) => ({ ...prev, fechaDevolucionEstimada }));
 
   const confirmarModal = async () => {
     setProcesando(true);
     try {
-      const { tipo, prestamo, observaciones } = modal;
-      if (tipo === 'aprobar') await aprobarPrestamo(prestamo.id);
+      const { tipo, prestamo, observaciones, fechaDevolucionEstimada } = modal;
+      if (tipo === 'aprobar') await aprobarPrestamo(prestamo.id, fechaDevolucionEstimada);
       if (tipo === 'rechazar') await rechazarPrestamo(prestamo.id, observaciones || undefined);
       if (tipo === 'devolver') await devolverPrestamo(prestamo.id, observaciones || undefined);
       await cargar();
@@ -52,6 +60,7 @@ export const usePrestamosAdmin = () => {
     cerrarModal,
     verObservacion,
     cambiarObservaciones,
+    cambiarFechaDevolucion,
     confirmarModal,
   };
 };

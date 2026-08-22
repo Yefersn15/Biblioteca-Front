@@ -36,7 +36,7 @@ const MisPrestamos = () => {
               <tr key={p.id}>
                 <td>{p.libro?.titulo}</td>
                 <td>{p.fechaPrestamo}</td>
-                <td>{p.fechaDevolucionEstimada}</td>
+                <td>{p.fechaDevolucionEstimada || <span className="text-muted">Por definir</span>}</td>
                 <td>{p.fechaDevolucionReal || '—'}</td>
                 <td><span className={`badge ${ESTADO_BADGE[p.estado]}`}>{p.estado}</span></td>
               </tr>

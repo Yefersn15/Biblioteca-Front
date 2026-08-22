@@ -21,7 +21,7 @@ const PrestamoRow = ({ prestamo, onAbrirModal, onVerObservacion }) => {
         {p.usuario?.direccion && <><br /><small className="text-muted">{p.usuario.direccion}{p.usuario.barrio ? `, ${p.usuario.barrio}` : ''}</small></>}
       </td>
       <td>{p.fechaPrestamo}</td>
-      <td>{p.fechaDevolucionEstimada}</td>
+      <td>{p.fechaDevolucionEstimada || <span className="text-muted">Por definir</span>}</td>
       <td><span className={`badge ${ESTADO_BADGE[p.estado]}`}>{p.estado}</span></td>
       <td>
         {p.estado === 'PENDIENTE' && (

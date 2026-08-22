@@ -14,6 +14,7 @@ const PrestamosAdmin = () => {
     cerrarModal,
     verObservacion,
     cambiarObservaciones,
+    cambiarFechaDevolucion,
     confirmarModal,
   } = usePrestamosAdmin();
 
@@ -60,6 +61,7 @@ const PrestamosAdmin = () => {
         procesando={procesando}
         onClose={cerrarModal}
         onChangeObservaciones={cambiarObservaciones}
+        onChangeFechaDevolucion={cambiarFechaDevolucion}
         onConfirm={confirmarModal}
       />
     </div>
