@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '../context/ToastContext';
 import { useConfirm } from '../context/ConfirmContext';
+import { usePaginacion } from '../hooks/usePaginacion';
+import Pagination from './Pagination';
 
 // CRUD genérico para catálogos simples (autores, editoriales, categorías):
 // listas casi idénticas donde solo cambian los campos del formulario. Evita
@@ -15,6 +17,7 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
   const [guardando, setGuardando] = useState(false);
   const [search, setSearch] = useState('');
   const [estadoFiltro, setEstadoFiltro] = useState('');
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(items, 5, [search, estadoFiltro]);
 
   const cargar = async () => {
     setLoading(true);
@@ -156,6 +159,7 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
       ) : items.length === 0 ? (
         <div className="alert alert-info">No hay registros todavía.</div>
       ) : (
+        <>
         <table className="table table-hover bg-white">
           <thead>
             <tr>
@@ -165,7 +169,7 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
             </tr>
           </thead>
           <tbody>
-            {items.map((item) => (
+            {itemsPagina.map((item) => (
               <tr key={item.id}>
                 {fields.map((f) => <td key={f.name}>{item[f.name]}</td>)}
                 <td>
@@ -189,6 +193,8 @@ const CatalogoCRUD = ({ titulo, api, fields }) => {
             ))}
           </tbody>
         </table>
+        <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
+        </>
       )}
     </div>
   );

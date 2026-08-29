@@ -41,7 +41,7 @@ export const useCatalogoLibros = () => {
   useEffect(() => {
     setLoading(true);
     const timeout = setTimeout(() => {
-      getLibros({ limit: 40, search: search || undefined, autorId: autorId || undefined, categoriaId: categoriaId || undefined, editorialId, sort }).then(({ items }) => {
+      getLibros({ limit: 100, search: search || undefined, autorId: autorId || undefined, categoriaId: categoriaId || undefined, editorialId, sort }).then(({ items }) => {
         setLibros(items);
         setLoading(false);
       });

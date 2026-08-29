@@ -1,5 +1,7 @@
 import { useUsuariosAdmin, ROLES } from './hooks/useUsuariosAdmin';
 import UsuarioRow from './components/UsuarioRow';
+import { usePaginacion } from '../../hooks/usePaginacion';
+import Pagination from '../../components/Pagination';
 
 const UsuariosAdmin = () => {
   const {
@@ -16,6 +18,7 @@ const UsuariosAdmin = () => {
     toggleEstado,
     handleEliminar,
   } = useUsuariosAdmin();
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(usuarios, 5, [search, rolFiltro, estadoFiltro]);
 
   return (
     <div>
@@ -49,30 +52,33 @@ const UsuariosAdmin = () => {
       {loading ? (
         <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>
       ) : (
-        <table className="table table-hover bg-white align-middle">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Documento</th>
-              <th>Contacto</th>
-              <th>Rol</th>
-              <th>Estado</th>
-              <th style={{ width: 80 }}></th>
-            </tr>
-          </thead>
-          <tbody>
-            {usuarios.map((u) => (
-              <UsuarioRow
-                key={u.id}
-                usuario={u}
-                usuarioActual={usuarioActual}
-                cambiarRol={cambiarRol}
-                toggleEstado={toggleEstado}
-                handleEliminar={handleEliminar}
-              />
-            ))}
-          </tbody>
-        </table>
+        <>
+          <table className="table table-hover bg-white align-middle">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Documento</th>
+                <th>Contacto</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th style={{ width: 80 }}></th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemsPagina.map((u) => (
+                <UsuarioRow
+                  key={u.id}
+                  usuario={u}
+                  usuarioActual={usuarioActual}
+                  cambiarRol={cambiarRol}
+                  toggleEstado={toggleEstado}
+                  handleEliminar={handleEliminar}
+                />
+              ))}
+            </tbody>
+          </table>
+          <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
+        </>
       )}
     </div>
   );

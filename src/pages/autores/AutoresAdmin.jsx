@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useAutoresAdmin } from './hooks/useAutoresAdmin';
 import AutorRow from './components/AutorRow';
 import { getAll as getCategorias } from '../../services/api/categorias.api';
+import { usePaginacion } from '../../hooks/usePaginacion';
+import Pagination from '../../components/Pagination';
 
 const AutoresAdmin = () => {
   const {
@@ -26,6 +28,7 @@ const AutoresAdmin = () => {
   }, []);
 
   const nacionalidades = [...new Set(autores.map((a) => a.nacionalidad).filter(Boolean))];
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(autores, 5, [search, nacionalidadFiltro, generoFiltro, estadoFiltro]);
 
   return (
     <div>
@@ -72,22 +75,26 @@ const AutoresAdmin = () => {
       ) : autores.length === 0 ? (
         <div className="alert alert-info">No hay autores todavía.</div>
       ) : (
-        <table className="table table-hover bg-white align-middle">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Nombre</th>
-              <th>Nacionalidad</th>
-              <th>Género literario</th>
-              <th style={{ width: 100 }}></th>
-            </tr>
-          </thead>
-          <tbody>
-            {autores.map((a) => (
-              <AutorRow key={a.id} autor={a} onEliminar={handleEliminar} toggleEstado={toggleEstado} />
-            ))}
-          </tbody>
-        </table>
+        <>
+          <table className="table table-hover bg-white align-middle">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Nombre</th>
+                <th>Nacionalidad</th>
+                <th>Género literario</th>
+                <th>Estado</th>
+                <th style={{ width: 100 }}></th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemsPagina.map((a) => (
+                <AutorRow key={a.id} autor={a} onEliminar={handleEliminar} toggleEstado={toggleEstado} />
+              ))}
+            </tbody>
+          </table>
+          <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
+        </>
       )}
     </div>
   );

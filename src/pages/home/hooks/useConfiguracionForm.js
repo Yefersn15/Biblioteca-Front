@@ -1,7 +1,7 @@
 // src/pages/home/hooks/useConfiguracionForm.js
 import { useState, useEffect } from 'react';
-import { actualizarConfiguracion } from '../services/configuracionService';
 import { useConfiguracion } from '../../../context/ConfiguracionContext';
+import { guardarConfigLocal } from '../../../utils/configuracionLocal';
 import { useToast } from '../../../context/ToastContext';
 
 // Estado local del FORMULARIO de edición de configuración (precargado desde el
@@ -34,9 +34,9 @@ export const useConfiguracionForm = () => {
     e.preventDefault();
     setGuardando(true);
     try {
-      await actualizarConfiguracion(form);
+      guardarConfigLocal(form);
       await config.recargar();
-      toast.success('Configuración actualizada');
+      toast.success('Configuración actualizada (guardada en este navegador)');
     } catch (err) {
       toast.error(err.message);
     } finally {

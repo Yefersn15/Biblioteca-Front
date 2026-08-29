@@ -40,7 +40,7 @@ const Perfil = () => {
       <form onSubmit={handleSubmit}>
         <div className="row g-4">
           <div className="col-md-6">
-            <DatosPersonalesForm form={form} setField={setField} />
+            <DatosPersonalesForm form={form} setField={setField} esAdmin={esAdmin} />
           </div>
 
           <div className="col-md-6 d-flex flex-column gap-4">

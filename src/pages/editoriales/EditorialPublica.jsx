@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useEditorialPublica } from './hooks/useEditorialPublica';
-import EditorialLibroCard from './components/EditorialLibroCard';
+import LibroCard from '../libros/components/LibroCard';
+import { usePaginacion } from '../../hooks/usePaginacion';
+import Pagination from '../../components/Pagination';
 
 const EditorialPublica = () => {
   const { editorial, libros, loading } = useEditorialPublica();
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(libros, 10, [editorial?.id]);
 
   if (loading) {
     return <div className="text-center py-5"><div className="spinner-border text-primary" role="status"></div></div>;
@@ -47,13 +50,16 @@ const EditorialPublica = () => {
       {libros.length === 0 ? (
         <div className="alert alert-info">No hay libros de esta editorial en el catálogo.</div>
       ) : (
-        <div className="row g-4">
-          {libros.map((libro) => (
-            <div className="col-6 col-md-3 col-lg-2" key={libro.id}>
-              <EditorialLibroCard libro={libro} />
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="row g-4">
+            {itemsPagina.map((libro) => (
+              <div className="col-6 col-md-3 col-lg-2" key={libro.id}>
+                <LibroCard libro={libro} />
+              </div>
+            ))}
+          </div>
+          <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
+        </>
       )}
     </div>
   );

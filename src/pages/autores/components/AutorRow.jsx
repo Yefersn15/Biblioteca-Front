@@ -11,16 +11,18 @@ const AutorRow = ({ autor, onEliminar, toggleEstado }) => (
     <td>{autor.nacionalidad}</td>
     <td>{autor.generoLiterario}</td>
     <td>
-      <Link to={`/admin/autores/editar/${autor.id}`} className="btn btn-sm btn-outline-primary me-1" title="Editar">
-        <i className="fas fa-edit"></i>
-      </Link>
       <button
-        className={`btn btn-sm ${autor.estado ? 'btn-outline-warning' : 'btn-outline-success'} me-1`}
+        className={`btn btn-sm ${autor.estado ? 'btn-outline-warning' : 'btn-outline-success'}`}
         onClick={() => toggleEstado(autor)}
         title={autor.estado ? 'Desactivar' : 'Activar'}
       >
         <i className={`fas fa-toggle-${autor.estado ? 'off' : 'on'}`}></i>
       </button>
+    </td>
+    <td>
+      <Link to={`/admin/autores/editar/${autor.id}`} className="btn btn-sm btn-outline-primary me-1" title="Editar">
+        <i className="fas fa-edit"></i>
+      </Link>
       <button className="btn btn-sm btn-outline-danger" onClick={() => onEliminar(autor)} title="Eliminar">
         <i className="fas fa-trash"></i>
       </button>

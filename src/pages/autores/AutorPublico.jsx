@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useAutorPublico } from './hooks/useAutorPublico';
-import AutorLibroCard from './components/AutorLibroCard';
+import LibroCard from '../libros/components/LibroCard';
+import { usePaginacion } from '../../hooks/usePaginacion';
+import Pagination from '../../components/Pagination';
 
 const RED_ICONS = { facebook: 'fa-facebook', twitter: 'fa-x-twitter', instagram: 'fa-instagram', biografiaUrl: 'fa-book-open' };
 
 const AutorPublico = () => {
   const { autor, libros, generos, obrasDestacadas, loading } = useAutorPublico();
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(libros, 10, [autor?.id]);
 
   if (loading) {
     return <div className="text-center py-5"><div className="spinner-border text-primary" role="status"></div></div>;
@@ -71,13 +74,16 @@ const AutorPublico = () => {
       {libros.length === 0 ? (
         <div className="alert alert-info">No hay libros de este autor en el catálogo.</div>
       ) : (
-        <div className="row g-4">
-          {libros.map((libro) => (
-            <div className="col-6 col-md-3 col-lg-2" key={libro.id}>
-              <AutorLibroCard libro={libro} />
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="row g-4">
+            {itemsPagina.map((libro) => (
+              <div className="col-6 col-md-3 col-lg-2" key={libro.id}>
+                <LibroCard libro={libro} />
+              </div>
+            ))}
+          </div>
+          <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
+        </>
       )}
     </div>
   );

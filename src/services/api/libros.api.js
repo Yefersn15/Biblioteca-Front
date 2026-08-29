@@ -5,8 +5,8 @@ export const getLibros = (params) =>
 
 export const getLibro = (id) => client.get(`/libros/${id}`).then((r) => r.data.data);
 
-export const getLibrosPopulares = (limit = 6) =>
-  client.get('/libros/populares', { params: { limit } }).then((r) => r.data.data);
+export const getLibrosPopulares = (params = {}) =>
+  client.get('/libros/populares', { params: { limit: 6, ...params } }).then((r) => r.data.data);
 
 export const crearLibro = (data) => client.post('/libros', data).then((r) => r.data.data);
 

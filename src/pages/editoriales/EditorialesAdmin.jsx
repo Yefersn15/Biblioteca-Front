@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useEditorialesAdmin } from './hooks/useEditorialesAdmin';
 import EditorialRow from './components/EditorialRow';
+import { usePaginacion } from '../../hooks/usePaginacion';
+import Pagination from '../../components/Pagination';
 
 const EditorialesAdmin = () => {
   const {
@@ -13,6 +15,7 @@ const EditorialesAdmin = () => {
     toggleEstado,
     handleEliminar,
   } = useEditorialesAdmin();
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(editoriales, 5, [search, estadoFiltro]);
 
   return (
     <div>
@@ -51,21 +54,25 @@ const EditorialesAdmin = () => {
       ) : editoriales.length === 0 ? (
         <div className="alert alert-info">No hay editoriales todavía.</div>
       ) : (
-        <table className="table table-hover bg-white align-middle">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Nombre</th>
-              <th>Sitio web</th>
-              <th style={{ width: 100 }}></th>
-            </tr>
-          </thead>
-          <tbody>
-            {editoriales.map((e) => (
-              <EditorialRow key={e.id} editorial={e} onEliminar={handleEliminar} onToggleEstado={toggleEstado} />
-            ))}
-          </tbody>
-        </table>
+        <>
+          <table className="table table-hover bg-white align-middle">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Nombre</th>
+                <th>Sitio web</th>
+                <th>Estado</th>
+                <th style={{ width: 100 }}></th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemsPagina.map((e) => (
+                <EditorialRow key={e.id} editorial={e} onEliminar={handleEliminar} onToggleEstado={toggleEstado} />
+              ))}
+            </tbody>
+          </table>
+          <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
+        </>
       )}
     </div>
   );

@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useBannersAdmin } from './hooks/useBannersAdmin';
 import { BANNER_TEMPLATES } from './hooks/bannerTemplates';
 import BannerCollage from './components/BannerCollage';
+import { usePaginacion } from '../../hooks/usePaginacion';
+import Pagination from '../../components/Pagination';
 
 const AdminBanners = () => {
   const {
@@ -16,6 +18,7 @@ const AdminBanners = () => {
     handleDelete,
     handleToggleEstado,
   } = useBannersAdmin();
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(banners, 5, [search, estadoFiltro, layoutFiltro]);
 
   return (
     <div className="container-fluid py-4">
@@ -73,14 +76,16 @@ const AdminBanners = () => {
       ) : banners.length === 0 ? (
         <div className="alert alert-info text-center">No hay banners creados todavía.</div>
       ) : (
+        <>
         <div className="row g-4">
-          {banners.map(banner => (
+          {itemsPagina.map(banner => (
             <div className="col-md-6" key={banner.id}>
               <div className="card h-100">
                 <div className="card-body">
                   <BannerCollage
                     layout={banner.layout}
                     images={banner.images}
+                    items={banner.items}
                     titulo={banner.titulo}
                     texto={banner.texto}
                     textPosition={banner.textPosition}
@@ -95,7 +100,7 @@ const AdminBanners = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="d-flex gap-1">
+                    <div className="d-flex gap-2">
                       <button
                         className={`btn btn-sm ${banner.estado ? 'btn-outline-warning' : 'btn-outline-success'}`}
                         onClick={() => handleToggleEstado(banner)}
@@ -120,6 +125,8 @@ const AdminBanners = () => {
             </div>
           ))}
         </div>
+        <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
+        </>
       )}
     </div>
   );

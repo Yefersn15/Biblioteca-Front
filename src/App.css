@@ -1,3 +1,36 @@
+.infinite-carousel {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+}
+
+.infinite-carousel-track {
+  display: flex;
+  width: max-content;
+  animation-name: infinite-carousel-scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.infinite-carousel:hover .infinite-carousel-track {
+  animation-play-state: paused;
+}
+
+.infinite-carousel-item {
+  flex: 0 0 auto;
+  padding: 0 0.5rem;
+}
+
+@keyframes infinite-carousel-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .banner-collage {
   position: relative;
   display: grid;
@@ -17,6 +50,74 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Banner de contenido "vivo" (libros/autores/editoriales/categorías): cada
+   casilla respeta su propia proporción real en vez de la cuadrícula fija de
+   la plantilla — así nunca se ve una portada o una foto recortada o
+   estirada, sea cual sea la plantilla elegida. */
+.banner-collage-items {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  background: #e9ecef;
+}
+
+.banner-item-cell {
+  flex: 0 0 auto;
+  position: relative;
+  height: var(--banner-item-h, 220px);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.banner-item-cell.is-book {
+  aspect-ratio: 2 / 3;
+}
+
+.banner-item-cell.is-square {
+  aspect-ratio: 1 / 1;
+}
+
+.banner-item-cell.is-featured {
+  height: calc(var(--banner-item-h, 220px) * 1.35);
+}
+
+.banner-item-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.banner-collage-label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8px;
+  background: var(--tema-acento);
+  color: var(--tema-acento-texto);
+  font-weight: 600;
+  overflow: hidden;
+}
+
+.banner-collage-label span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .banner-collage-placeholder {

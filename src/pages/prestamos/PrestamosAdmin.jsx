@@ -1,6 +1,8 @@
 import { usePrestamosAdmin } from './hooks/usePrestamosAdmin';
 import PrestamoRow from './components/PrestamoRow';
 import PrestamoActionModal from './components/PrestamoActionModal';
+import { usePaginacion } from '../../hooks/usePaginacion';
+import Pagination from '../../components/Pagination';
 
 const PrestamosAdmin = () => {
   const {
@@ -19,6 +21,7 @@ const PrestamosAdmin = () => {
     cambiarFechaDevolucion,
     confirmarModal,
   } = usePrestamosAdmin();
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(prestamos, 5, [filtro, search]);
 
   return (
     <div>
@@ -48,24 +51,27 @@ const PrestamosAdmin = () => {
       ) : prestamos.length === 0 ? (
         <div className="alert alert-info">No hay préstamos con ese filtro.</div>
       ) : (
-        <table className="table table-hover bg-white align-middle">
-          <thead>
-            <tr>
-              <th>Libro</th>
-              <th>Solicitante</th>
-              <th>Contacto</th>
-              <th>Solicitado</th>
-              <th>Devolución estimada</th>
-              <th>Estado</th>
-              <th style={{ width: 260 }}></th>
-            </tr>
-          </thead>
-          <tbody>
-            {prestamos.map((p) => (
-              <PrestamoRow key={p.id} prestamo={p} onAbrirModal={abrirModal} onVerObservacion={verObservacion} />
-            ))}
-          </tbody>
-        </table>
+        <>
+          <table className="table table-hover bg-white align-middle">
+            <thead>
+              <tr>
+                <th>Libro</th>
+                <th>Solicitante</th>
+                <th>Contacto</th>
+                <th>Solicitado</th>
+                <th>Devolución estimada</th>
+                <th>Estado</th>
+                <th style={{ width: 260 }}></th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemsPagina.map((p) => (
+                <PrestamoRow key={p.id} prestamo={p} onAbrirModal={abrirModal} onVerObservacion={verObservacion} />
+              ))}
+            </tbody>
+          </table>
+          <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
+        </>
       )}
 
       <PrestamoActionModal

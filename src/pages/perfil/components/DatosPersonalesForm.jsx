@@ -1,7 +1,7 @@
 // src/pages/perfil/components/DatosPersonalesForm.jsx
 import ImageUploadField from '../../../components/upload/ImageUploadField';
 
-const DatosPersonalesForm = ({ form, setField }) => {
+const DatosPersonalesForm = ({ form, setField, esAdmin }) => {
   return (
     <div className="card h-100">
       <div className="card-header bg-white border-bottom">
@@ -11,12 +11,19 @@ const DatosPersonalesForm = ({ form, setField }) => {
         <div className="row g-3">
           <div className="col-6">
             <label className="form-label">Nombres</label>
-            <input type="text" className="form-control" required value={form.nombres} onChange={(e) => setField('nombres', e.target.value)} />
+            <input type="text" className="form-control" required readOnly={!esAdmin} value={form.nombres} onChange={(e) => setField('nombres', e.target.value)} />
           </div>
           <div className="col-6">
             <label className="form-label">Apellidos</label>
-            <input type="text" className="form-control" required value={form.apellidos} onChange={(e) => setField('apellidos', e.target.value)} />
+            <input type="text" className="form-control" required readOnly={!esAdmin} value={form.apellidos} onChange={(e) => setField('apellidos', e.target.value)} />
           </div>
+          {!esAdmin && (
+            <div className="col-12">
+              <small className="text-muted">
+                <i className="fas fa-circle-info me-1"></i>Tu nombre solo puede modificarlo un administrador.
+              </small>
+            </div>
+          )}
           <div className="col-6">
             <label className="form-label">Género</label>
             <select className="form-select" value={form.genero} onChange={(e) => setField('genero', e.target.value)}>

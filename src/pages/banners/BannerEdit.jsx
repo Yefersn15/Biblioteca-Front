@@ -9,7 +9,7 @@ const BannerEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
-  const { form, setForm, errors, setLayout, setImageUrl, setField, validate } = useBannerForm(null);
+  const { form, setForm, errors, setLayout, setImageUrl, setField, setContentType, setOrigen, validate } = useBannerForm(null);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
 
@@ -22,7 +22,11 @@ const BannerEdit = () => {
       }
       setForm({
         layout: banner.layout,
-        images: banner.images || [],
+        contentType: banner.contentType || 'IMAGENES',
+        images: banner.images?.length ? banner.images : [{ slot: 0, url: '' }],
+        origen: banner.origen || null,
+        origenId: banner.origenId || null,
+        refIds: banner.refIds || [],
         titulo: banner.titulo || '',
         texto: banner.texto || '',
         textPosition: banner.textPosition || 'none',
@@ -79,6 +83,8 @@ const BannerEdit = () => {
               setLayout={setLayout}
               setImageUrl={setImageUrl}
               setField={setField}
+              setContentType={setContentType}
+              setOrigen={setOrigen}
             />
 
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">

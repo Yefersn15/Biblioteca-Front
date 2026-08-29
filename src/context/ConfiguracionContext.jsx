@@ -1,19 +1,7 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import { getConfiguracion } from '../services/api/configuracion.api';
 import { resolverTema, aplicarTemaCss } from '../utils/tema';
 import { useModoOscuro } from '../hooks/useModoOscuro';
-
-const DEFECTO = {
-  nombreInstitucion: 'Biblioteca Web',
-  logoUrl: '',
-  descripcion: '',
-  direccion: '',
-  telefono: '',
-  email: '',
-  horario: [],
-  mapaEmbedUrl: '',
-  tema: { modo: 'NINGUNO', paletaId: null, colores: null },
-};
+import { DEFECTO, leerConfigLocal } from '../utils/configuracionLocal';
 
 const ConfiguracionContext = createContext(DEFECTO);
 
@@ -21,7 +9,10 @@ export const ConfiguracionProvider = ({ children }) => {
   const [config, setConfig] = useState(DEFECTO);
   const [loading, setLoading] = useState(true);
 
-  const recargar = () => getConfiguracion().then(setConfig).catch(() => setConfig(DEFECTO));
+  const recargar = () => {
+    setConfig(leerConfigLocal());
+    return Promise.resolve();
+  };
 
   useEffect(() => {
     recargar().finally(() => setLoading(false));

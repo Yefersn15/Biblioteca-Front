@@ -14,7 +14,7 @@ export const useAutorPublico = () => {
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([getById(id), getLibros({ autorId: id, limit: 50 }), getCategorias({ limit: 200 })]).then(
+    Promise.all([getById(id), getLibros({ autorId: id, limit: 100 }), getCategorias({ limit: 200 })]).then(
       ([a, { items }, { items: categorias }]) => {
         setAutor(a);
         setLibros(items);

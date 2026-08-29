@@ -1,6 +1,8 @@
 import { useCatalogoLibros } from './hooks/useCatalogoLibros';
 import CatalogoFiltros from './components/CatalogoFiltros';
 import LibroCard from './components/LibroCard';
+import { usePaginacion } from '../../hooks/usePaginacion';
+import Pagination from '../../components/Pagination';
 
 const CatalogoLibros = () => {
   const {
@@ -18,6 +20,7 @@ const CatalogoLibros = () => {
     limpiarFiltros,
     hayFiltros,
   } = useCatalogoLibros();
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(libros, 10, [search, autorId, categoriaId, sort]);
 
   return (
     <div className="container py-4">
@@ -44,13 +47,16 @@ const CatalogoLibros = () => {
       ) : libros.length === 0 ? (
         <div className="alert alert-info">No se encontraron libros con esos filtros.</div>
       ) : (
-        <div className="row g-4">
-          {libros.map((libro) => (
-            <div className="col-6 col-md-3 col-lg-2" key={libro.id}>
-              <LibroCard libro={libro} />
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="row g-4">
+            {itemsPagina.map((libro) => (
+              <div className="col-6 col-md-3 col-lg-2" key={libro.id}>
+                <LibroCard libro={libro} />
+              </div>
+            ))}
+          </div>
+          <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
+        </>
       )}
     </div>
   );

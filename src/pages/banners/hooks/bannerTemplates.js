@@ -1,9 +1,15 @@
 // src/pages/banners/hooks/bannerTemplates.js
-// Plantillas fijas de collage. `areas` usa grid-template-areas con letras a, b, c...
-// asignadas en orden a cada casilla de imagen (slot 0 = a, slot 1 = b, ...).
-// `maxWidth` limita el ancho con el que se sube cada imagen a Cloudinary: entre
-// más casillas tiene la plantilla, más chica se ve cada imagen en pantalla, así
-// que no tiene sentido guardar un archivo tan pesado como el de una imagen única.
+// Plantillas fijas de collage. `areas`/`cols`/`rows`/`maxWidth` solo se usan
+// cuando el contenido es "Imágenes personalizadas" (`areas` usa
+// grid-template-areas con letras a, b, c... asignadas en orden a cada
+// casilla; `maxWidth` limita el ancho con el que se sube cada imagen a
+// Cloudinary, más chico entre más casillas tiene la plantilla).
+//
+// Para contenido "vivo" (libros/autores/editoriales/categorías/populares),
+// esa cuadrícula NO se usa para el tamaño de cada casilla — cada una respeta
+// su propia proporción real (portada vertical o foto/logo cuadrado, ver
+// BannerCollage) y solo se toman `slots` (cuántas) y `featuredSlot` (cuál se
+// ve más grande) de la plantilla elegida.
 export const BANNER_TEMPLATES = [
   {
     key: 'single',
@@ -13,6 +19,7 @@ export const BANNER_TEMPLATES = [
     cols: '1fr',
     rows: '1fr',
     maxWidth: 1600,
+    featuredSlot: 0,
   },
   {
     key: 'duo',
@@ -22,6 +29,7 @@ export const BANNER_TEMPLATES = [
     cols: '1fr 1fr',
     rows: '1fr',
     maxWidth: 1300,
+    featuredSlot: 0,
   },
   {
     key: 'trio',
@@ -31,6 +39,7 @@ export const BANNER_TEMPLATES = [
     cols: '1.4fr 1fr',
     rows: '1fr 1fr',
     maxWidth: 1000,
+    featuredSlot: 0,
   },
   {
     key: 'grid-4',
@@ -40,6 +49,7 @@ export const BANNER_TEMPLATES = [
     cols: '1fr 1fr',
     rows: '1fr 1fr',
     maxWidth: 1000,
+    featuredSlot: 0,
   },
   {
     key: 'grid-6',
@@ -49,6 +59,7 @@ export const BANNER_TEMPLATES = [
     cols: '1fr 1fr 1fr',
     rows: '1fr 1fr',
     maxWidth: 700,
+    featuredSlot: 0,
   },
   {
     key: 'mosaic-8',
@@ -58,6 +69,77 @@ export const BANNER_TEMPLATES = [
     cols: '1fr 1fr 1fr 1fr',
     rows: '1fr 1fr',
     maxWidth: 700,
+    featuredSlot: 0,
+  },
+  {
+    key: 'big-4',
+    label: '1 grande + 4 pequeños',
+    slots: 5,
+    areas: '"a b c" "a d e"',
+    cols: '1.3fr 1fr 1fr',
+    rows: '1fr 1fr',
+    maxWidth: 900,
+    featuredSlot: 0,
+  },
+  {
+    key: 'duo-big-right',
+    label: '2 a la izquierda + 1 grande',
+    slots: 3,
+    areas: '"a c" "b c"',
+    cols: '1fr 1.3fr',
+    rows: '1fr 1fr',
+    maxWidth: 1000,
+    featuredSlot: 2,
+  },
+  {
+    key: 'row-5',
+    label: '5 imágenes',
+    slots: 5,
+    areas: '"a b c d e"',
+    cols: '1fr 1fr 1fr 1fr 1fr',
+    rows: '1fr',
+    maxWidth: 700,
+    featuredSlot: 0,
+  },
+  {
+    key: 'shelf-4',
+    label: 'Fila de 4',
+    slots: 4,
+    areas: '"a b c d"',
+    cols: '1fr 1fr 1fr 1fr',
+    rows: '1fr',
+    maxWidth: 500,
+    featuredSlot: 0,
+  },
+  {
+    key: 'shelf-6',
+    label: 'Fila de 6',
+    slots: 6,
+    areas: '"a b c d e f"',
+    cols: '1fr 1fr 1fr 1fr 1fr 1fr',
+    rows: '1fr',
+    maxWidth: 380,
+    featuredSlot: 0,
+  },
+  {
+    key: 'shelf-featured-4',
+    label: '1 destacado + fila de 4',
+    slots: 5,
+    areas: '"a b c d e"',
+    cols: '1.6fr 1fr 1fr 1fr 1fr',
+    rows: '1fr',
+    maxWidth: 500,
+    featuredSlot: 0,
+  },
+  {
+    key: 'shelf-featured-6',
+    label: '1 destacado + fila de 6',
+    slots: 7,
+    areas: '"a b c d e f g"',
+    cols: '1.6fr 1fr 1fr 1fr 1fr 1fr 1fr',
+    rows: '1fr',
+    maxWidth: 380,
+    featuredSlot: 0,
   },
 ];
 

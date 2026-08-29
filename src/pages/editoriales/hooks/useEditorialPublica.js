@@ -12,7 +12,7 @@ export const useEditorialPublica = () => {
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([getById(id), getLibros({ editorialId: id, limit: 50 })]).then(([e, { items }]) => {
+    Promise.all([getById(id), getLibros({ editorialId: id, limit: 100 })]).then(([e, { items }]) => {
       setEditorial(e);
       setLibros(items);
       setLoading(false);

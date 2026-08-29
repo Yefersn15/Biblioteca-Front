@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useLibrosAdmin } from './hooks/useLibrosAdmin';
 import LibroRow from './components/LibroRow';
+import { usePaginacion } from '../../hooks/usePaginacion';
+import Pagination from '../../components/Pagination';
 
 const LibrosAdmin = () => {
   const {
@@ -19,6 +21,7 @@ const LibrosAdmin = () => {
     limpiarFiltros,
     handleEliminar,
   } = useLibrosAdmin();
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(libros, 5, [search, editorialId, tipo, estadoFiltro]);
 
   return (
     <div>
@@ -76,24 +79,27 @@ const LibrosAdmin = () => {
       ) : libros.length === 0 ? (
         <div className="alert alert-info">No hay libros todavía.</div>
       ) : (
-        <table className="table table-hover bg-white align-middle">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Título</th>
-              <th>Autor</th>
-              <th>Tipo</th>
-              <th>Copias</th>
-              <th>Estado</th>
-              <th style={{ width: 120 }}></th>
-            </tr>
-          </thead>
-          <tbody>
-            {libros.map((libro) => (
-              <LibroRow key={libro.id} libro={libro} onEliminar={handleEliminar} />
-            ))}
-          </tbody>
-        </table>
+        <>
+          <table className="table table-hover bg-white align-middle">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Tipo</th>
+                <th>Copias</th>
+                <th>Estado</th>
+                <th style={{ width: 120 }}></th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemsPagina.map((libro) => (
+                <LibroRow key={libro.id} libro={libro} onEliminar={handleEliminar} />
+              ))}
+            </tbody>
+          </table>
+          <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
+        </>
       )}
     </div>
   );

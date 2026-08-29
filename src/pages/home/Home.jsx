@@ -4,12 +4,15 @@ import { useConfiguracion } from '../../context/ConfiguracionContext';
 import HomeLoginCard from './HomeLoginCard';
 import { formatearHorario } from '../../utils/horario';
 import { useHome } from './hooks/useHome';
-import LibroCard from './components/LibroCard';
+import LibroCard from '../libros/components/LibroCard';
+import AutorCard from '../autores/components/AutorCard';
+import EditorialCard from '../editoriales/components/EditorialCard';
+import InfiniteCarousel from '../../components/InfiniteCarousel';
 
 const Home = () => {
   const { nombreInstitucion, direccion, telefono, email, horario, mapaEmbedUrl } = useConfiguracion();
   const horarioFormateado = formatearHorario(horario);
-  const { banners, libros } = useHome();
+  const { banners, libros, autores, editoriales } = useHome();
 
   return (
     <div>
@@ -20,12 +23,27 @@ const Home = () => {
               key={banner.id}
               layout={banner.layout}
               images={banner.images}
+              items={banner.items}
               titulo={banner.titulo}
               texto={banner.texto}
               textPosition={banner.textPosition}
               height={360}
             />
           ))}
+        </div>
+      )}
+
+      {autores.length > 0 && (
+        <div className="container py-4">
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h2 className="mb-0">Autores</h2>
+            <Link to="/catalogo/autores" className="btn btn-outline-primary btn-sm">Ver todos</Link>
+          </div>
+          <InfiniteCarousel
+            items={autores}
+            itemWidth={150}
+            renderItem={(autor) => <AutorCard autor={autor} />}
+          />
         </div>
       )}
 
@@ -38,13 +56,27 @@ const Home = () => {
         {libros.length === 0 ? (
           <p className="text-muted">Todavía no hay libros cargados en el catálogo.</p>
         ) : (
-          <div className="row g-4">
-            {libros.map((libro) => (
-              <LibroCard key={libro.id} libro={libro} />
-            ))}
-          </div>
+          <InfiniteCarousel
+            items={libros}
+            itemWidth={150}
+            renderItem={(libro) => <LibroCard libro={libro} />}
+          />
         )}
       </div>
+
+      {editoriales.length > 0 && (
+        <div className="container py-4">
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h2 className="mb-0">Editoriales</h2>
+            <Link to="/catalogo/editoriales" className="btn btn-outline-primary btn-sm">Ver todas</Link>
+          </div>
+          <InfiniteCarousel
+            items={editoriales}
+            itemWidth={150}
+            renderItem={(editorial) => <EditorialCard editorial={editorial} />}
+          />
+        </div>
+      )}
 
       <div className="container pb-5">
         <div className="row g-4">

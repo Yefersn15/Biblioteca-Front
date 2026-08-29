@@ -36,9 +36,11 @@ export const usePerfilForm = () => {
     }
     setGuardando(true);
     try {
-      const payload = { nombres: form.nombres, apellidos: form.apellidos, genero: form.genero, celular: form.celular, avatar: form.avatar };
+      const payload = { genero: form.genero, celular: form.celular, avatar: form.avatar };
       if (esAdmin) {
         Object.assign(payload, {
+          nombres: form.nombres,
+          apellidos: form.apellidos,
           tipoDocumento: form.tipoDocumento,
           documento: form.documento,
           direccion: form.direccion,

@@ -28,7 +28,8 @@ const RegisterFormFields = ({ form, handleChange }) => (
     </div>
     <div className="col-md-6">
       <label className="form-label">Número de documento *</label>
-      <input type="text" className="form-control" name="documento" required value={form.documento} onChange={handleChange} />
+      <input type="text" className="form-control" name="documento" required minLength={6} value={form.documento} onChange={handleChange} />
+      <small className="text-muted">Mínimo 6 caracteres</small>
     </div>
 
     <div className="col-12">
