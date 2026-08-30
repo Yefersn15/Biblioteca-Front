@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useConfiguracion } from '../context/ConfiguracionContext';
+import ThemeToggleButton from './header/ThemeToggleButton';
+import UserMenu from './header/UserMenu';
 
 const Header = () => {
   const { user, isStaff, logout } = useAuth();
@@ -40,29 +42,16 @@ const Header = () => {
 
           <ul className="navbar-nav align-items-lg-center">
             <li className="nav-item">
-              <button
-                type="button"
-                className="nav-link btn btn-link"
-                onClick={toggleModoOscuro}
-                title={modoOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-              >
-                <i className={`fas ${modoOscuro ? 'fa-sun' : 'fa-moon'}`}></i>
-              </button>
+              <ThemeToggleButton modoOscuro={modoOscuro} toggleModoOscuro={toggleModoOscuro} className="nav-link btn btn-link" />
             </li>
             {user ? (
-              <li className="nav-item dropdown">
-                <button className="nav-link dropdown-toggle btn btn-link" data-bs-toggle="dropdown">
-                  <i className="fas fa-user-circle me-1"></i>{user.nombres}
-                </button>
-                <ul className="dropdown-menu dropdown-menu-end">
-                  <li><Link className="dropdown-item" to="/perfil"><i className="fas fa-user me-2"></i>Mi perfil</Link></li>
+              <li className="nav-item">
+                <UserMenu label={user.nombres} botonClassName="nav-link dropdown-toggle btn btn-link" onLogout={handleLogout}>
                   <li><Link className="dropdown-item" to="/mis-prestamos"><i className="fas fa-right-left me-2"></i>Mis préstamos</Link></li>
                   {isStaff && (
                     <li><Link className="dropdown-item" to="/admin/dashboard"><i className="fas fa-gauge me-2"></i>Administración</Link></li>
                   )}
-                  <li><hr className="dropdown-divider" /></li>
-                  <li><button className="dropdown-item text-danger" onClick={handleLogout}><i className="fas fa-right-from-bracket me-2"></i>Cerrar sesión</button></li>
-                </ul>
+                </UserMenu>
               </li>
             ) : (
               <>
