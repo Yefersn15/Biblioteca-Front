@@ -6,7 +6,7 @@
 const CLAVE_STORAGE = 'biblioteca:configuracion';
 
 export const DEFECTO = {
-  nombreInstitucion: 'Biblioteca Web',
+  nombreInstitucion: 'Folio',
   logoUrl: '',
   descripcion: '',
   direccion: '',

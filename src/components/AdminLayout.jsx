@@ -8,6 +8,7 @@ import TopBar from './header/TopBar';
 import ThemeToggleButton from './header/ThemeToggleButton';
 import UserMenu from './header/UserMenu';
 import MenuPersonalizarLayout from './header/MenuPersonalizarLayout';
+import BrandIcon from './BrandIcon';
 
 const ENLACES_BASE = [
   { to: '/admin/dashboard', label: 'Inicio', icon: 'fa-gauge', end: true },
@@ -46,7 +47,7 @@ const AdminLayout = () => {
       {logoUrl ? (
         <img src={logoUrl} alt="" height={28} style={{ objectFit: 'contain' }} />
       ) : (
-        <i className="fas fa-book-open"></i>
+        <BrandIcon size={24} />
       )}
       {!compacto && <span className="ms-2 text-truncate">{nombreInstitucion}</span>}
     </Link>

@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useConfiguracion } from '../context/ConfiguracionContext';
 import ThemeToggleButton from './header/ThemeToggleButton';
 import UserMenu from './header/UserMenu';
+import BrandIcon from './BrandIcon';
 
 const Header = () => {
   const { user, isStaff, logout } = useAuth();
@@ -22,7 +23,7 @@ const Header = () => {
           {logoUrl ? (
             <img src={logoUrl} alt="" height={32} className="me-2" style={{ objectFit: 'contain' }} />
           ) : (
-            <i className="fas fa-book-open me-2"></i>
+            <BrandIcon size={26} className="me-2" />
           )}
           {nombreInstitucion}
         </Link>
@@ -38,6 +39,7 @@ const Header = () => {
             <li className="nav-item"><Link className="nav-link" to="/catalogo/autores">Autores</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/catalogo/editoriales">Editoriales</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/catalogo/categorias">Categorías</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/nosotros">Nosotros</Link></li>
           </ul>
 
           <ul className="navbar-nav align-items-lg-center">

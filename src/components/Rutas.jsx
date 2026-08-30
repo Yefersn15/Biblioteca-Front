@@ -17,6 +17,7 @@ import AutorPublico from '../pages/autores/AutorPublico';
 import EditorialesPublicas from '../pages/editoriales/EditorialesPublicas';
 import EditorialPublica from '../pages/editoriales/EditorialPublica';
 import CategoriasPublicas from '../pages/categorias/CategoriasPublicas';
+import Nosotros from '../pages/nosotros/Nosotros';
 
 import AdminDashboard from '../pages/dashboard/AdminDashboard';
 import LibrosAdmin from '../pages/libros/LibrosAdmin';
@@ -45,6 +46,7 @@ const Rutas = () => (
       <Route path="/catalogo/editoriales" element={<EditorialesPublicas />} />
       <Route path="/catalogo/editoriales/:id" element={<EditorialPublica />} />
       <Route path="/catalogo/categorias" element={<CategoriasPublicas />} />
+      <Route path="/nosotros" element={<Nosotros />} />
       <Route path="/catalogo/:id" element={<LibroDetalle />} />
       <Route path="/login" element={<PrivateRoute requireGuest><Login /></PrivateRoute>} />
       <Route path="/registro" element={<PrivateRoute requireGuest><Register /></PrivateRoute>} />
