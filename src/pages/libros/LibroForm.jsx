@@ -13,6 +13,7 @@ const LibroForm = () => {
     categorias,
     cargando,
     guardando,
+    intentoEnviar,
     toggleEnLista,
     handleSubmit,
   } = useLibroForm();
@@ -35,6 +36,7 @@ const LibroForm = () => {
               categorias={categorias}
               editando={editando}
               toggleEnLista={toggleEnLista}
+              intentoEnviar={intentoEnviar}
             />
 
             <div className="mt-4 d-flex gap-2">

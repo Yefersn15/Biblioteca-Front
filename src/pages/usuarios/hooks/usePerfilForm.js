@@ -1,8 +1,9 @@
-// src/pages/perfil/hooks/usePerfilForm.js
+// src/pages/usuarios/hooks/usePerfilForm.js
 import { useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { useToast } from '../../../context/ToastContext';
-import { actualizarUsuario } from '../services/perfilService';
+import { actualizarUsuario } from '../services/usuariosService';
+import { passwordEsValida } from '../../../validations/password';
 
 export const usePerfilForm = () => {
   const { user, actualizarUsuarioLocal } = useAuth();
@@ -32,6 +33,10 @@ export const usePerfilForm = () => {
     e.preventDefault();
     if (password && password !== confirmPassword) {
       toast.error('Las contraseñas no coinciden');
+      return;
+    }
+    if (password && !passwordEsValida(password)) {
+      toast.error('La contraseña debe incluir mayúscula, minúscula, número y símbolo');
       return;
     }
     setGuardando(true);

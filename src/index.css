@@ -150,16 +150,45 @@ a:not(.btn):not(.nav-link):not(.navbar-brand):not(.tema-encabezado-link) {
 
 /* Los campos de entrada usan "fondo" (no "superficie") a propósito: son un
    tono distinto al de la card que los contiene, para que no se confundan
-   con ella — quedan "hundidos" en vez de fundirse con el fondo de la card. */
+   con ella — quedan "hundidos" en vez de fundirse con el fondo de la card.
+   El borde se mezcla con "fondo-texto" (el negro/blanco ya calculado para
+   que contraste con "fondo", ver utils/color.js) en vez de con "encabezado":
+   así el borde siempre es visible sin importar la paleta elegida — mezclarlo
+   con "encabezado" lo volvía invisible en cualquier tema donde encabezado y
+   fondo coincidieran (p. ej. el tema neutro por defecto, blanco sobre blanco). */
 .form-control,
 .form-select {
   background-color: var(--tema-fondo);
   color: var(--tema-fondo-texto);
-  border-color: color-mix(in srgb, var(--tema-encabezado) 25%, var(--tema-fondo));
+  border-color: color-mix(in srgb, var(--tema-fondo-texto) 25%, var(--tema-fondo));
 }
 
 .form-control::placeholder {
   color: color-mix(in srgb, var(--tema-fondo-texto) 50%, transparent);
+}
+
+/* Bootstrap trae su propio fondo fijo (gris clarito) para inputs/selects
+   deshabilitados o de solo lectura, que no se ve con el resto del formulario
+   en modo oscuro (queda un recuadro claro suelto). Se usa "superficie" en vez
+   de "fondo" para que además se note a simple vista que el campo no se puede
+   editar, pero respetando la paleta activa en cualquier tema. */
+.form-control:disabled,
+.form-control[readonly],
+.form-select:disabled {
+  background-color: var(--tema-superficie);
+  color: color-mix(in srgb, var(--tema-fondo-texto) 65%, transparent);
+  opacity: 1;
+}
+
+/* Feedback en tiempo real "gratis" para cualquier campo con validación
+   nativa del navegador (required, type=email, minLength, pattern...):
+   `:user-invalid` solo se activa después de que la persona interactuó con
+   el campo (a diferencia de `:invalid`, que se vería en rojo desde el
+   primer render). No reemplaza los mensajes propios de la app, los
+   complementa en los campos que solo tenían validación nativa. */
+.form-control:user-invalid,
+.form-select:user-invalid {
+  border-color: var(--bs-form-invalid-border-color, #dc3545);
 }
 
 /* Checkbox/radio/switch: Bootstrap los deja blancos fijos sin importar el

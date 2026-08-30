@@ -2,17 +2,17 @@
 import { Link } from 'react-router-dom';
 import { getTemplate, SLOT_LETTERS } from '../hooks/bannerTemplates';
 
-// `items`, si se pasa, son casillas "vivas" enlazadas al catálogo
-// ({id, imageUrl, label, linkTo, shape} — ver banners.service.resolverItems
-// en el backend). Si no se pasa (o es null), se usan las imágenes subidas a
-// mano de siempre (`images`), en la cuadrícula fija de la plantilla.
+// `items`, si se pasa, son casillas "vivas" enlazadas al catálogo (autores
+// destacados: {id, imageUrl, label, linkTo, shape} — ver
+// banners.service.resolverItems en el backend). Si no se pasa (o es null),
+// se usan las imágenes subidas a mano de siempre (`images`), en la
+// cuadrícula fija de la plantilla.
 //
-// Los `items` NO usan la cuadrícula de la plantilla: una portada de libro es
-// vertical (2:3) y una foto de autor/logo de editorial es cuadrada (1:1), así
-// que cada casilla respeta su propia proporción (`item.shape`) en vez de
-// estirarse a la forma que le tocó en la plantilla — por eso no importa cuál
-// plantilla esté elegida, siempre se ven bien. Solo se usa `featuredSlot` de
-// la plantilla para saber cuál casilla se muestra más grande.
+// Los `items` NO usan la cuadrícula de la plantilla: cada casilla respeta su
+// propia proporción real (foto cuadrada, `item.shape`) en vez de estirarse a
+// la forma que le tocó en la plantilla — por eso no importa cuál plantilla
+// esté elegida, siempre se ven bien. Solo se usa `featuredSlot` de la
+// plantilla para saber cuál casilla se muestra más grande.
 const BannerCollage = ({ layout, images = [], items = null, titulo, texto, textPosition = 'none', height = 380 }) => {
   const template = getTemplate(layout);
   const usaItems = Array.isArray(items);

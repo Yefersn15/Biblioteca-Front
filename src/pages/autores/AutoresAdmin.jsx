@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { useAutoresAdmin } from './hooks/useAutoresAdmin';
+import AutoresAdminFiltros from './components/AutoresAdminFiltros';
 import AutorRow from './components/AutorRow';
-import { getAll as getCategorias } from '../../services/api/categorias.api';
 import { usePaginacion } from '../../hooks/usePaginacion';
-import Pagination from '../../components/Pagination';
+import AdminTable from '../../components/AdminTable';
 
 const AutoresAdmin = () => {
   const {
     autores,
+    categorias,
+    nacionalidades,
     loading,
     search,
     setSearch,
@@ -21,13 +22,6 @@ const AutoresAdmin = () => {
     toggleEstado,
     handleEliminar,
   } = useAutoresAdmin();
-  const [categorias, setCategorias] = useState([]);
-
-  useEffect(() => {
-    getCategorias({ limit: 200 }).then(({ items }) => setCategorias(items));
-  }, []);
-
-  const nacionalidades = [...new Set(autores.map((a) => a.nacionalidad).filter(Boolean))];
   const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(autores, 5, [search, nacionalidadFiltro, generoFiltro, estadoFiltro]);
 
   return (
@@ -39,63 +33,32 @@ const AutoresAdmin = () => {
         </Link>
       </div>
 
-      <div className="row g-2 mb-3 align-items-center">
-        <div className="col-md-4">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Buscar por nombre..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <div className="col-6 col-md-3" style={{ flex: '1 1 0' }}>
-          <select className="form-select" value={nacionalidadFiltro} onChange={(e) => setNacionalidadFiltro(e.target.value)}>
-            <option value="">Todas las nacionalidades</option>
-            {nacionalidades.map((n) => <option key={n} value={n}>{n}</option>)}
-          </select>
-        </div>
-        <div className="col-6 col-md-3" style={{ flex: '1 1 0' }}>
-          <select className="form-select" value={generoFiltro} onChange={(e) => setGeneroFiltro(e.target.value)}>
-            <option value="">Todos los géneros</option>
-            {categorias.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
-          </select>
-        </div>
-        <div className="col-6 col-md-2" style={{ flex: '1 1 0' }}>
-          <select className="form-select" value={estadoFiltro} onChange={(e) => setEstadoFiltro(e.target.value)}>
-            <option value="">Todos</option>
-            <option value="true">Habilitados</option>
-            <option value="false">Inhabilitados</option>
-          </select>
-        </div>
-      </div>
+      <AutoresAdminFiltros
+        search={search}
+        setSearch={setSearch}
+        nacionalidadFiltro={nacionalidadFiltro}
+        setNacionalidadFiltro={setNacionalidadFiltro}
+        generoFiltro={generoFiltro}
+        setGeneroFiltro={setGeneroFiltro}
+        estadoFiltro={estadoFiltro}
+        setEstadoFiltro={setEstadoFiltro}
+        nacionalidades={nacionalidades}
+        categorias={categorias}
+      />
 
-      {loading ? (
-        <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>
-      ) : autores.length === 0 ? (
-        <div className="alert alert-info">No hay autores todavía.</div>
-      ) : (
-        <>
-          <table className="table table-hover bg-white align-middle">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Nombre</th>
-                <th>Nacionalidad</th>
-                <th>Género literario</th>
-                <th>Estado</th>
-                <th style={{ width: 100 }}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {itemsPagina.map((a) => (
-                <AutorRow key={a.id} autor={a} onEliminar={handleEliminar} toggleEstado={toggleEstado} />
-              ))}
-            </tbody>
-          </table>
-          <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
-        </>
-      )}
+      <AdminTable
+        loading={loading}
+        isEmpty={autores.length === 0}
+        emptyMessage="No hay autores todavía."
+        headers={<><th></th><th>Nombre</th><th>Nacionalidad</th><th>Género literario</th><th>Estado</th><th style={{ width: 100 }}></th></>}
+        pagina={pagina}
+        totalPaginas={totalPaginas}
+        onCambiarPagina={setPagina}
+      >
+        {itemsPagina.map((a) => (
+          <AutorRow key={a.id} autor={a} onEliminar={handleEliminar} toggleEstado={toggleEstado} />
+        ))}
+      </AdminTable>
     </div>
   );
 };

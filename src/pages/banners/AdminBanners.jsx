@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useBannersAdmin } from './hooks/useBannersAdmin';
-import { BANNER_TEMPLATES } from './hooks/bannerTemplates';
+import AdminBannersFiltros from './components/AdminBannersFiltros';
 import BannerCollage from './components/BannerCollage';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import Pagination from '../../components/Pagination';
@@ -32,42 +32,14 @@ const AdminBanners = () => {
         </Link>
       </div>
 
-      <div className="row g-2 mb-3">
-        <div className="col-md-4">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Buscar por título o texto..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <div className="col-md-4">
-          <select
-            className="form-select"
-            value={estadoFiltro}
-            onChange={(e) => setEstadoFiltro(e.target.value)}
-          >
-            <option value="">Todos</option>
-            <option value="true">Habilitados</option>
-            <option value="false">Inhabilitados</option>
-          </select>
-        </div>
-        <div className="col-md-4">
-          <select
-            className="form-select"
-            value={layoutFiltro}
-            onChange={(e) => setLayoutFiltro(e.target.value)}
-          >
-            <option value="">Todos los diseños</option>
-            {BANNER_TEMPLATES.map((template) => (
-              <option key={template.key} value={template.key}>
-                {template.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+      <AdminBannersFiltros
+        search={search}
+        setSearch={setSearch}
+        estadoFiltro={estadoFiltro}
+        setEstadoFiltro={setEstadoFiltro}
+        layoutFiltro={layoutFiltro}
+        setLayoutFiltro={setLayoutFiltro}
+      />
 
       {loading ? (
         <div className="text-center py-5">

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useConfiguracion } from '../context/ConfiguracionContext';
@@ -21,6 +22,7 @@ const AdminLayout = () => {
   const { user, isAdmin, logout } = useAuth();
   const { nombreInstitucion, logoUrl, temaResuelto, modoOscuro, toggleModoOscuro } = useConfiguracion();
   const { posicion, compacto, setPosicion, toggleCompacto } = useAdminLayoutPrefs();
+  const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
   const navigate = useNavigate();
   const enlaces = isAdmin ? [...ENLACES_BASE, ...ENLACES_ADMIN] : ENLACES_BASE;
   const esLateral = posicion === 'lateral';
@@ -50,12 +52,23 @@ const AdminLayout = () => {
       ? { borderLeft: `3px solid ${isActive ? temaResuelto.acento : 'transparent'}`, backgroundColor: isActive ? resaltadoActivo : undefined }
       : { borderBottom: `3px solid ${isActive ? temaResuelto.acento : 'transparent'}` };
 
+  // `vertical`: apilado en columna (barra lateral en escritorio, o el propio
+  // menú colapsable en móvil). Al elegir un enlace en móvil, el menú se
+  // cierra solo — si no, taparía el contenido hasta que alguien lo cierre a mano.
   const menu = (vertical) => (
     <nav className={vertical ? 'nav flex-column' : 'nav'}>
       {enlaces.map((link) => (
-        <NavLink key={link.to} to={link.to} end={link.end} className={enlaceClase} style={enlaceEstilo} title={compacto ? link.label : undefined}>
-          <i className={`fas ${link.icon} ${compacto ? '' : 'me-2'}`}></i>
-          {!compacto && link.label}
+        <NavLink
+          key={link.to}
+          to={link.to}
+          end={link.end}
+          className={enlaceClase}
+          style={enlaceEstilo}
+          title={compacto && !vertical ? link.label : undefined}
+          onClick={() => setMenuMovilAbierto(false)}
+        >
+          <i className={`fas ${link.icon} ${compacto && !vertical ? '' : 'me-2'}`}></i>
+          {(!compacto || vertical) && link.label}
         </NavLink>
       ))}
     </nav>
@@ -63,9 +76,10 @@ const AdminLayout = () => {
 
   // Menú para elegir posición (lateral/superior) y modo compacto (solo
   // iconos). Se guarda en localStorage vía useAdminLayoutPrefs, así que cada
-  // quien lo deja como prefiera.
+  // quien lo deja como prefiera. Ambas preferencias solo aplican en
+  // escritorio (md en adelante) — en móvil siempre se usa el menú colapsable.
   const controlesLayout = (
-    <div className="dropdown">
+    <div className="dropdown d-none d-md-block">
       <button className="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown" title="Personalizar menú">
         <i className="fas fa-sliders"></i>
       </button>
@@ -101,7 +115,7 @@ const AdminLayout = () => {
   const menuUsuario = (
     <div className="dropdown">
       <button className="btn btn-link tema-encabezado-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-        <i className="fas fa-user-circle me-1"></i>{user?.nombres} · {user?.rol}
+        <i className="fas fa-user-circle me-1"></i><span className="d-none d-sm-inline">{user?.nombres} · {user?.rol}</span>
       </button>
       <ul className="dropdown-menu dropdown-menu-end">
         <li><Link className="dropdown-item" to="/perfil"><i className="fas fa-user me-2"></i>Mi perfil</Link></li>
@@ -112,21 +126,45 @@ const AdminLayout = () => {
     </div>
   );
 
+  const botonMenuMovil = (
+    <button
+      type="button"
+      className="btn btn-sm tema-encabezado-link border-0 d-md-none"
+      onClick={() => setMenuMovilAbierto((abierto) => !abierto)}
+      aria-label={menuMovilAbierto ? 'Cerrar menú' : 'Abrir menú'}
+    >
+      <i className={`fas ${menuMovilAbierto ? 'fa-xmark' : 'fa-bars'}`}></i>
+    </button>
+  );
+
+  // El menú colapsable de móvil es el mismo sin importar la preferencia de
+  // escritorio (lateral/superior): en pantallas angostas ninguna de las dos
+  // formas de escritorio cabe bien, así que ambas caen a este único patrón.
+  const menuMovilColapsable = (
+    <div className={`d-md-none border-top ${menuMovilAbierto ? '' : 'd-none'}`}>
+      {menu(true)}
+    </div>
+  );
+
   if (!esLateral) {
     return (
       <div>
-        <nav className="navbar navbar-expand tema-encabezado border-bottom px-3">
-          <div className="d-flex align-items-center gap-4 flex-grow-1 overflow-hidden">
-            {marca}
-            {menu(false)}
+        <nav className="tema-encabezado border-bottom px-3">
+          <div className="d-flex align-items-center justify-content-between py-2 gap-2">
+            <div className="d-flex align-items-center gap-3 flex-grow-1 overflow-hidden">
+              {botonMenuMovil}
+              {marca}
+              <div className="d-none d-md-block">{menu(false)}</div>
+            </div>
+            <div className="d-flex align-items-center gap-2 flex-shrink-0">
+              {botonModoOscuro}
+              {controlesLayout}
+              {menuUsuario}
+            </div>
           </div>
-          <div className="d-flex align-items-center gap-2">
-            {botonModoOscuro}
-            {controlesLayout}
-            {menuUsuario}
-          </div>
+          {menuMovilColapsable}
         </nav>
-        <div className="p-4">
+        <div className="p-3 p-md-4">
           <Outlet />
         </div>
       </div>
@@ -134,22 +172,29 @@ const AdminLayout = () => {
   }
 
   return (
-    <div className="d-flex" style={{ minHeight: '100vh' }}>
-      <aside className="tema-encabezado border-end p-3" style={{ width: compacto ? 70 : 230, flexShrink: 0, transition: 'width .15s' }}>
+    <div className="d-md-flex" style={{ minHeight: '100vh' }}>
+      <aside className="tema-encabezado border-end p-3 d-none d-md-block" style={{ width: compacto ? 70 : 230, flexShrink: 0, transition: 'width .15s' }}>
         <div className="mb-4">{marca}</div>
         {menu(true)}
       </aside>
 
-      <div className="flex-grow-1">
-        <nav className="navbar tema-encabezado border-bottom px-4 d-flex justify-content-between">
-          <span className="tema-encabezado-link">Panel de administración</span>
-          <div className="d-flex align-items-center gap-2">
-            {botonModoOscuro}
-            {controlesLayout}
-            {menuUsuario}
+      <div className="flex-grow-1" style={{ minWidth: 0 }}>
+        <nav className="tema-encabezado border-bottom px-3 px-md-4">
+          <div className="d-flex align-items-center justify-content-between py-2 gap-2">
+            <div className="d-flex align-items-center gap-3 overflow-hidden">
+              {botonMenuMovil}
+              <span className="tema-encabezado-link d-none d-md-inline">Panel de administración</span>
+              <div className="d-md-none">{marca}</div>
+            </div>
+            <div className="d-flex align-items-center gap-2 flex-shrink-0">
+              {botonModoOscuro}
+              {controlesLayout}
+              {menuUsuario}
+            </div>
           </div>
+          {menuMovilColapsable}
         </nav>
-        <div className="p-4">
+        <div className="p-3 p-md-4">
           <Outlet />
         </div>
       </div>

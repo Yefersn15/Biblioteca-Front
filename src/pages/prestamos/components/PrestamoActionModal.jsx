@@ -56,6 +56,7 @@ const PrestamoActionModal = ({ modal, procesando, onClose, onChangeObservaciones
                 <textarea
                   className="form-control"
                   rows={3}
+                  maxLength={1000}
                   placeholder={modal.tipo === 'rechazar' ? 'Ej: no cumple los requisitos de préstamo' : 'Ej: libro devuelto con daños en la portada'}
                   value={modal.observaciones}
                   onChange={(e) => onChangeObservaciones(e.target.value)}

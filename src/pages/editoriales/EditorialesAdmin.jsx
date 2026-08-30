@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useEditorialesAdmin } from './hooks/useEditorialesAdmin';
+import EditorialesAdminFiltros from './components/EditorialesAdminFiltros';
 import EditorialRow from './components/EditorialRow';
 import { usePaginacion } from '../../hooks/usePaginacion';
-import Pagination from '../../components/Pagination';
+import AdminTable from '../../components/AdminTable';
 
 const EditorialesAdmin = () => {
   const {
@@ -26,54 +27,21 @@ const EditorialesAdmin = () => {
         </Link>
       </div>
 
-      <div className="row g-2 mb-3">
-        <div className="col">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Buscar por nombre..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <div className="col-auto">
-          <select
-            className="form-select"
-            value={estadoFiltro}
-            onChange={(e) => setEstadoFiltro(e.target.value)}
-          >
-            <option value="">Todas</option>
-            <option value="true">Habilitadas</option>
-            <option value="false">Inhabilitadas</option>
-          </select>
-        </div>
-      </div>
+      <EditorialesAdminFiltros search={search} setSearch={setSearch} estadoFiltro={estadoFiltro} setEstadoFiltro={setEstadoFiltro} />
 
-      {loading ? (
-        <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>
-      ) : editoriales.length === 0 ? (
-        <div className="alert alert-info">No hay editoriales todavía.</div>
-      ) : (
-        <>
-          <table className="table table-hover bg-white align-middle">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Nombre</th>
-                <th>Sitio web</th>
-                <th>Estado</th>
-                <th style={{ width: 100 }}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {itemsPagina.map((e) => (
-                <EditorialRow key={e.id} editorial={e} onEliminar={handleEliminar} onToggleEstado={toggleEstado} />
-              ))}
-            </tbody>
-          </table>
-          <Pagination pagina={pagina} totalPaginas={totalPaginas} onCambiarPagina={setPagina} />
-        </>
-      )}
+      <AdminTable
+        loading={loading}
+        isEmpty={editoriales.length === 0}
+        emptyMessage="No hay editoriales todavía."
+        headers={<><th></th><th>Nombre</th><th>Sitio web</th><th>Estado</th><th style={{ width: 100 }}></th></>}
+        pagina={pagina}
+        totalPaginas={totalPaginas}
+        onCambiarPagina={setPagina}
+      >
+        {itemsPagina.map((e) => (
+          <EditorialRow key={e.id} editorial={e} onEliminar={handleEliminar} onToggleEstado={toggleEstado} />
+        ))}
+      </AdminTable>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-// src/pages/perfil/components/DatosPersonalesForm.jsx
 import ImageUploadField from '../../../components/upload/ImageUploadField';
 
 const DatosPersonalesForm = ({ form, setField, esAdmin }) => {
@@ -11,11 +10,11 @@ const DatosPersonalesForm = ({ form, setField, esAdmin }) => {
         <div className="row g-3">
           <div className="col-6">
             <label className="form-label">Nombres</label>
-            <input type="text" className="form-control" required readOnly={!esAdmin} value={form.nombres} onChange={(e) => setField('nombres', e.target.value)} />
+            <input type="text" className="form-control" required minLength={2} maxLength={100} readOnly={!esAdmin} value={form.nombres} onChange={(e) => setField('nombres', e.target.value)} />
           </div>
           <div className="col-6">
             <label className="form-label">Apellidos</label>
-            <input type="text" className="form-control" required readOnly={!esAdmin} value={form.apellidos} onChange={(e) => setField('apellidos', e.target.value)} />
+            <input type="text" className="form-control" required minLength={2} maxLength={100} readOnly={!esAdmin} value={form.apellidos} onChange={(e) => setField('apellidos', e.target.value)} />
           </div>
           {!esAdmin && (
             <div className="col-12">
@@ -34,7 +33,7 @@ const DatosPersonalesForm = ({ form, setField, esAdmin }) => {
           </div>
           <div className="col-6">
             <label className="form-label">Celular</label>
-            <input type="tel" className="form-control" value={form.celular} onChange={(e) => setField('celular', e.target.value)} />
+            <input type="tel" className="form-control" maxLength={20} value={form.celular} onChange={(e) => setField('celular', e.target.value)} />
           </div>
           <div className="col-12">
             <ImageUploadField

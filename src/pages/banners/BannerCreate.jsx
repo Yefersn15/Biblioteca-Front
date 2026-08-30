@@ -8,7 +8,7 @@ import { useToast } from '../../context/ToastContext';
 const BannerCreate = () => {
   const navigate = useNavigate();
   const toast = useToast();
-  const { form, errors, setLayout, setImageUrl, setField, setContentType, setOrigen, validate } = useBannerForm();
+  const { form, errors, setLayout, setImageUrl, setField, setContentType, validate } = useBannerForm();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -42,7 +42,6 @@ const BannerCreate = () => {
               setImageUrl={setImageUrl}
               setField={setField}
               setContentType={setContentType}
-              setOrigen={setOrigen}
             />
 
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">

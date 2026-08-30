@@ -1,18 +1,34 @@
-// src/pages/auth/components/ResetPasswordStep.jsx
-const ResetPasswordStep = ({ password, setPassword, confirmPassword, setConfirmPassword, loading, onSubmit }) => (
-  <form onSubmit={onSubmit}>
-    <div className="mb-3">
-      <label className="form-label">Nueva contraseña</label>
-      <input type="password" className="form-control" minLength={8} required value={password} onChange={(e) => setPassword(e.target.value)} />
-    </div>
-    <div className="mb-3">
-      <label className="form-label">Confirmar contraseña</label>
-      <input type="password" className="form-control" minLength={8} required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-    </div>
-    <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-      {loading ? 'Actualizando...' : 'Actualizar contraseña'}
-    </button>
-  </form>
-);
+import PasswordRequisitos from '../../../components/PasswordRequisitos';
+import { passwordEsValida } from '../../../validations/password';
+
+const ResetPasswordStep = ({ password, setPassword, confirmPassword, setConfirmPassword, loading, onSubmit }) => {
+  const passwordValida = passwordEsValida(password);
+  const noCoinciden = confirmPassword.length > 0 && password !== confirmPassword;
+  const puedeEnviar = passwordValida && confirmPassword.length > 0 && !noCoinciden;
+
+  return (
+    <form onSubmit={onSubmit}>
+      <div className="mb-2">
+        <label className="form-label">Nueva contraseña</label>
+        <input type="password" className="form-control" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <PasswordRequisitos password={password} />
+      </div>
+      <div className="mb-3">
+        <label className="form-label">Confirmar contraseña</label>
+        <input
+          type="password"
+          className={`form-control ${noCoinciden ? 'is-invalid' : ''}`}
+          required
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        {noCoinciden && <div className="invalid-feedback">Las contraseñas no coinciden</div>}
+      </div>
+      <button type="submit" className="btn btn-primary w-100" disabled={loading || !puedeEnviar}>
+        {loading ? 'Actualizando...' : 'Actualizar contraseña'}
+      </button>
+    </form>
+  );
+};
 
 export default ResetPasswordStep;

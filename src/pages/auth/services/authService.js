@@ -4,5 +4,5 @@
 import * as authApi from '../../../services/api/auth.api';
 
 export const solicitarRecuperacion = authApi.solicitarRecuperacion;
-export const verificarCodigo = authApi.verificarCodigo;
+export const verificarToken = authApi.verificarToken;
 export const restablecerPassword = authApi.restablecerPassword;

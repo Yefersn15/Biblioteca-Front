@@ -35,6 +35,8 @@ const ConfiguracionAdmin = () => {
                   type="text"
                   className="form-control"
                   required
+                  minLength={2}
+                  maxLength={150}
                   value={form.nombreInstitucion}
                   onChange={(e) => setForm({ ...form, nombreInstitucion: e.target.value })}
                 />
@@ -59,6 +61,7 @@ const ConfiguracionAdmin = () => {
                 <textarea
                   className="form-control"
                   rows={2}
+                  maxLength={2000}
                   value={form.descripcion}
                   onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
                 />
@@ -70,6 +73,7 @@ const ConfiguracionAdmin = () => {
                   type="text"
                   className="form-control"
                   placeholder="Calle 52 #43-31, Medellín"
+                  maxLength={200}
                   value={form.direccion}
                   onChange={(e) => setForm({ ...form, direccion: e.target.value })}
                 />
@@ -77,7 +81,7 @@ const ConfiguracionAdmin = () => {
               </div>
               <div className="col-md-6">
                 <label className="form-label">Teléfono</label>
-                <input type="text" className="form-control" value={form.telefono} onChange={(e) => setForm({ ...form, telefono: e.target.value })} />
+                <input type="text" className="form-control" maxLength={30} value={form.telefono} onChange={(e) => setForm({ ...form, telefono: e.target.value })} />
               </div>
 
               <div className="col-md-6">

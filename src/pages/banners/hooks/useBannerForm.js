@@ -2,15 +2,13 @@
 import { useState } from 'react';
 import { getTemplate } from './bannerTemplates';
 
-const TIPOS_CON_REFIDS = ['LIBROS', 'AUTORES', 'EDITORIALES', 'CATEGORIAS'];
-const NOMBRE_REFIDS = { LIBROS: 'libro(s)', AUTORES: 'autor(es)', EDITORIALES: 'editorial(es)', CATEGORIAS: 'categoría(s)' };
+const TIPOS_CON_REFIDS = ['AUTORES'];
+const NOMBRE_REFIDS = { AUTORES: 'autor(es)' };
 
 const FORM_INICIAL = {
   layout: 'single',
   contentType: 'IMAGENES',
   images: [{ slot: 0, url: '' }],
-  origen: null,
-  origenId: null,
   refIds: [],
   titulo: '',
   texto: '',
@@ -43,11 +41,9 @@ export const useBannerForm = (initialData) => {
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  // Cambiar el tipo de contenido (o, en "Populares", de dónde salen los
-  // libros) reinicia la selección: mezclar ids de libros con ids de autores,
-  // por ejemplo, no tiene sentido.
-  const setContentType = (contentType) => setForm(prev => ({ ...prev, contentType, origen: null, origenId: null, refIds: [] }));
-  const setOrigen = (origen) => setForm(prev => ({ ...prev, origen, origenId: null }));
+  // Cambiar el tipo de contenido reinicia la selección de referencias:
+  // mezclar ids de un tipo con otro no tiene sentido.
+  const setContentType = (contentType) => setForm(prev => ({ ...prev, contentType, refIds: [] }));
 
   const validate = () => {
     const newErrors = {};
@@ -61,9 +57,6 @@ export const useBannerForm = (initialData) => {
       if (form.refIds.length !== slots) {
         newErrors.refIds = `Selecciona ${slots} ${NOMBRE_REFIDS[form.contentType]}`;
       }
-    } else if (form.contentType === 'POPULARES') {
-      if (!form.origen) newErrors.origen = 'Elige si los libros populares son de una categoría, un autor o una editorial';
-      else if (!form.origenId) newErrors.origenId = 'Elige de cuál';
     }
 
     if (form.textPosition !== 'none' && !form.titulo?.trim() && !form.texto?.trim()) {
@@ -73,5 +66,5 @@ export const useBannerForm = (initialData) => {
     return newErrors;
   };
 
-  return { form, setForm, errors, setLayout, setImageUrl, setField, setContentType, setOrigen, validate };
+  return { form, setForm, errors, setLayout, setImageUrl, setField, setContentType, validate };
 };

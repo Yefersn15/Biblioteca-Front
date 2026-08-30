@@ -8,6 +8,8 @@ const EditorialFormFields = ({ form, setField }) => (
         type="text"
         className="form-control"
         required
+        minLength={2}
+        maxLength={150}
         value={form.nombre}
         onChange={(e) => setField('nombre', e.target.value)}
       />
@@ -28,6 +30,7 @@ const EditorialFormFields = ({ form, setField }) => (
       <textarea
         className="form-control"
         rows={3}
+        maxLength={2000}
         value={form.descripcion}
         onChange={(e) => setField('descripcion', e.target.value)}
       />

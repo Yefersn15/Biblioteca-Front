@@ -40,6 +40,12 @@ export const usePrestamosAdmin = () => {
   const cambiarObservaciones = (observaciones) => setModal((prev) => ({ ...prev, observaciones }));
   const cambiarFechaDevolucion = (fechaDevolucionEstimada) => setModal((prev) => ({ ...prev, fechaDevolucionEstimada }));
 
+  const MENSAJES_EXITO = {
+    aprobar: 'Préstamo aprobado',
+    rechazar: 'Préstamo rechazado',
+    devolver: 'Devolución registrada',
+  };
+
   const confirmarModal = async () => {
     setProcesando(true);
     try {
@@ -49,6 +55,7 @@ export const usePrestamosAdmin = () => {
       if (tipo === 'devolver') await devolverPrestamo(prestamo.id, observaciones || undefined);
       await cargar();
       cerrarModal();
+      toast.success(MENSAJES_EXITO[tipo]);
     } catch (err) {
       toast.error(err.message);
     } finally {

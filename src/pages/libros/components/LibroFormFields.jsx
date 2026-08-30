@@ -1,6 +1,14 @@
 import ImageUploadField from '../../../components/upload/ImageUploadField';
+import { isbnEsValido } from '../../../validations/isbn';
 
-const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, editando, toggleEnLista }) => (
+const ANIO_MIN = 1000;
+const ANIO_MAX = 3000;
+
+const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, editando, toggleEnLista, intentoEnviar }) => {
+  const sinAutores = intentoEnviar && form.autorIds.length === 0;
+  const isbnInvalido = form.isbn?.trim() && !isbnEsValido(form.isbn);
+
+  return (
   <div className="row g-3">
     <div className="col-md-8">
       <label className="form-label">Título</label>
@@ -8,6 +16,7 @@ const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, edit
         type="text"
         className="form-control"
         required
+        maxLength={200}
         value={form.titulo}
         onChange={(e) => setForm({ ...form, titulo: e.target.value })}
       />
@@ -27,7 +36,7 @@ const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, edit
     </div>
 
     <div className="col-12">
-      <label className="form-label d-block">Autor(es) *</label>
+      <label className={`form-label d-block ${sinAutores ? 'text-danger' : ''}`}>Autor(es) *</label>
       {autores.length === 0 && <p className="text-muted small">No hay autores creados todavía.</p>}
       {autores.map((a) => (
         <div className="form-check form-check-inline" key={a.id}>
@@ -43,6 +52,7 @@ const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, edit
           </label>
         </div>
       ))}
+      {sinAutores && <div className="small text-danger mt-1">Selecciona al menos un autor</div>}
     </div>
 
     <div className="col-md-6">
@@ -62,6 +72,7 @@ const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, edit
         type="text"
         className="form-control"
         placeholder="Español, inglés..."
+        maxLength={60}
         value={form.idioma}
         onChange={(e) => setForm({ ...form, idioma: e.target.value })}
       />
@@ -72,6 +83,7 @@ const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, edit
       <textarea
         className="form-control"
         rows={3}
+        maxLength={5000}
         value={form.descripcion}
         onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
       />
@@ -101,16 +113,20 @@ const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, edit
       <label className="form-label">ISBN</label>
       <input
         type="text"
-        className="form-control"
+        className={`form-control ${isbnInvalido ? 'is-invalid' : ''}`}
+        placeholder="ISBN-10 o ISBN-13"
         value={form.isbn}
         onChange={(e) => setForm({ ...form, isbn: e.target.value })}
       />
+      {isbnInvalido && <div className="invalid-feedback">Debe tener 10 o 13 dígitos</div>}
     </div>
     <div className="col-md-3">
       <label className="form-label">Año de publicación</label>
       <input
         type="number"
         className="form-control"
+        min={ANIO_MIN}
+        max={ANIO_MAX}
         value={form.anioPublicacion}
         onChange={(e) => setForm({ ...form, anioPublicacion: e.target.value })}
       />
@@ -166,6 +182,7 @@ const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, edit
       </div>
     )}
   </div>
-);
+  );
+};
 
 export default LibroFormFields;

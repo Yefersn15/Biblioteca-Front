@@ -6,6 +6,7 @@ import * as autoresApi from '../../../services/api/autores.api';
 import * as editorialesApi from '../../../services/api/editoriales.api';
 import * as categoriasApi from '../../../services/api/categorias.api';
 import { useToast } from '../../../context/ToastContext';
+import { isbnEsValido } from '../../../validations/isbn';
 
 const FORM_INICIAL = {
   titulo: '',
@@ -36,6 +37,9 @@ export const useLibroForm = () => {
   const [categorias, setCategorias] = useState([]);
   const [cargando, setCargando] = useState(editando);
   const [guardando, setGuardando] = useState(false);
+  // Se activa en el primer intento de envío: antes de eso no tiene sentido
+  // mostrar "selecciona un autor" en un formulario que la persona recién abrió.
+  const [intentoEnviar, setIntentoEnviar] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -82,8 +86,13 @@ export const useLibroForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIntentoEnviar(true);
     if (form.autorIds.length === 0) {
       toast.error('Selecciona al menos un autor');
+      return;
+    }
+    if (!isbnEsValido(form.isbn)) {
+      toast.error('El ISBN no tiene un formato válido (10 o 13 dígitos)');
       return;
     }
     setGuardando(true);
@@ -121,6 +130,7 @@ export const useLibroForm = () => {
     categorias,
     cargando,
     guardando,
+    intentoEnviar,
     toggleEnLista,
     handleSubmit,
   };

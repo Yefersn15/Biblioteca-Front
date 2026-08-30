@@ -1,4 +1,3 @@
-// src/pages/perfil/components/DocumentoUbicacionForm.jsx
 const DOCUMENTO_LABEL = { CC: 'CC', TI: 'TI', PASAPORTE: 'Pasaporte', CEDULA_EXTRANJERA: 'CE' };
 
 const DocumentoUbicacionForm = ({ form, setField, esAdmin }) => {
@@ -22,15 +21,15 @@ const DocumentoUbicacionForm = ({ form, setField, esAdmin }) => {
           </div>
           <div className="col-5">
             <label className="form-label">Número</label>
-            <input type="text" className="form-control" readOnly={!esAdmin} value={form.documento} onChange={(e) => setField('documento', e.target.value)} />
+            <input type="text" className="form-control" minLength={esAdmin ? 6 : undefined} maxLength={30} readOnly={!esAdmin} value={form.documento} onChange={(e) => setField('documento', e.target.value)} />
           </div>
           <div className="col-6">
             <label className="form-label">Dirección</label>
-            <input type="text" className="form-control" readOnly={!esAdmin} value={form.direccion} onChange={(e) => setField('direccion', e.target.value)} />
+            <input type="text" className="form-control" maxLength={200} readOnly={!esAdmin} value={form.direccion} onChange={(e) => setField('direccion', e.target.value)} />
           </div>
           <div className="col-6">
             <label className="form-label">Barrio</label>
-            <input type="text" className="form-control" readOnly={!esAdmin} value={form.barrio} onChange={(e) => setField('barrio', e.target.value)} />
+            <input type="text" className="form-control" maxLength={100} readOnly={!esAdmin} value={form.barrio} onChange={(e) => setField('barrio', e.target.value)} />
           </div>
           {!esAdmin && (
             <div className="col-12">

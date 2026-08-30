@@ -27,6 +27,10 @@ export const useRegisterForm = () => {
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+  // Feedback en tiempo real: solo se marca error una vez que la persona ya
+  // escribió algo en "Confirmar contraseña" (no apenas entra al formulario).
+  const passwordsNoCoinciden = form.confirmPassword.length > 0 && form.password !== form.confirmPassword;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -49,5 +53,5 @@ export const useRegisterForm = () => {
     }
   };
 
-  return { form, error, loading, handleChange, handleSubmit };
+  return { form, error, loading, handleChange, handleSubmit, passwordsNoCoinciden };
 };

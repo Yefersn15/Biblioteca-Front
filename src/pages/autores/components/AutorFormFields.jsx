@@ -4,7 +4,7 @@ const AutorFormFields = ({ form, setField, setRedSocial, toggleEnLista, categori
   <div className="row g-3">
     <div className="col-md-6">
       <label className="form-label">Nombre *</label>
-      <input type="text" className="form-control" required value={form.nombre} onChange={(e) => setField('nombre', e.target.value)} />
+      <input type="text" className="form-control" required minLength={2} maxLength={150} value={form.nombre} onChange={(e) => setField('nombre', e.target.value)} />
     </div>
     <div className="col-md-6">
       <label className="form-label">Apellido</label>
@@ -13,11 +13,11 @@ const AutorFormFields = ({ form, setField, setRedSocial, toggleEnLista, categori
 
     <div className="col-md-6">
       <label className="form-label">Nacionalidad</label>
-      <input type="text" className="form-control" value={form.nacionalidad} onChange={(e) => setField('nacionalidad', e.target.value)} />
+      <input type="text" className="form-control" maxLength={100} value={form.nacionalidad} onChange={(e) => setField('nacionalidad', e.target.value)} />
     </div>
     <div className="col-md-6">
       <label className="form-label">Idioma principal</label>
-      <input type="text" className="form-control" value={form.idiomaPrincipal} onChange={(e) => setField('idiomaPrincipal', e.target.value)} />
+      <input type="text" className="form-control" maxLength={60} value={form.idiomaPrincipal} onChange={(e) => setField('idiomaPrincipal', e.target.value)} />
     </div>
 
     <div className="col-12">
@@ -39,7 +39,7 @@ const AutorFormFields = ({ form, setField, setRedSocial, toggleEnLista, categori
 
     <div className="col-12">
       <label className="form-label">Biografía</label>
-      <textarea className="form-control" rows={4} value={form.biografia} onChange={(e) => setField('biografia', e.target.value)} />
+      <textarea className="form-control" rows={4} maxLength={5000} value={form.biografia} onChange={(e) => setField('biografia', e.target.value)} />
     </div>
 
     <div className="col-12">

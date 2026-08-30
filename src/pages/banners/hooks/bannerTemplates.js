@@ -5,11 +5,10 @@
 // casilla; `maxWidth` limita el ancho con el que se sube cada imagen a
 // Cloudinary, más chico entre más casillas tiene la plantilla).
 //
-// Para contenido "vivo" (libros/autores/editoriales/categorías/populares),
-// esa cuadrícula NO se usa para el tamaño de cada casilla — cada una respeta
-// su propia proporción real (portada vertical o foto/logo cuadrado, ver
-// BannerCollage) y solo se toman `slots` (cuántas) y `featuredSlot` (cuál se
-// ve más grande) de la plantilla elegida.
+// Para contenido "vivo" (autores), esa cuadrícula NO se usa para el tamaño
+// de cada casilla — cada una respeta su propia proporción real (foto
+// cuadrada, ver BannerCollage) y solo se toman `slots` (cuántas) y
+// `featuredSlot` (cuál se ve más grande) de la plantilla elegida.
 export const BANNER_TEMPLATES = [
   {
     key: 'single',
