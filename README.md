@@ -1,16 +1,60 @@
-# React + Vite
+# Biblioteca-Front
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cliente web del proyecto Biblioteca: React 19 + Vite + React Router, consumiendo la API de [Biblioteca-Back](../Biblioteca-Back).
 
-Currently, two official plugins are available:
+## Primer arranque
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Instala dependencias:
+   ```
+   npm install
+   ```
+2. Crea un archivo `.env` en la raíz con la URL de la API:
+   ```
+   VITE_API_URL=http://localhost:4000/api
+   ```
+3. Levanta el servidor de desarrollo:
+   ```
+   npm run dev
+   ```
+   La app queda en `http://localhost:5173` (Vite elige otro puerto libre si ese está ocupado).
 
-## React Compiler
+Otros scripts: `npm run build` (build de producción), `npm run preview` (sirve el build) y `npm run lint` (ESLint).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Estructura
 
-## Expanding the ESLint configuration
+```
+src/
+  components/          compartido entre ≥2 módulos: Layout, AdminLayout, Rutas,
+                        PrivateRoute, AdminTable, Pagination, PasswordRequisitos...
+    header/             Navbar, TopBar, ThemeToggleButton, UserMenu,
+                        MenuPersonalizarLayout (usados por Header.jsx y AdminLayout.jsx)
+    upload/             ImageUploadField y afines
+  context/             AuthContext (sesión/JWT), ConfiguracionContext (tema, institución)
+  hooks/               compartidos: useModoOscuro, usePaginacion, useBusquedaOrden...
+  pages/<módulo>/      una carpeta por módulo (libros, autores, editoriales,
+                        categorias, prestamos, usuarios, banners, auth, home, dashboard)
+    components/         piezas de UI propias del módulo (filtros, filas de tabla, campos de formulario)
+    hooks/              lógica de datos/estado propia del módulo
+    services/           llamadas a la API propias del módulo
+    validations/         validaciones propias del módulo, si no son genéricas
+  services/api/        cliente axios (client.js, interceptores de token) + *.api.js por recurso
+  utils/               compartidos: tema.js (resuelve paleta clara/oscura), color.js, horario.js...
+  validations/         compartidas: password.js (regla de contraseña fuerte), isbn.js
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Convención de ubicación:** si una pieza (componente, hook, servicio, validación) la usa un solo módulo, vive dentro de `pages/<módulo>/`. Si la usan dos o más módulos, sube a su equivalente en la raíz de `src/`.
+
+## Roles y rutas
+
+Los roles vienen del backend: `USUARIO`, `BIBLIOTECARIO`, `ADMIN`. `PrivateRoute` (`src/components/PrivateRoute.jsx`) controla el acceso:
+
+- Rutas públicas (catálogo, login, registro, recuperación de contraseña) bajo `Layout` + `Header`.
+- `/perfil` y `/mis-prestamos` requieren sesión iniciada (cualquier rol).
+- `/admin/*` requiere rol `BIBLIOTECARIO` o `ADMIN` (`staffOnly`), y usa `AdminLayout` en vez del header público.
+- `/login`, `/registro`, `/recuperar-password` y `/restablecer-password` son `requireGuest`: si ya hay sesión, redirigen en vez de mostrarse.
+
+La sesión se guarda como JWT en `localStorage` (`AuthContext.jsx`); el cliente axios (`services/api/client.js`) lo adjunta en cada petición y limpia la sesión local si el backend responde 401.
+
+## Tema claro/oscuro
+
+`ConfiguracionContext` resuelve la paleta activa (clara, oscura o personalizada desde `/admin/configuracion`) a variables CSS (`--tema-fondo`, `--tema-superficie`, `--tema-acento`, etc.) vía `utils/tema.js`, consumidas en `index.css` y en clases utilitarias como `tema-encabezado`, `tema-acento-bg`.
