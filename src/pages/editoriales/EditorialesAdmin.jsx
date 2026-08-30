@@ -4,8 +4,18 @@ import EditorialesAdminFiltros from './components/EditorialesAdminFiltros';
 import EditorialRow from './components/EditorialRow';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import AdminTable from '../../components/AdminTable';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const EditorialesAdmin = () => {
+  useAyudaPagina({
+    titulo: 'Editoriales (admin)',
+    contenido: (
+      <>
+        <p>Gestiona las editoriales. Una editorial con libros asociados <strong>no se puede eliminar</strong>; solo se puede desactivar.</p>
+        <p>Al desactivar una editorial, sus libros también quedan desactivados automáticamente. Reactivar la editorial no reactiva sus libros — eso se hace uno por uno desde Libros.</p>
+      </>
+    ),
+  });
   const {
     editoriales,
     loading,

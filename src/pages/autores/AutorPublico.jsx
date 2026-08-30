@@ -3,10 +3,15 @@ import { useAutorPublico } from './hooks/useAutorPublico';
 import LibroCard from '../libros/components/LibroCard';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import Pagination from '../../components/Pagination';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const RED_ICONS = { facebook: 'fa-facebook', twitter: 'fa-x-twitter', instagram: 'fa-instagram', biografiaUrl: 'fa-book-open' };
 
 const AutorPublico = () => {
+  useAyudaPagina({
+    titulo: 'Perfil de autor',
+    contenido: <p>Biografía, redes sociales, premios y obras destacadas del autor, junto con todos sus libros disponibles en el catálogo.</p>,
+  });
   const { autor, libros, generos, obrasDestacadas, loading } = useAutorPublico();
   const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(libros, 10, [autor?.id]);
 

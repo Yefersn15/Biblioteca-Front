@@ -1,7 +1,12 @@
 import { useCategoriaForm } from './hooks/useCategoriaForm';
 import CategoriaFormFields from './components/CategoriaFormFields';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const CategoriaForm = () => {
+  useAyudaPagina({
+    titulo: 'Crear/editar categoría',
+    contenido: <p>Nombre y descripción de la categoría. Se asigna a los libros desde el formulario de cada libro (un libro puede tener varias categorías).</p>,
+  });
   const { editando, form, setField, cargando, guardando, handleSubmit, navigate } = useCategoriaForm();
 
   if (cargando) {

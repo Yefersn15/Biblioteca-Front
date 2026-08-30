@@ -4,8 +4,18 @@ import PrestamoRow from './components/PrestamoRow';
 import PrestamoActionModal from './components/PrestamoActionModal';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import AdminTable from '../../components/AdminTable';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const PrestamosAdmin = () => {
+  useAyudaPagina({
+    titulo: 'Préstamos (admin)',
+    contenido: (
+      <>
+        <p>Gestiona todas las solicitudes de préstamo: aprobar (define la fecha estimada de devolución), rechazar, o marcar como devuelto.</p>
+        <p>Al aprobar se descuenta una copia disponible del libro; al devolver, se suma de nuevo. Si no quedan copias al momento de aprobar, la solicitud se rechaza automáticamente.</p>
+      </>
+    ),
+  });
   const {
     prestamos,
     loading,

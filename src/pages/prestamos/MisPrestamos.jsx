@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useMisPrestamos } from './hooks/useMisPrestamos';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const ESTADO_BADGE = {
   PENDIENTE: 'bg-warning text-dark',
@@ -9,6 +10,20 @@ const ESTADO_BADGE = {
 };
 
 const MisPrestamos = () => {
+  useAyudaPagina({
+    titulo: 'Mis préstamos',
+    contenido: (
+      <>
+        <p>Historial de tus solicitudes de préstamo con su estado actual:</p>
+        <ul className="mb-0">
+          <li><strong>Pendiente:</strong> esperando que un bibliotecario o admin la revise.</li>
+          <li><strong>Aprobado:</strong> el libro está en tu poder, con fecha estimada de devolución.</li>
+          <li><strong>Rechazado:</strong> la solicitud no se aprobó.</li>
+          <li><strong>Devuelto:</strong> el préstamo ya se cerró.</li>
+        </ul>
+      </>
+    ),
+  });
   const { prestamos, loading } = useMisPrestamos();
 
   return (

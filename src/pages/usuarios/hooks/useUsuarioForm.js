@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUsuario, actualizarUsuario } from '../services/usuariosService';
+import { useAuth } from '../../../context/AuthContext';
 import { useToast } from '../../../context/ToastContext';
 import { passwordEsValida } from '../../../validations/password';
 
@@ -13,6 +14,7 @@ export const useUsuarioForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
+  const { user: usuarioActual } = useAuth();
 
   const [email, setEmail] = useState('');
   const [form, setForm] = useState(FORM_INICIAL);
@@ -20,10 +22,12 @@ export const useUsuarioForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
+  const [esAdminPrincipal, setEsAdminPrincipal] = useState(false);
 
   useEffect(() => {
     getUsuario(id).then((u) => {
       setEmail(u.email);
+      setEsAdminPrincipal(u.esAdminPrincipal);
       setForm({
         nombres: u.nombres,
         apellidos: u.apellidos,
@@ -38,6 +42,11 @@ export const useUsuarioForm = () => {
       setCargando(false);
     });
   }, [id]);
+
+  // Otro admin (incluido otro ADMIN) no puede editar en absoluto la cuenta
+  // creada por `npm run seed:db`; ella misma sí puede editar sus datos
+  // normales, solo no su rol/estado/contraseña (ver SeguridadForm).
+  const bloqueadoCompleto = esAdminPrincipal && usuarioActual?.id !== Number(id);
 
   const setField = (name, value) => {
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -67,5 +76,5 @@ export const useUsuarioForm = () => {
     }
   };
 
-  return { email, form, setField, password, setPassword, confirmPassword, setConfirmPassword, cargando, guardando, handleSubmit, navigate };
+  return { email, form, setField, password, setPassword, confirmPassword, setConfirmPassword, cargando, guardando, handleSubmit, navigate, esAdminPrincipal, bloqueadoCompleto };
 };

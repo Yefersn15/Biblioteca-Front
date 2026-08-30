@@ -1,8 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import { useLibroForm } from './hooks/useLibroForm';
 import LibroFormFields from './components/LibroFormFields';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const LibroForm = () => {
+  useAyudaPagina({
+    titulo: 'Crear/editar libro',
+    contenido: (
+      <>
+        <p>Completa los datos del libro: debes elegir al menos un autor, y el ISBN (si lo indicas) se valida en formato ISBN-10 o ISBN-13.</p>
+        <p>"Copias totales" define cuántos ejemplares físicos existen; "copias disponibles" baja automáticamente con cada préstamo aprobado y sube al devolverlo. Puedes adjuntar un archivo digital opcional para descarga directa.</p>
+      </>
+    ),
+  });
   const navigate = useNavigate();
   const {
     editando,

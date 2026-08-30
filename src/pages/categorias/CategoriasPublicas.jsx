@@ -3,6 +3,7 @@ import { useCategoriasPublicas } from './hooks/useCategoriasPublicas';
 import { useBusquedaOrden, ORDEN_OPCIONES } from '../../hooks/useBusquedaOrden';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import Pagination from '../../components/Pagination';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const getTexto = (c) => c.nombre;
 const getPopularidad = (c) => c.cantidadLibros || 0;
@@ -11,6 +12,10 @@ const getPopularidad = (c) => c.cantidadLibros || 0;
 // propio (sin logo/bio) — así que no tiene página individual, cada tarjeta
 // lleva directo al catálogo ya filtrado por esa categoría.
 const CategoriasPublicas = () => {
+  useAyudaPagina({
+    titulo: 'Categorías',
+    contenido: <p>Lista de categorías (géneros/temas) activas. A diferencia de autores y editoriales, una categoría no tiene página propia: al hacer clic en una vas directo al catálogo ya filtrado por ella.</p>,
+  });
   const { categorias, loading } = useCategoriasPublicas();
   const { busqueda, setBusqueda, orden, setOrden, resultado } = useBusquedaOrden(categorias, getTexto, getPopularidad);
   const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(resultado, 10, [busqueda, orden]);

@@ -29,8 +29,10 @@ src/
     header/             Navbar, TopBar, ThemeToggleButton, UserMenu,
                         MenuPersonalizarLayout (usados por Header.jsx y AdminLayout.jsx)
     upload/             ImageUploadField y afines
-  context/             AuthContext (sesión/JWT), ConfiguracionContext (tema, institución)
-  hooks/               compartidos: useModoOscuro, usePaginacion, useBusquedaOrden...
+  context/             AuthContext (sesión/JWT), ConfiguracionContext (tema, institución),
+                        ToastContext, ConfirmContext, AyudaContext (botón de ayuda flotante)
+  hooks/               compartidos: useModoOscuro, usePaginacion, useBusquedaOrden,
+                        useAyudaPagina (registra el texto de ayuda de cada página)...
   pages/<módulo>/      una carpeta por módulo (libros, autores, editoriales,
                         categorias, prestamos, usuarios, banners, auth, home, dashboard)
     components/         piezas de UI propias del módulo (filtros, filas de tabla, campos de formulario)
@@ -58,3 +60,7 @@ La sesión se guarda como JWT en `localStorage` (`AuthContext.jsx`); el cliente 
 ## Tema claro/oscuro
 
 `ConfiguracionContext` resuelve la paleta activa (clara, oscura o personalizada desde `/admin/configuracion`) a variables CSS (`--tema-fondo`, `--tema-superficie`, `--tema-acento`, etc.) vía `utils/tema.js`, consumidas en `index.css` y en clases utilitarias como `tema-encabezado`, `tema-acento-bg`.
+
+## Ayuda contextual
+
+Cada página llama `useAyudaPagina({ titulo, contenido })` al montarse para registrar su propio texto de ayuda. `AyudaContext` (montado una sola vez en `main.jsx`, junto a los demás providers) dibuja con eso un botón flotante fijo (esquina inferior derecha) presente en toda la app; al pulsarlo se abre un panel lateral con el texto de la página activa, que cambia solo al navegar.

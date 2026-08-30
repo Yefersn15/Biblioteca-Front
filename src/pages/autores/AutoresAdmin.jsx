@@ -4,8 +4,18 @@ import AutoresAdminFiltros from './components/AutoresAdminFiltros';
 import AutorRow from './components/AutorRow';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import AdminTable from '../../components/AdminTable';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const AutoresAdmin = () => {
+  useAyudaPagina({
+    titulo: 'Autores (admin)',
+    contenido: (
+      <>
+        <p>Gestiona los autores del catálogo. Un autor con libros asociados <strong>no se puede eliminar</strong> (para no perder esa relación); solo se puede desactivar.</p>
+        <p>Al desactivar un autor, sus libros también quedan desactivados automáticamente (ocultos del catálogo público). Reactivar al autor no reactiva sus libros — cada libro se reactiva por separado desde su propio formulario.</p>
+      </>
+    ),
+  });
   const {
     autores,
     categorias,

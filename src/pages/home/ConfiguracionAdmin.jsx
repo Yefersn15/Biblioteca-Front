@@ -2,6 +2,7 @@ import ImageUploadField from '../../components/upload/ImageUploadField';
 import HorarioBuilder from './components/HorarioBuilder';
 import SelectorTema from './components/SelectorTema';
 import { useConfiguracionForm } from './hooks/useConfiguracionForm';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 // Si el admin pega el <iframe> completo que da "Insertar un mapa" en Google
 // Maps, se queda solo con la URL del src — así no tiene que editar HTML a mano.
@@ -11,6 +12,15 @@ const extraerSrcDeIframe = (valor) => {
 };
 
 const ConfiguracionAdmin = () => {
+  useAyudaPagina({
+    titulo: 'Configuración',
+    contenido: (
+      <>
+        <p>Datos de la institución (nombre, logo, contacto, horario, ubicación) y la paleta de color del sitio, visibles en todo el sitio: encabezado, pie de página, inicio y panel de administración.</p>
+        <p>Todo se guarda localmente en esta instalación (no depende de servicios externos), excepto el mapa, que usa la URL de "Insertar un mapa" de Google Maps si la defines.</p>
+      </>
+    ),
+  });
   const { form, setForm, guardando, handleSubmit } = useConfiguracionForm();
 
   if (!form) {

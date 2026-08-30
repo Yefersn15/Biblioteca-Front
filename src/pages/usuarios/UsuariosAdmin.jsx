@@ -3,8 +3,18 @@ import UsuariosAdminFiltros from './components/UsuariosAdminFiltros';
 import UsuarioRow from './components/UsuarioRow';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import AdminTable from '../../components/AdminTable';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const UsuariosAdmin = () => {
+  useAyudaPagina({
+    titulo: 'Usuarios (admin)',
+    contenido: (
+      <>
+        <p>Cambia el rol (USUARIO, BIBLIOTECARIO, ADMIN) o el estado de cualquier cuenta, o entra a "Editar" para corregir sus datos personales. No puedes tocar tu propia fila (rol/estado/eliminar) para evitar que te quites permisos por error.</p>
+        <p>La cuenta creada por <code>npm run seed:db</code> (el administrador principal) está protegida: nadie, ni siquiera otro administrador, puede cambiarle el rol, desactivarla, eliminarla o cambiarle la contraseña desde aquí — solo desde el servidor.</p>
+      </>
+    ),
+  });
   const {
     usuarios,
     loading,

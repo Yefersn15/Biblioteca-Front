@@ -8,8 +8,18 @@ import LibroCard from '../libros/components/LibroCard';
 import AutorCard from '../autores/components/AutorCard';
 import EditorialCard from '../editoriales/components/EditorialCard';
 import InfiniteCarousel from '../../components/InfiniteCarousel';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const Home = () => {
+  useAyudaPagina({
+    titulo: 'Inicio',
+    contenido: (
+      <>
+        <p>Página de bienvenida del sitio: muestra el banner principal, autores y editoriales destacados, y una selección de libros recomendados (los más recientes del catálogo).</p>
+        <p>Los datos de contacto, horario y ubicación que ves aquí abajo se configuran desde <strong>Configuración</strong> en el panel de administración.</p>
+      </>
+    ),
+  });
   const { nombreInstitucion, direccion, telefono, email, horario, mapaEmbedUrl } = useConfiguracion();
   const horarioFormateado = formatearHorario(horario);
   const { banners, libros, autores, editoriales } = useHome();

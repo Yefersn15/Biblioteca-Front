@@ -1,7 +1,12 @@
 import { useEditorialForm } from './hooks/useEditorialForm';
 import EditorialFormFields from './components/EditorialFormFields';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const EditorialForm = () => {
+  useAyudaPagina({
+    titulo: 'Crear/editar editorial',
+    contenido: <p>Datos básicos de la editorial: nombre, sitio web, descripción y logo.</p>,
+  });
   const { editando, form, setField, cargando, guardando, handleSubmit, navigate } = useEditorialForm();
 
   if (cargando) {

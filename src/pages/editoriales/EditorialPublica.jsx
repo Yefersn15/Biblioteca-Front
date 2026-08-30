@@ -3,8 +3,13 @@ import { useEditorialPublica } from './hooks/useEditorialPublica';
 import LibroCard from '../libros/components/LibroCard';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import Pagination from '../../components/Pagination';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const EditorialPublica = () => {
+  useAyudaPagina({
+    titulo: 'Perfil de editorial',
+    contenido: <p>Información de la editorial (sitio web, descripción) y todos sus libros disponibles en el catálogo.</p>,
+  });
   const { editorial, libros, loading } = useEditorialPublica();
   const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(libros, 10, [editorial?.id]);
 

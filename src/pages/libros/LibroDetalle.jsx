@@ -2,8 +2,18 @@ import { Link } from 'react-router-dom';
 import { useLibroDetalle } from './hooks/useLibroDetalle';
 import { useLibrosRelacionados } from './hooks/useLibrosRelacionados';
 import LibroCard from './components/LibroCard';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const LibroDetalle = () => {
+  useAyudaPagina({
+    titulo: 'Detalle del libro',
+    contenido: (
+      <>
+        <p>Ficha completa del libro: autores, editorial, categorías, copias disponibles y, si el bibliotecario lo cargó, un archivo digital para descargar.</p>
+        <p>El botón "Solicitar préstamo" solo aparece si has iniciado sesión y quedan copias disponibles; la solicitud queda <strong>pendiente</strong> hasta que un bibliotecario o administrador la apruebe desde el panel.</p>
+      </>
+    ),
+  });
   const { user, libro, solicitando, solicitado, handleSolicitar } = useLibroDetalle();
   const relacionados = useLibrosRelacionados(libro);
 

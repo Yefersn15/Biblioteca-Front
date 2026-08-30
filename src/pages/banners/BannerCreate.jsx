@@ -4,8 +4,18 @@ import { createBanner } from './services/bannersService';
 import { useBannerForm } from './hooks/useBannerForm';
 import BannerFormFields from './components/BannerFormFields';
 import { useToast } from '../../context/ToastContext';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const BannerCreate = () => {
+  useAyudaPagina({
+    titulo: 'Nuevo banner',
+    contenido: (
+      <>
+        <p>Elige un layout (una imagen, dos, collage...) y luego el tipo de contenido: <strong>Imágenes</strong> (subes tú los archivos) o <strong>Autores</strong> (se arma solo con las fotos de los autores que elijas).</p>
+        <p>El orden de visualización decide cuál banner activo aparece primero en el inicio.</p>
+      </>
+    ),
+  });
   const navigate = useNavigate();
   const toast = useToast();
   const { form, errors, setLayout, setImageUrl, setField, setContentType, validate } = useBannerForm();

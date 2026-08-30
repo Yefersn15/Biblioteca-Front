@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useResetPasswordForm } from './hooks/useResetPasswordForm';
 import ResetPasswordStep from './components/ResetPasswordStep';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const ResetPassword = () => {
+  useAyudaPagina({
+    titulo: 'Nueva contraseña',
+    contenido: <p>Se abre desde el enlace que llega por correo. Si el enlace ya venció (pasaron más de 15 minutos) o ya se usó, se te avisa aquí mismo y puedes pedir uno nuevo.</p>,
+  });
   const {
     estadoEnlace,
     password,

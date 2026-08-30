@@ -3,11 +3,18 @@ import AutorCard from './components/AutorCard';
 import { useBusquedaOrden, ORDEN_OPCIONES } from '../../hooks/useBusquedaOrden';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import Pagination from '../../components/Pagination';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const getTexto = (a) => `${a.nombre} ${a.apellido}`;
 const getPopularidad = (a) => a.cantidadLibros || 0;
 
 const AutoresPublicos = () => {
+  useAyudaPagina({
+    titulo: 'Autores',
+    contenido: (
+      <p>Lista de autores activos en la biblioteca. Busca por nombre u ordénalos por popularidad (cantidad de libros suyos en el catálogo); haz clic en uno para ver su biografía y sus obras.</p>
+    ),
+  });
   const { autores, loading } = useAutoresPublicos();
   const { busqueda, setBusqueda, orden, setOrden, resultado } = useBusquedaOrden(autores, getTexto, getPopularidad);
   const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(resultado, 10, [busqueda, orden]);

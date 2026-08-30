@@ -2,10 +2,20 @@ import { usePerfilForm } from './hooks/usePerfilForm';
 import DatosPersonalesForm from './components/DatosPersonalesForm';
 import DocumentoUbicacionForm from './components/DocumentoUbicacionForm';
 import SeguridadForm from './components/SeguridadForm';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const ROL_LABEL = { ADMIN: 'Administrador', BIBLIOTECARIO: 'Bibliotecario', USUARIO: 'Usuario' };
 
 const Perfil = () => {
+  useAyudaPagina({
+    titulo: 'Mi perfil',
+    contenido: (
+      <>
+        <p>Edita tus datos de contacto (celular, género, foto) y tu contraseña. Si no eres administrador, tu nombre, documento y dirección solo puede cambiarlos un administrador — contáctalo si necesitas corregirlos.</p>
+        <p>La foto de perfil sí admite subir un archivo directamente aquí (a diferencia del registro), porque esta pantalla ya requiere estar logueado.</p>
+      </>
+    ),
+  });
   const { user, esAdmin, form, setField, password, setPassword, confirmPassword, setConfirmPassword, guardando, handleSubmit } = usePerfilForm();
 
   return (
@@ -51,6 +61,7 @@ const Perfil = () => {
               setPassword={setPassword}
               confirmPassword={confirmPassword}
               setConfirmPassword={setConfirmPassword}
+              bloqueada={user.esAdminPrincipal}
             />
           </div>
         </div>

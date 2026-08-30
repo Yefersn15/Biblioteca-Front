@@ -9,6 +9,7 @@ import { AuthProvider } from './context/AuthContext'
 import { ToastProvider } from './context/ToastContext'
 import { ConfirmProvider } from './context/ConfirmContext'
 import { ConfiguracionProvider } from './context/ConfiguracionContext'
+import { AyudaProvider } from './context/AyudaContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -17,7 +18,9 @@ createRoot(document.getElementById('root')).render(
         <AuthProvider>
           <ToastProvider>
             <ConfirmProvider>
-              <App />
+              <AyudaProvider>
+                <App />
+              </AyudaProvider>
             </ConfirmProvider>
           </ToastProvider>
         </AuthProvider>

@@ -4,8 +4,18 @@ import AdminBannersFiltros from './components/AdminBannersFiltros';
 import BannerCollage from './components/BannerCollage';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import Pagination from '../../components/Pagination';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const AdminBanners = () => {
+  useAyudaPagina({
+    titulo: 'Banners (admin)',
+    contenido: (
+      <>
+        <p>Gestiona los banners promocionales que aparecen en el inicio. Solo se muestra el primero <strong>activo</strong> (según su orden), así que puedes tener varios guardados y alternar cuál está visible.</p>
+        <p>Cada banner puede ser de imágenes propias o mostrar autores destacados automáticamente, con distintos layouts (una imagen, collage, etc.).</p>
+      </>
+    ),
+  });
   const {
     banners,
     loading,

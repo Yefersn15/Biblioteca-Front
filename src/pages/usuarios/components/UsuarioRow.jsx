@@ -3,6 +3,9 @@ import { ROLES } from '../hooks/useUsuariosAdmin';
 
 const UsuarioRow = ({ usuario: u, usuarioActual, cambiarRol, toggleEstado, handleEliminar }) => {
   const esUsuarioActual = u.id === usuarioActual.id;
+  // La cuenta creada por `npm run seed:db` no se puede tocar desde aquí,
+  // ni siquiera por otro ADMIN: rol y estado quedan fijos, y no se puede eliminar.
+  const bloqueadoPorAdminPrincipal = u.esAdminPrincipal;
 
   return (
     <tr>
@@ -20,7 +23,7 @@ const UsuarioRow = ({ usuario: u, usuarioActual, cambiarRol, toggleEstado, handl
           className="form-select form-select-sm"
           style={{ width: 160 }}
           value={u.rol}
-          disabled={esUsuarioActual}
+          disabled={esUsuarioActual || bloqueadoPorAdminPrincipal}
           onChange={(e) => cambiarRol(u, e.target.value)}
         >
           {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
@@ -29,9 +32,9 @@ const UsuarioRow = ({ usuario: u, usuarioActual, cambiarRol, toggleEstado, handl
       <td>
         <button
           className={`btn btn-sm ${u.estado ? 'btn-outline-warning' : 'btn-outline-success'}`}
-          disabled={esUsuarioActual}
+          disabled={esUsuarioActual || bloqueadoPorAdminPrincipal}
           onClick={() => toggleEstado(u)}
-          title={u.estado ? 'Desactivar' : 'Activar'}
+          title={bloqueadoPorAdminPrincipal ? 'El administrador principal no se puede desactivar' : u.estado ? 'Desactivar' : 'Activar'}
         >
           <i className={`fas fa-toggle-${u.estado ? 'off' : 'on'}`}></i>
         </button>
@@ -40,7 +43,7 @@ const UsuarioRow = ({ usuario: u, usuarioActual, cambiarRol, toggleEstado, handl
         <Link to={`/admin/usuarios/editar/${u.id}`} className="btn btn-sm btn-outline-primary me-1" title="Editar">
           <i className="fas fa-edit"></i>
         </Link>
-        {!esUsuarioActual && (
+        {!esUsuarioActual && !bloqueadoPorAdminPrincipal && (
           <button className="btn btn-sm btn-outline-danger" onClick={() => handleEliminar(u)} title="Eliminar">
             <i className="fas fa-trash"></i>
           </button>

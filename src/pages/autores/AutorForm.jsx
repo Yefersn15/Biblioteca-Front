@@ -1,7 +1,12 @@
 import { useAutorForm } from './hooks/useAutorForm';
 import AutorFormFields from './components/AutorFormFields';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const AutorForm = () => {
+  useAyudaPagina({
+    titulo: 'Crear/editar autor',
+    contenido: <p>Datos del autor: biografía, nacionalidad, géneros literarios, redes sociales y premios. Al editar puedes ver sus libros propios en el catálogo, pero se administran desde la sección Libros.</p>,
+  });
   const {
     form,
     setField,

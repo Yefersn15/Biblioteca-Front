@@ -1,8 +1,18 @@
 import { Link } from 'react-router-dom';
 import { useForgotPasswordForm } from './hooks/useForgotPasswordForm';
 import RequestEmailStep from './components/RequestEmailStep';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const ForgotPassword = () => {
+  useAyudaPagina({
+    titulo: 'Recuperar contraseña',
+    contenido: (
+      <p>
+        Escribe tu correo y te enviaremos un enlace para crear una nueva contraseña, válido por 15 minutos. El mensaje que ves ("Si el correo existe...") es siempre el mismo,
+        exista o no una cuenta con ese correo, para no revelar qué correos están registrados.
+      </p>
+    ),
+  });
   const { email, setEmail, enviado, error, loading, handleSolicitar } = useForgotPasswordForm();
 
   return (

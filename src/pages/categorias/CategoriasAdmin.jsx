@@ -4,8 +4,18 @@ import CategoriasAdminFiltros from './components/CategoriasAdminFiltros';
 import CategoriaRow from './components/CategoriaRow';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import AdminTable from '../../components/AdminTable';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const CategoriasAdmin = () => {
+  useAyudaPagina({
+    titulo: 'Categorías (admin)',
+    contenido: (
+      <>
+        <p>Gestiona las categorías (géneros/temas) del catálogo. Una categoría con libros asociados <strong>no se puede eliminar</strong>; solo se puede desactivar.</p>
+        <p>Al desactivar una categoría, solo se desactivan los libros marcados con <strong>esa</strong> categoría — no afecta a otros libros del mismo autor ni a otras categorías de esos libros.</p>
+      </>
+    ),
+  });
   const {
     categorias,
     loading,

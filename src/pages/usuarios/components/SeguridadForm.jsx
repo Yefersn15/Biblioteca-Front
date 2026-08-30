@@ -2,7 +2,10 @@ import PasswordRequisitos from '../../../components/PasswordRequisitos';
 
 // La contraseña es opcional: dejarla vacía significa "no cambiarla". Solo se
 // valida en tiempo real (checklist + confirmación) cuando sí se escribe algo.
-const SeguridadForm = ({ email, password, setPassword, confirmPassword, setConfirmPassword }) => {
+// `bloqueada`: la cuenta del administrador principal (npm run seed:db) no
+// puede cambiar su contraseña desde la app, así que aquí se oculta el campo
+// en vez de mostrarlo y dejar que el backend lo rechace.
+const SeguridadForm = ({ email, password, setPassword, confirmPassword, setConfirmPassword, bloqueada }) => {
   const escribiendoPassword = password.length > 0;
   const noCoinciden = escribiendoPassword && confirmPassword.length > 0 && password !== confirmPassword;
 
@@ -16,22 +19,31 @@ const SeguridadForm = ({ email, password, setPassword, confirmPassword, setConfi
           <label className="form-label">Correo</label>
           <input type="email" className="form-control" value={email} disabled />
         </div>
-        <div className="mb-2">
-          <label className="form-label">Nueva contraseña</label>
-          <input type="password" className="form-control" placeholder="Dejar vacío para no cambiarla" value={password} onChange={(e) => setPassword(e.target.value)} />
-          {escribiendoPassword && <PasswordRequisitos password={password} />}
-        </div>
-        <div>
-          <label className="form-label">Verificar nueva contraseña</label>
-          <input
-            type="password"
-            className={`form-control ${noCoinciden ? 'is-invalid' : ''}`}
-            placeholder="Repite la nueva contraseña"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          {noCoinciden && <div className="invalid-feedback">Las contraseñas no coinciden</div>}
-        </div>
+        {bloqueada ? (
+          <small className="text-muted">
+            <i className="fas fa-circle-info me-1"></i>
+            Esta contraseña solo se puede cambiar desde el servidor (<code>npm run seed:db</code>).
+          </small>
+        ) : (
+          <>
+            <div className="mb-2">
+              <label className="form-label">Nueva contraseña</label>
+              <input type="password" className="form-control" placeholder="Dejar vacío para no cambiarla" value={password} onChange={(e) => setPassword(e.target.value)} />
+              {escribiendoPassword && <PasswordRequisitos password={password} />}
+            </div>
+            <div>
+              <label className="form-label">Verificar nueva contraseña</label>
+              <input
+                type="password"
+                className={`form-control ${noCoinciden ? 'is-invalid' : ''}`}
+                placeholder="Repite la nueva contraseña"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              {noCoinciden && <div className="invalid-feedback">Las contraseñas no coinciden</div>}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

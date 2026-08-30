@@ -1,8 +1,18 @@
 import { Link } from 'react-router-dom';
 import { useRegisterForm } from './hooks/useRegisterForm';
 import RegisterFormFields from './components/RegisterFormFields';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const Register = () => {
+  useAyudaPagina({
+    titulo: 'Crear cuenta',
+    contenido: (
+      <>
+        <p>Regístrate como usuario para solicitar préstamos. Todas las cuentas nuevas quedan con rol <strong>USUARIO</strong>; un administrador puede luego darte más permisos si corresponde.</p>
+        <p>La contraseña debe tener al menos 8 caracteres, con mayúscula, minúscula, número y símbolo. La foto de perfil aquí solo se puede pegar como URL, no subir un archivo, porque subir archivos requiere estar logueado (eso sí está disponible después, en "Mi perfil").</p>
+      </>
+    ),
+  });
   const { form, error, loading, handleChange, handleSubmit, passwordsNoCoinciden } = useRegisterForm();
 
   return (

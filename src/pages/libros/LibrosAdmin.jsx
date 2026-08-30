@@ -4,8 +4,18 @@ import LibrosAdminFiltros from './components/LibrosAdminFiltros';
 import LibroRow from './components/LibroRow';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import AdminTable from '../../components/AdminTable';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const LibrosAdmin = () => {
+  useAyudaPagina({
+    titulo: 'Libros (admin)',
+    contenido: (
+      <>
+        <p>Gestiona el catálogo: crea, edita o elimina libros. "Eliminar" es una baja lógica: el libro se oculta del catálogo público y de las solicitudes de préstamo, pero no se borra su historial. Para reactivarlo, edítalo y marca "Visible en el catálogo".</p>
+        <p>Filtra por editorial, tipo o estado, y busca por título o autor.</p>
+      </>
+    ),
+  });
   const {
     libros,
     loading,

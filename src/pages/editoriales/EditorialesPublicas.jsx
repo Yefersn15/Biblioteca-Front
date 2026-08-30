@@ -3,11 +3,16 @@ import EditorialCard from './components/EditorialCard';
 import { useBusquedaOrden, ORDEN_OPCIONES } from '../../hooks/useBusquedaOrden';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import Pagination from '../../components/Pagination';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const getTexto = (e) => e.nombre;
 const getPopularidad = (e) => e.cantidadLibros || 0;
 
 const EditorialesPublicas = () => {
+  useAyudaPagina({
+    titulo: 'Editoriales',
+    contenido: <p>Lista de editoriales activas. Busca por nombre u ordénalas por popularidad (cantidad de libros suyos en el catálogo); haz clic en una para ver su información y sus libros.</p>,
+  });
   const { editoriales, loading } = useEditorialesPublicas();
   const { busqueda, setBusqueda, orden, setOrden, resultado } = useBusquedaOrden(editoriales, getTexto, getPopularidad);
   const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(resultado, 10, [busqueda, orden]);

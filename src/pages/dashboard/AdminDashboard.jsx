@@ -2,8 +2,13 @@ import { useDashboard, diasVencido } from './hooks/useDashboard';
 import Stat from './components/Stat';
 import ListaLibros from './components/ListaLibros';
 import Destacado from './components/Destacado';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const AdminDashboard = () => {
+  useAyudaPagina({
+    titulo: 'Panel de administración',
+    contenido: <p>Resumen general: totales del catálogo, estadísticas de préstamos (libros más prestados, editorial/autor más prestado) y la lista de préstamos vencidos que necesitan seguimiento.</p>,
+  });
   const { isAdmin, stats, resumen, vencidos } = useDashboard();
 
   return (

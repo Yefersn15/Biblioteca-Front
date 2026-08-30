@@ -4,8 +4,13 @@ import { getBannerById, updateBanner } from './services/bannersService';
 import { useBannerForm } from './hooks/useBannerForm';
 import BannerFormFields from './components/BannerFormFields';
 import { useToast } from '../../context/ToastContext';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const BannerEdit = () => {
+  useAyudaPagina({
+    titulo: 'Editar banner',
+    contenido: <p>Cambia el layout, las imágenes o autores mostrados, el texto superpuesto, el orden o el estado (activo/inactivo) de este banner.</p>,
+  });
   const { id } = useParams();
   const navigate = useNavigate();
   const toast = useToast();

@@ -2,8 +2,13 @@ import { useUsuarioForm } from './hooks/useUsuarioForm';
 import DatosPersonalesForm from './components/DatosPersonalesForm';
 import DocumentoUbicacionForm from './components/DocumentoUbicacionForm';
 import SeguridadForm from './components/SeguridadForm';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const UsuarioForm = () => {
+  useAyudaPagina({
+    titulo: 'Editar usuario',
+    contenido: <p>Corrige los datos personales, de documento/ubicación y contraseña de un usuario en su nombre (por ejemplo, cuando te lo solicita porque no puede editarlos él mismo). No existe pantalla de "crear usuario": las cuentas nuevas se crean desde el registro público.</p>,
+  });
   const {
     email,
     form,
@@ -16,10 +21,28 @@ const UsuarioForm = () => {
     guardando,
     handleSubmit,
     navigate,
+    esAdminPrincipal,
+    bloqueadoCompleto,
   } = useUsuarioForm();
 
   if (cargando) {
     return <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>;
+  }
+
+  if (bloqueadoCompleto) {
+    return (
+      <div>
+        <h2 className="mb-4">Editar usuario</h2>
+        <div className="alert alert-warning">
+          <i className="fas fa-lock me-2"></i>
+          Esta es la cuenta del administrador principal (creada con <code>npm run seed:db</code>) y no puede ser
+          modificada por ningún otro usuario, incluido otro administrador.
+        </div>
+        <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin/usuarios')}>
+          <i className="fas fa-arrow-left me-2"></i>Volver
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -38,6 +61,7 @@ const UsuarioForm = () => {
               setPassword={setPassword}
               confirmPassword={confirmPassword}
               setConfirmPassword={setConfirmPassword}
+              bloqueada={esAdminPrincipal}
             />
           </div>
         </div>

@@ -3,8 +3,18 @@ import CatalogoFiltros from './components/CatalogoFiltros';
 import LibroCard from './components/LibroCard';
 import { usePaginacion } from '../../hooks/usePaginacion';
 import Pagination from '../../components/Pagination';
+import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const CatalogoLibros = () => {
+  useAyudaPagina({
+    titulo: 'Catálogo',
+    contenido: (
+      <>
+        <p>Aquí aparecen todos los libros activos de la biblioteca. Puedes buscar por título, filtrar por autor o categoría, y ordenar los resultados.</p>
+        <p>Un libro con "0 de X copias disponibles" sigue visible pero no se puede solicitar en préstamo hasta que se devuelva alguna copia.</p>
+      </>
+    ),
+  });
   const {
     libros,
     loading,
