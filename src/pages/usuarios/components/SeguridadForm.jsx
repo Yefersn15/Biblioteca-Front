@@ -1,4 +1,5 @@
 import PasswordRequisitos from '../../../components/PasswordRequisitos';
+import PasswordInput from '../../../components/PasswordInput';
 
 // La contraseña es opcional: dejarla vacía significa "no cambiarla". Solo se
 // valida en tiempo real (checklist + confirmación) cuando sí se escribe algo.
@@ -28,19 +29,18 @@ const SeguridadForm = ({ email, password, setPassword, confirmPassword, setConfi
           <>
             <div className="mb-2">
               <label className="form-label">Nueva contraseña</label>
-              <input type="password" className="form-control" placeholder="Dejar vacío para no cambiarla" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <PasswordInput placeholder="Dejar vacío para no cambiarla" value={password} onChange={(e) => setPassword(e.target.value)} />
               {escribiendoPassword && <PasswordRequisitos password={password} />}
             </div>
             <div>
               <label className="form-label">Verificar nueva contraseña</label>
-              <input
-                type="password"
-                className={`form-control ${noCoinciden ? 'is-invalid' : ''}`}
+              <PasswordInput
+                invalid={noCoinciden}
                 placeholder="Repite la nueva contraseña"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-              {noCoinciden && <div className="invalid-feedback">Las contraseñas no coinciden</div>}
+              {noCoinciden && <div className="invalid-feedback d-block">Las contraseñas no coinciden</div>}
             </div>
           </>
         )}

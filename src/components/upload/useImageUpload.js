@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { uploadImagen } from '../../services/api/upload.api';
+import { uploadImagen, uploadAvatarPublico } from '../../services/api/upload.api';
 
 const MAX_SIZE_MB = 8;
 
-export const useImageUpload = (folder = 'general') => {
+export const useImageUpload = (folder = 'general', publico = false) => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
 
@@ -19,7 +19,7 @@ export const useImageUpload = (folder = 'general') => {
     }
     setUploading(true);
     try {
-      return await uploadImagen(file, folder);
+      return publico ? await uploadAvatarPublico(file) : await uploadImagen(file, folder);
     } catch (err) {
       setError(err.message || 'Error al subir la imagen');
       return null;

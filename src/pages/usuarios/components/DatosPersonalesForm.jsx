@@ -33,7 +33,7 @@ const DatosPersonalesForm = ({ form, setField, esAdmin }) => {
           </div>
           <div className="col-6">
             <label className="form-label">Celular</label>
-            <input type="tel" className="form-control" maxLength={20} value={form.celular} onChange={(e) => setField('celular', e.target.value)} />
+            <input type="tel" inputMode="numeric" className="form-control" maxLength={20} value={form.celular} onChange={(e) => setField('celular', e.target.value.replace(/\D/g, ''))} />
           </div>
           <div className="col-12">
             <ImageUploadField

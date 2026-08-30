@@ -1,11 +1,17 @@
 import { Link } from 'react-router-dom';
 import { useLoginForm } from './hooks/useLoginForm';
 import { useAyudaPagina } from '../../hooks/useAyudaPagina';
+import PasswordInput from '../../components/PasswordInput';
 
 const Login = () => {
   useAyudaPagina({
     titulo: 'Ingresar',
-    contenido: <p>Inicia sesión con tu correo y contraseña. Si olvidaste tu contraseña, usa "¿Olvidaste tu contraseña?" para recibir un enlace de recuperación por correo (válido por 15 minutos).</p>,
+    contenido: (
+      <>
+        <p>Inicia sesión con tu correo y contraseña. Si olvidaste tu contraseña, usa "¿Olvidaste tu contraseña?" para recibir un enlace de recuperación por correo (válido por 15 minutos).</p>
+        <p>Para explorar el panel de administración sin crear tu propia cuenta, puedes usar esta cuenta de prueba: <strong>admin@test.com</strong> / <strong>Test123.</strong></p>
+      </>
+    ),
   });
   const { email, setEmail, password, setPassword, error, loading, handleSubmit } = useLoginForm();
 
@@ -22,7 +28,7 @@ const Login = () => {
             </div>
             <div className="mb-3">
               <label className="form-label">Contraseña</label>
-              <input type="password" className="form-control" required value={password} onChange={(e) => setPassword(e.target.value)} />
+              <PasswordInput required value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <button type="submit" className="btn btn-primary w-100" disabled={loading}>
               {loading ? 'Ingresando...' : 'Ingresar'}

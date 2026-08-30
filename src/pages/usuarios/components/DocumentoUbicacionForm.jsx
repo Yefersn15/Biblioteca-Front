@@ -21,7 +21,16 @@ const DocumentoUbicacionForm = ({ form, setField, esAdmin }) => {
           </div>
           <div className="col-5">
             <label className="form-label">Número</label>
-            <input type="text" className="form-control" minLength={esAdmin ? 6 : undefined} maxLength={30} readOnly={!esAdmin} value={form.documento} onChange={(e) => setField('documento', e.target.value)} />
+            <input
+              type="text"
+              inputMode="numeric"
+              className="form-control"
+              minLength={esAdmin ? 6 : undefined}
+              maxLength={30}
+              readOnly={!esAdmin}
+              value={form.documento}
+              onChange={(e) => setField('documento', e.target.value.replace(/\D/g, ''))}
+            />
           </div>
           <div className="col-6">
             <label className="form-label">Dirección</label>

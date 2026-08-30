@@ -1,4 +1,5 @@
 import PasswordRequisitos from '../../../components/PasswordRequisitos';
+import PasswordInput from '../../../components/PasswordInput';
 import { passwordEsValida } from '../../../validations/password';
 
 const ResetPasswordStep = ({ password, setPassword, confirmPassword, setConfirmPassword, loading, onSubmit }) => {
@@ -10,19 +11,18 @@ const ResetPasswordStep = ({ password, setPassword, confirmPassword, setConfirmP
     <form onSubmit={onSubmit}>
       <div className="mb-2">
         <label className="form-label">Nueva contraseña</label>
-        <input type="password" className="form-control" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <PasswordInput required value={password} onChange={(e) => setPassword(e.target.value)} />
         <PasswordRequisitos password={password} />
       </div>
       <div className="mb-3">
         <label className="form-label">Confirmar contraseña</label>
-        <input
-          type="password"
-          className={`form-control ${noCoinciden ? 'is-invalid' : ''}`}
+        <PasswordInput
           required
+          invalid={noCoinciden}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        {noCoinciden && <div className="invalid-feedback">Las contraseñas no coinciden</div>}
+        {noCoinciden && <div className="invalid-feedback d-block">Las contraseñas no coinciden</div>}
       </div>
       <button type="submit" className="btn btn-primary w-100" disabled={loading || !puedeEnviar}>
         {loading ? 'Actualizando...' : 'Actualizar contraseña'}

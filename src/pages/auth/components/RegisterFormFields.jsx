@@ -1,9 +1,20 @@
 // src/pages/auth/components/RegisterFormFields.jsx
+import PasswordInput from '../../../components/PasswordInput';
+import ImageUploadField from '../../../components/upload/ImageUploadField';
+
 const GENEROS = [
   ['HOMBRE', 'Hombre'],
   ['MUJER', 'Mujer'],
   ['OTRO', 'Otro'],
 ];
+
+// Filtra cualquier caracter que no sea dígito antes de guardarlo: en un
+// input controlado de React, la única forma confiable de "no dejar
+// escribir letras" es descartarlas apenas llegan al estado, no validar
+// después. Envuelve el handleChange genérico del formulario.
+const soloNumeros = (handleChange) => (e) => {
+  handleChange({ target: { name: e.target.name, value: e.target.value.replace(/\D/g, '') } });
+};
 
 const RegisterFormFields = ({ form, handleChange, passwordsNoCoinciden }) => (
   <div className="row g-2">
@@ -28,7 +39,7 @@ const RegisterFormFields = ({ form, handleChange, passwordsNoCoinciden }) => (
 
     <div className="col-md-4">
       <label className="form-label">Número de documento *</label>
-      <input type="text" className="form-control" name="documento" required minLength={6} maxLength={30} placeholder="Mínimo 6 caracteres" value={form.documento} onChange={handleChange} />
+      <input type="text" inputMode="numeric" className="form-control" name="documento" required minLength={6} maxLength={30} placeholder="Mínimo 6 caracteres" value={form.documento} onChange={soloNumeros(handleChange)} />
     </div>
     <div className="col-md-4">
       <label className="form-label">Correo *</label>
@@ -36,7 +47,7 @@ const RegisterFormFields = ({ form, handleChange, passwordsNoCoinciden }) => (
     </div>
     <div className="col-md-4">
       <label className="form-label">Celular *</label>
-      <input type="tel" className="form-control" name="celular" required minLength={7} maxLength={20} value={form.celular} onChange={handleChange} />
+      <input type="tel" inputMode="numeric" className="form-control" name="celular" required minLength={7} maxLength={20} value={form.celular} onChange={soloNumeros(handleChange)} />
     </div>
     <div className="col-12">
       <small className="text-muted">El correo se usa para iniciar sesión y para recuperar tu contraseña.</small>
@@ -74,25 +85,23 @@ const RegisterFormFields = ({ form, handleChange, passwordsNoCoinciden }) => (
 
     <div className="col-md-6">
       <label className="form-label">Contraseña *</label>
-      <input type="password" className="form-control" name="password" required minLength={8} placeholder="Mínimo 8 caracteres" value={form.password} onChange={handleChange} />
+      <PasswordInput name="password" required minLength={8} placeholder="Mínimo 8 caracteres" value={form.password} onChange={handleChange} />
     </div>
     <div className="col-md-6">
       <label className="form-label">Confirmar contraseña *</label>
-      <input
-        type="password"
-        className={`form-control ${passwordsNoCoinciden ? 'is-invalid' : ''}`}
+      <PasswordInput
         name="confirmPassword"
         required
         minLength={8}
+        invalid={passwordsNoCoinciden}
         value={form.confirmPassword}
         onChange={handleChange}
       />
-      {passwordsNoCoinciden && <div className="invalid-feedback">Las contraseñas no coinciden</div>}
+      {passwordsNoCoinciden && <div className="invalid-feedback d-block">Las contraseñas no coinciden</div>}
     </div>
 
     <div className="col-12">
-      <label className="form-label">Foto de perfil (URL, opcional)</label>
-      <input type="url" className="form-control" name="avatar" placeholder="https://ejemplo.com/foto.jpg" value={form.avatar} onChange={handleChange} />
+      <ImageUploadField label="Foto de perfil (opcional)" folder="avatares" publico name="avatar" value={form.avatar} onChange={handleChange} />
     </div>
   </div>
 );

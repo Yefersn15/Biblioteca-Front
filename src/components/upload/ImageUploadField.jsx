@@ -4,8 +4,8 @@ import { useImageUpload } from './useImageUpload';
 // Campo de imagen reutilizable: sube el archivo a Cloudinary (vía el backend,
 // que guarda solo la URL resultante en la base de datos) o, si se prefiere,
 // se puede pegar directamente una URL externa en el campo de texto.
-const ImageUploadField = ({ label, name, value, onChange, onValueChange, folder = 'general', size = 84, invalid, invalidMessage }) => {
-  const { upload, uploading, error, setError } = useImageUpload(folder);
+const ImageUploadField = ({ label, name, value, onChange, onValueChange, folder = 'general', publico = false, size = 84, invalid, invalidMessage }) => {
+  const { upload, uploading, error, setError } = useImageUpload(folder, publico);
   const inputRef = useRef(null);
 
   const applyValue = (url) => {
