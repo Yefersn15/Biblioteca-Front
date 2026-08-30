@@ -7,6 +7,8 @@ export const getPrestamo = (id) => client.get(`/prestamos/${id}`).then((r) => r.
 
 export const solicitarPrestamo = (data) => client.post('/prestamos', data).then((r) => r.data.data);
 
+export const registrarPrestamoPresencial = (data) => client.post('/prestamos/presencial', data).then((r) => r.data.data);
+
 export const aprobarPrestamo = (id, fechaDevolucionEstimada) =>
   client.put(`/prestamos/${id}/aprobar`, { fechaDevolucionEstimada }).then((r) => r.data.data);
 

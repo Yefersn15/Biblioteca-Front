@@ -25,7 +25,8 @@ Otros scripts: `npm run build` (build de producción), `npm run preview` (sirve 
 ```
 src/
   components/          compartido entre ≥2 módulos: Layout, AdminLayout, Rutas,
-                        PrivateRoute, AdminTable, Pagination, PasswordRequisitos...
+                        PrivateRoute, AdminTable, Pagination, PasswordRequisitos,
+                        BrandIcon (ícono de marca, "Folio")...
     header/             Navbar, TopBar, ThemeToggleButton, UserMenu,
                         MenuPersonalizarLayout (usados por Header.jsx y AdminLayout.jsx)
     upload/             ImageUploadField y afines
@@ -50,7 +51,7 @@ src/
 
 Los roles vienen del backend: `USUARIO`, `BIBLIOTECARIO`, `ADMIN`. `PrivateRoute` (`src/components/PrivateRoute.jsx`) controla el acceso:
 
-- Rutas públicas (catálogo, login, registro, recuperación de contraseña) bajo `Layout` + `Header`.
+- Rutas públicas (catálogo, login, registro, recuperación de contraseña, `/nosotros`) bajo `Layout` + `Header`.
 - `/perfil` y `/mis-prestamos` requieren sesión iniciada (cualquier rol).
 - `/admin/*` requiere rol `BIBLIOTECARIO` o `ADMIN` (`staffOnly`), y usa `AdminLayout` en vez del header público.
 - `/login`, `/registro`, `/recuperar-password` y `/restablecer-password` son `requireGuest`: si ya hay sesión, redirigen en vez de mostrarse.
@@ -64,3 +65,7 @@ La sesión se guarda como JWT en `localStorage` (`AuthContext.jsx`); el cliente 
 ## Ayuda contextual
 
 Cada página llama `useAyudaPagina({ titulo, contenido })` al montarse para registrar su propio texto de ayuda. `AyudaContext` (montado una sola vez en `main.jsx`, junto a los demás providers) dibuja con eso un botón flotante fijo (esquina inferior derecha) presente en toda la app; al pulsarlo se abre un panel lateral con el texto de la página activa, que cambia solo al navegar.
+
+## Préstamos (admin)
+
+Además de aprobar/rechazar/devolver solicitudes hechas en línea, `/admin/prestamos` tiene "Registrar préstamo" para uno presencial: un modal con `BuscadorSelect` (campo de texto que filtra una lista ya cargada y muestra resultados en un desplegable, usado tanto para elegir el usuario como el libro). Si quien pide el libro no tiene cuenta, se cambia a "Usuario nuevo" y se ingresan sus datos ahí mismo; el backend crea la cuenta en el mismo paso (ver README de Biblioteca-Back).

@@ -13,6 +13,7 @@ const PrestamosAdmin = () => {
       <>
         <p>Gestiona todas las solicitudes de préstamo: aprobar (define la fecha estimada de devolución), rechazar, o marcar como devuelto.</p>
         <p>Al aprobar se descuenta una copia disponible del libro; al devolver, se suma de nuevo. Si no quedan copias al momento de aprobar, la solicitud se rechaza automáticamente.</p>
+        <p>"Registrar préstamo" es para cuando alguien pide el libro en persona en el mostrador: queda aprobado de una vez, sin pasar por "pendiente". Si la persona no tiene cuenta, se le crea una mínima ahí mismo con los datos que indiques.</p>
       </>
     ),
   });
@@ -25,11 +26,18 @@ const PrestamosAdmin = () => {
     setSearch,
     procesando,
     modal,
+    usuarios,
+    librosDisponibles,
     abrirModal,
+    abrirModalPresencial,
     cerrarModal,
     verObservacion,
     cambiarObservaciones,
     cambiarFechaDevolucion,
+    cambiarModoUsuario,
+    seleccionarUsuarioPresencial,
+    cambiarCampoUsuarioNuevo,
+    seleccionarLibroPresencial,
     confirmarModal,
   } = usePrestamosAdmin();
   const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(prestamos, 5, [filtro, search]);
@@ -38,8 +46,12 @@ const PrestamosAdmin = () => {
     <div>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Préstamos</h2>
-        <PrestamosAdminFiltros search={search} setSearch={setSearch} filtro={filtro} setFiltro={setFiltro} />
+        <button type="button" className="btn btn-primary" onClick={abrirModalPresencial}>
+          <i className="fas fa-plus me-1"></i>Registrar préstamo
+        </button>
       </div>
+
+      <PrestamosAdminFiltros search={search} setSearch={setSearch} filtro={filtro} setFiltro={setFiltro} />
 
       <AdminTable
         loading={loading}
@@ -58,9 +70,15 @@ const PrestamosAdmin = () => {
       <PrestamoActionModal
         modal={modal}
         procesando={procesando}
+        usuarios={usuarios}
+        librosDisponibles={librosDisponibles}
         onClose={cerrarModal}
         onChangeObservaciones={cambiarObservaciones}
         onChangeFechaDevolucion={cambiarFechaDevolucion}
+        onChangeModoUsuario={cambiarModoUsuario}
+        onSeleccionarUsuario={seleccionarUsuarioPresencial}
+        onCambiarCampoUsuarioNuevo={cambiarCampoUsuarioNuevo}
+        onSeleccionarLibro={seleccionarLibroPresencial}
         onConfirm={confirmarModal}
       />
     </div>
