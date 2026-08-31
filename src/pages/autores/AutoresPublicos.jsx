@@ -17,7 +17,7 @@ const AutoresPublicos = () => {
   });
   const { autores, loading } = useAutoresPublicos();
   const { busqueda, setBusqueda, orden, setOrden, resultado } = useBusquedaOrden(autores, getTexto, getPopularidad);
-  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(resultado, 10, [busqueda, orden]);
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(resultado, 8, [busqueda, orden]);
 
   return (
     <div className="container py-4">

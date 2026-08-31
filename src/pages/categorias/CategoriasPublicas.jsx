@@ -18,7 +18,7 @@ const CategoriasPublicas = () => {
   });
   const { categorias, loading } = useCategoriasPublicas();
   const { busqueda, setBusqueda, orden, setOrden, resultado } = useBusquedaOrden(categorias, getTexto, getPopularidad);
-  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(resultado, 10, [busqueda, orden]);
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(resultado, 8, [busqueda, orden]);
 
   return (
     <div className="container py-4">

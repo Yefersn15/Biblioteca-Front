@@ -30,7 +30,7 @@ const CatalogoLibros = () => {
     limpiarFiltros,
     hayFiltros,
   } = useCatalogoLibros();
-  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(libros, 10, [search, autorId, categoriaId, sort]);
+  const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(libros, 12, [search, autorId, categoriaId, sort]);
 
   return (
     <div className="container py-4">
