@@ -45,7 +45,7 @@ export const useLibrosAdmin = () => {
   useEffect(() => { cargar(); }, [search, editorialId, tipo, estadoFiltro]);
 
   const handleEliminar = async (libro) => {
-    if (!(await confirm(`¿Eliminar "${libro.titulo}"? Se ocultará del catálogo público.`))) return;
+    if (!(await confirm(`¿Eliminar "${libro.titulo}"? Esta acción no se puede deshacer.`))) return;
     try {
       await eliminarLibro(libro.id);
       toast.success('Libro eliminado');
