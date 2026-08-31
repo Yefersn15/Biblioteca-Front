@@ -19,6 +19,7 @@ const AutorForm = () => {
     guardando,
     handleSubmit,
     navigate,
+    fotografiaRef,
   } = useAutorForm();
 
   if (cargando) {
@@ -39,6 +40,7 @@ const AutorForm = () => {
               categorias={categorias}
               librosPropios={librosPropios}
               editando={editando}
+              fotografiaRef={fotografiaRef}
             />
 
             <div className="mt-4 d-flex gap-2">

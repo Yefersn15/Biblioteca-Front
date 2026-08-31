@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createBanner } from './services/bannersService';
 import { useBannerForm } from './hooks/useBannerForm';
@@ -20,6 +20,7 @@ const BannerCreate = () => {
   const toast = useToast();
   const { form, errors, setLayout, setImageUrl, setField, setContentType, validate } = useBannerForm();
   const [loading, setLoading] = useState(false);
+  const imageRefs = useRef([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +29,19 @@ const BannerCreate = () => {
 
     setLoading(true);
     try {
-      await createBanner(form);
+      let payload = form;
+      if (form.contentType === 'IMAGENES') {
+        const resultados = await Promise.all(imageRefs.current.map((r) => r?.resolverPendiente()));
+        if (resultados.some((r) => r?.ok === false)) {
+          setLoading(false);
+          return;
+        }
+        const images = form.images.map((img, i) => (
+          resultados[i]?.changed ? { slot: img.slot, url: resultados[i].url, publicId: resultados[i].publicId } : img
+        ));
+        payload = { ...form, images };
+      }
+      await createBanner(payload);
       navigate('/admin/banners');
     } catch (err) {
       toast.error('Error al crear banner: ' + (err.message || err));
@@ -52,6 +65,7 @@ const BannerCreate = () => {
               setImageUrl={setImageUrl}
               setField={setField}
               setContentType={setContentType}
+              imageRefs={imageRefs}
             />
 
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">

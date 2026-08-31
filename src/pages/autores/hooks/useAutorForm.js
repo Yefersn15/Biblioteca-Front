@@ -1,5 +1,5 @@
 // src/pages/autores/hooks/useAutorForm.js
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getById, create, update } from '../services/autoresService';
 import { getAll as getCategorias } from '../../../services/api/categorias.api';
@@ -13,6 +13,7 @@ const FORM_INICIAL = {
   generoLiterario: [],
   biografia: '',
   fotografiaUrl: '',
+  fotografiaPublicId: '',
   idiomaPrincipal: '',
   obrasDestacadas: [],
   premios: '',
@@ -30,6 +31,7 @@ export const useAutorForm = () => {
   const [librosPropios, setLibrosPropios] = useState([]);
   const [cargando, setCargando] = useState(editando);
   const [guardando, setGuardando] = useState(false);
+  const fotografiaRef = useRef(null);
 
   useEffect(() => {
     getCategorias({ limit: 200 }).then(({ items }) => setCategorias(items));
@@ -45,6 +47,7 @@ export const useAutorForm = () => {
         generoLiterario: a.generoLiterario || [],
         biografia: a.biografia || '',
         fotografiaUrl: a.fotografiaUrl || '',
+        fotografiaPublicId: a.fotografiaPublicId || '',
         idiomaPrincipal: a.idiomaPrincipal || '',
         obrasDestacadas: a.obrasDestacadas || [],
         premios: (a.premios || []).join(', '),
@@ -73,10 +76,19 @@ export const useAutorForm = () => {
     e.preventDefault();
     setGuardando(true);
     try {
+      const resuelto = await fotografiaRef.current?.resolverPendiente();
+      if (resuelto?.ok === false) {
+        setGuardando(false);
+        return;
+      }
       const payload = {
         ...form,
         premios: form.premios.split(',').map((s) => s.trim()).filter(Boolean),
       };
+      if (resuelto?.changed) {
+        payload.fotografiaUrl = resuelto.url;
+        payload.fotografiaPublicId = resuelto.publicId;
+      }
       if (editando) {
         await update(id, payload);
         toast.success('Autor actualizado');
@@ -104,5 +116,6 @@ export const useAutorForm = () => {
     guardando,
     handleSubmit,
     navigate,
+    fotografiaRef,
   };
 };

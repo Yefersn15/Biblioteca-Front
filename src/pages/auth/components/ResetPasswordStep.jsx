@@ -2,9 +2,8 @@ import PasswordRequisitos from '../../../components/PasswordRequisitos';
 import PasswordInput from '../../../components/PasswordInput';
 import { passwordEsValida } from '../../../validations/password';
 
-const ResetPasswordStep = ({ password, setPassword, confirmPassword, setConfirmPassword, loading, onSubmit }) => {
+const ResetPasswordStep = ({ password, setPassword, confirmPassword, setConfirmPassword, noCoinciden, loading, onSubmit }) => {
   const passwordValida = passwordEsValida(password);
-  const noCoinciden = confirmPassword.length > 0 && password !== confirmPassword;
   const puedeEnviar = passwordValida && confirmPassword.length > 0 && !noCoinciden;
 
   return (

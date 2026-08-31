@@ -7,7 +7,7 @@ const EditorialForm = () => {
     titulo: 'Crear/editar editorial',
     contenido: <p>Datos básicos de la editorial: nombre, sitio web, descripción y logo.</p>,
   });
-  const { editando, form, setField, cargando, guardando, handleSubmit, navigate } = useEditorialForm();
+  const { editando, form, setField, cargando, guardando, handleSubmit, navigate, logoRef } = useEditorialForm();
 
   if (cargando) {
     return <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>;
@@ -19,7 +19,7 @@ const EditorialForm = () => {
       <div className="card">
         <div className="card-body">
           <form onSubmit={handleSubmit}>
-            <EditorialFormFields form={form} setField={setField} />
+            <EditorialFormFields form={form} setField={setField} logoRef={logoRef} />
 
             <div className="mt-4 d-flex gap-2">
               <button type="submit" className="btn btn-primary" disabled={guardando}>

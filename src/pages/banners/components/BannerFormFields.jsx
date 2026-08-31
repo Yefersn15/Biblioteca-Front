@@ -23,7 +23,7 @@ const CONTENT_TYPES = [
 // la plantilla elegida.
 const autorAItem = (a) => ({ id: a.id, imageUrl: a.fotografiaUrl, label: `${a.nombre} ${a.apellido}`, linkTo: `/catalogo/autores/${a.id}`, shape: 'square' });
 
-const BannerFormFields = ({ form, errors, setLayout, setImageUrl, setField, setContentType }) => {
+const BannerFormFields = ({ form, errors, setLayout, setImageUrl, setField, setContentType, imageRefs }) => {
   const template = getTemplate(form.layout);
   const slots = template.slots;
 
@@ -60,9 +60,10 @@ const BannerFormFields = ({ form, errors, setLayout, setImageUrl, setField, setC
           {form.images.map((img, i) => (
             <div className="col-md-6" key={i}>
               <ImageUploadField
+                ref={(el) => { if (imageRefs) imageRefs.current[i] = el; }}
                 label={`Imagen ${i + 1}`}
                 value={img.url}
-                onValueChange={(url) => setImageUrl(i, url)}
+                onValueChange={(url, publicId) => setImageUrl(i, url, publicId)}
                 folder="banners"
                 maxWidth={template.maxWidth}
                 size={64}

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useUsuariosAdmin, ROLES } from './hooks/useUsuariosAdmin';
 import UsuariosAdminFiltros from './components/UsuariosAdminFiltros';
 import UsuarioRow from './components/UsuarioRow';
@@ -33,7 +34,12 @@ const UsuariosAdmin = () => {
 
   return (
     <div>
-      <h2 className="mb-4">Usuarios</h2>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2>Usuarios</h2>
+        <Link to="/admin/usuarios/nuevo" className="btn btn-primary">
+          <i className="fas fa-plus me-1"></i>Nuevo usuario
+        </Link>
+      </div>
 
       <UsuariosAdminFiltros
         search={search}

@@ -1,9 +1,10 @@
 // src/pages/usuarios/hooks/usePerfilForm.js
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { useToast } from '../../../context/ToastContext';
 import { actualizarUsuario } from '../services/usuariosService';
-import { passwordEsValida } from '../../../validations/password';
+import { usePasswordFields } from '../../../hooks/usePasswordFields';
+import { resolverImagenPendiente } from '../../../components/upload/useImageUpload';
 
 export const usePerfilForm = () => {
   const { user, actualizarUsuarioLocal } = useAuth();
@@ -16,14 +17,15 @@ export const usePerfilForm = () => {
     genero: user.genero || '',
     celular: user.celular || '',
     avatar: user.avatar || '',
+    avatarPublicId: user.avatarPublicId || '',
     tipoDocumento: user.tipoDocumento || '',
     documento: user.documento || '',
     direccion: user.direccion || '',
     barrio: user.barrio || '',
   });
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [guardando, setGuardando] = useState(false);
+  const avatarRef = useRef(null);
+  const { password, setPassword, confirmPassword, setConfirmPassword, noCoinciden, validar, reset: resetPassword } = usePasswordFields();
 
   const setField = (name, value) => {
     setForm(prev => ({ ...prev, [name]: value }));
@@ -31,17 +33,24 @@ export const usePerfilForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password && password !== confirmPassword) {
-      toast.error('Las contraseñas no coinciden');
-      return;
-    }
-    if (password && !passwordEsValida(password)) {
-      toast.error('La contraseña debe incluir mayúscula, minúscula, número y símbolo');
+    const errorPassword = validar({ obligatoria: false });
+    if (errorPassword) {
+      toast.error(errorPassword);
       return;
     }
     setGuardando(true);
     try {
-      const payload = { genero: form.genero, celular: form.celular, avatar: form.avatar };
+      const imagen = await resolverImagenPendiente(avatarRef, { url: form.avatar, publicId: form.avatarPublicId });
+      if (!imagen.ok) {
+        setGuardando(false);
+        return;
+      }
+      const payload = {
+        genero: form.genero,
+        celular: form.celular,
+        avatar: imagen.url,
+        avatarPublicId: imagen.publicId,
+      };
       if (esAdmin) {
         Object.assign(payload, {
           nombres: form.nombres,
@@ -55,8 +64,7 @@ export const usePerfilForm = () => {
       if (password) payload.password = password;
       const usuarioActualizado = await actualizarUsuario(user.id, payload);
       actualizarUsuarioLocal(usuarioActualizado);
-      setPassword('');
-      setConfirmPassword('');
+      resetPassword();
       toast.success('Perfil actualizado');
     } catch (err) {
       toast.error(err.message);
@@ -65,5 +73,18 @@ export const usePerfilForm = () => {
     }
   };
 
-  return { user, esAdmin, form, setField, password, setPassword, confirmPassword, setConfirmPassword, guardando, handleSubmit };
+  return {
+    user,
+    esAdmin,
+    form,
+    setField,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    noCoinciden,
+    guardando,
+    handleSubmit,
+    avatarRef,
+  };
 };

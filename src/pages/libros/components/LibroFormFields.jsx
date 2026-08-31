@@ -4,7 +4,7 @@ import { isbnEsValido } from '../../../validations/isbn';
 const ANIO_MIN = 1000;
 const ANIO_MAX = 3000;
 
-const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, editando, toggleEnLista, intentoEnviar }) => {
+const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, editando, toggleEnLista, intentoEnviar, portadaRef }) => {
   const sinAutores = intentoEnviar && form.autorIds.length === 0;
   const isbnInvalido = form.isbn?.trim() && !isbnEsValido(form.isbn);
 
@@ -91,10 +91,11 @@ const LibroFormFields = ({ form, setForm, autores, editoriales, categorias, edit
 
     <div className="col-12">
       <ImageUploadField
+        ref={portadaRef}
         label="Portada"
         folder="libros"
         value={form.portadaUrl}
-        onValueChange={(url) => setForm({ ...form, portadaUrl: url })}
+        onValueChange={(url, publicId) => setForm({ ...form, portadaUrl: url, portadaPublicId: publicId })}
       />
     </div>
 

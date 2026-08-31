@@ -8,7 +8,7 @@ const NOMBRE_REFIDS = { AUTORES: 'autor(es)' };
 const FORM_INICIAL = {
   layout: 'single',
   contentType: 'IMAGENES',
-  images: [{ slot: 0, url: '' }],
+  images: [{ slot: 0, url: '', publicId: null }],
   refIds: [],
   titulo: '',
   texto: '',
@@ -24,16 +24,16 @@ export const useBannerForm = (initialData) => {
   const setLayout = (layout) => {
     const slots = getTemplate(layout).slots;
     setForm(prev => {
-      const images = Array.from({ length: slots }, (_, i) => prev.images[i] || { slot: i, url: '' });
+      const images = Array.from({ length: slots }, (_, i) => prev.images[i] || { slot: i, url: '', publicId: null });
       const refIds = prev.refIds.slice(0, slots);
       return { ...prev, layout, images, refIds };
     });
   };
 
-  const setImageUrl = (slotIndex, url) => {
+  const setImageUrl = (slotIndex, url, publicId = null) => {
     setForm(prev => ({
       ...prev,
-      images: prev.images.map((img, i) => (i === slotIndex ? { ...img, url } : img)),
+      images: prev.images.map((img, i) => (i === slotIndex ? { ...img, url, publicId } : img)),
     }));
   };
 

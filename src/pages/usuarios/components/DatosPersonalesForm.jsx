@@ -1,6 +1,6 @@
 import ImageUploadField from '../../../components/upload/ImageUploadField';
 
-const DatosPersonalesForm = ({ form, setField, esAdmin }) => {
+const DatosPersonalesForm = ({ form, setField, esAdmin, avatarRef }) => {
   return (
     <div className="card h-100">
       <div className="card-header bg-white border-bottom">
@@ -37,10 +37,14 @@ const DatosPersonalesForm = ({ form, setField, esAdmin }) => {
           </div>
           <div className="col-12">
             <ImageUploadField
+              ref={avatarRef}
               label="Foto de perfil"
               folder="avatares"
               value={form.avatar}
-              onValueChange={(url) => setField('avatar', url)}
+              onValueChange={(url, publicId) => {
+                setField('avatar', url);
+                setField('avatarPublicId', publicId);
+              }}
             />
           </div>
         </div>

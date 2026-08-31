@@ -16,7 +16,7 @@ const Perfil = () => {
       </>
     ),
   });
-  const { user, esAdmin, form, setField, password, setPassword, confirmPassword, setConfirmPassword, guardando, handleSubmit } = usePerfilForm();
+  const { user, esAdmin, form, setField, password, setPassword, confirmPassword, setConfirmPassword, noCoinciden, guardando, handleSubmit, avatarRef } = usePerfilForm();
 
   return (
     <div className="container py-4" style={{ maxWidth: 900 }}>
@@ -50,7 +50,7 @@ const Perfil = () => {
       <form onSubmit={handleSubmit}>
         <div className="row g-4">
           <div className="col-md-6">
-            <DatosPersonalesForm form={form} setField={setField} esAdmin={esAdmin} />
+            <DatosPersonalesForm form={form} setField={setField} esAdmin={esAdmin} avatarRef={avatarRef} />
           </div>
 
           <div className="col-md-6 d-flex flex-column gap-4">
@@ -61,6 +61,7 @@ const Perfil = () => {
               setPassword={setPassword}
               confirmPassword={confirmPassword}
               setConfirmPassword={setConfirmPassword}
+              noCoinciden={noCoinciden}
               bloqueada={user.esAdminPrincipal}
             />
           </div>

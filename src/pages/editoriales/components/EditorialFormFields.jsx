@@ -1,6 +1,6 @@
 import ImageUploadField from '../../../components/upload/ImageUploadField';
 
-const EditorialFormFields = ({ form, setField }) => (
+const EditorialFormFields = ({ form, setField, logoRef }) => (
   <div className="row g-3">
     <div className="col-md-6">
       <label className="form-label">Nombre *</label>
@@ -38,10 +38,14 @@ const EditorialFormFields = ({ form, setField }) => (
 
     <div className="col-12">
       <ImageUploadField
+        ref={logoRef}
         label="Logo"
         folder="editoriales"
         value={form.logoUrl}
-        onValueChange={(url) => setField('logoUrl', url)}
+        onValueChange={(url, publicId) => {
+          setField('logoUrl', url);
+          setField('logoPublicId', publicId);
+        }}
       />
     </div>
   </div>

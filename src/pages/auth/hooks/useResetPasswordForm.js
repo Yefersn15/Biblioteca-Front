@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as authService from '../services/authService';
+import { usePasswordFields } from '../../../hooks/usePasswordFields';
 
 export const useResetPasswordForm = () => {
   const navigate = useNavigate();
@@ -11,8 +12,7 @@ export const useResetPasswordForm = () => {
 
   // 'verificando' -> 'valido' -> formulario visible; 'invalido' -> mensaje de error fijo.
   const [estadoEnlace, setEstadoEnlace] = useState('verificando');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const { password, setPassword, confirmPassword, setConfirmPassword, noCoinciden, validar } = usePasswordFields();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -29,8 +29,9 @@ export const useResetPasswordForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden');
+    const errorPassword = validar({ obligatoria: true });
+    if (errorPassword) {
+      setError(errorPassword);
       return;
     }
     setLoading(true);
@@ -50,6 +51,7 @@ export const useResetPasswordForm = () => {
     setPassword,
     confirmPassword,
     setConfirmPassword,
+    noCoinciden,
     error,
     loading,
     handleSubmit,

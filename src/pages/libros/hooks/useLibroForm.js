@@ -1,5 +1,5 @@
 // src/pages/libros/hooks/useLibroForm.js
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getLibro, crearLibro, actualizarLibro } from '../services/librosService';
 import * as autoresApi from '../../../services/api/autores.api';
@@ -15,6 +15,7 @@ const FORM_INICIAL = {
   tipo: 'LIBRO',
   descripcion: '',
   portadaUrl: '',
+  portadaPublicId: '',
   isbn: '',
   anioPublicacion: '',
   idioma: '',
@@ -40,6 +41,7 @@ export const useLibroForm = () => {
   // Se activa en el primer intento de envío: antes de eso no tiene sentido
   // mostrar "selecciona un autor" en un formulario que la persona recién abrió.
   const [intentoEnviar, setIntentoEnviar] = useState(false);
+  const portadaRef = useRef(null);
 
   useEffect(() => {
     (async () => {
@@ -61,6 +63,7 @@ export const useLibroForm = () => {
           tipo: libro.tipo,
           descripcion: libro.descripcion || '',
           portadaUrl: libro.portadaUrl || '',
+          portadaPublicId: libro.portadaPublicId || '',
           isbn: libro.isbn || '',
           anioPublicacion: libro.anioPublicacion || '',
           idioma: libro.idioma || '',
@@ -97,6 +100,11 @@ export const useLibroForm = () => {
     }
     setGuardando(true);
     try {
+      const resuelto = await portadaRef.current?.resolverPendiente();
+      if (resuelto?.ok === false) {
+        setGuardando(false);
+        return;
+      }
       const payload = {
         ...form,
         editorialId: form.editorialId || undefined,
@@ -106,6 +114,10 @@ export const useLibroForm = () => {
         archivoUrl: form.archivoUrl || undefined,
         paginas: form.paginas || undefined,
       };
+      if (resuelto?.changed) {
+        payload.portadaUrl = resuelto.url;
+        payload.portadaPublicId = resuelto.publicId;
+      }
       if (editando) {
         await actualizarLibro(id, payload);
         toast.success('Libro actualizado');
@@ -133,5 +145,6 @@ export const useLibroForm = () => {
     intentoEnviar,
     toggleEnLista,
     handleSubmit,
+    portadaRef,
   };
 };

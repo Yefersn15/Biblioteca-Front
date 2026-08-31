@@ -5,25 +5,34 @@ import SeguridadForm from './components/SeguridadForm';
 import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
 const UsuarioForm = () => {
-  useAyudaPagina({
-    titulo: 'Editar usuario',
-    contenido: <p>Corrige los datos personales, de documento/ubicación y contraseña de un usuario en su nombre (por ejemplo, cuando te lo solicita porque no puede editarlos él mismo). No existe pantalla de "crear usuario": las cuentas nuevas se crean desde el registro público.</p>,
-  });
   const {
+    editando,
     email,
+    setEmail,
+    rol,
+    setRol,
     form,
     setField,
     password,
     setPassword,
     confirmPassword,
     setConfirmPassword,
+    noCoinciden,
     cargando,
     guardando,
     handleSubmit,
     navigate,
     esAdminPrincipal,
     bloqueadoCompleto,
+    avatarRef,
   } = useUsuarioForm();
+
+  useAyudaPagina({
+    titulo: editando ? 'Editar usuario' : 'Nuevo usuario',
+    contenido: editando
+      ? <p>Corrige los datos personales, de documento/ubicación y contraseña de un usuario en su nombre (por ejemplo, cuando te lo solicita porque no puede editarlos él mismo).</p>
+      : <p>Registra una cuenta a mano, eligiendo su contraseña y su rol de una vez. A diferencia del registro público (que siempre crea cuentas con rol Usuario), aquí puedes darle directamente el rol de Bibliotecario o Administrador.</p>,
+  });
 
   if (cargando) {
     return <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>;
@@ -47,20 +56,25 @@ const UsuarioForm = () => {
 
   return (
     <div>
-      <h2 className="mb-4">Editar usuario</h2>
+      <h2 className="mb-4">{editando ? 'Editar usuario' : 'Nuevo usuario'}</h2>
       <form onSubmit={handleSubmit}>
         <div className="row g-4">
           <div className="col-md-6">
-            <DatosPersonalesForm form={form} setField={setField} esAdmin />
+            <DatosPersonalesForm form={form} setField={setField} esAdmin avatarRef={avatarRef} />
           </div>
           <div className="col-md-6 d-flex flex-column gap-4">
             <DocumentoUbicacionForm form={form} setField={setField} esAdmin />
             <SeguridadForm
+              editando={editando}
               email={email}
+              setEmail={setEmail}
+              rol={rol}
+              setRol={setRol}
               password={password}
               setPassword={setPassword}
               confirmPassword={confirmPassword}
               setConfirmPassword={setConfirmPassword}
+              noCoinciden={noCoinciden}
               bloqueada={esAdminPrincipal}
             />
           </div>
@@ -68,7 +82,7 @@ const UsuarioForm = () => {
 
         <div className="mt-4 d-flex gap-2">
           <button type="submit" className="btn btn-primary" disabled={guardando}>
-            <i className="fas fa-save me-2"></i>{guardando ? 'Guardando...' : 'Guardar cambios'}
+            <i className="fas fa-save me-2"></i>{guardando ? 'Guardando...' : editando ? 'Guardar cambios' : 'Crear usuario'}
           </button>
           <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin/usuarios')}>
             <i className="fas fa-times me-2"></i>Cancelar

@@ -14,6 +14,7 @@ const ResetPassword = () => {
     setPassword,
     confirmPassword,
     setConfirmPassword,
+    noCoinciden,
     error,
     loading,
     handleSubmit,
@@ -45,6 +46,7 @@ const ResetPassword = () => {
                 setPassword={setPassword}
                 confirmPassword={confirmPassword}
                 setConfirmPassword={setConfirmPassword}
+                noCoinciden={noCoinciden}
                 loading={loading}
                 onSubmit={handleSubmit}
               />

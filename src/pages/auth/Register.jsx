@@ -13,7 +13,20 @@ const Register = () => {
       </>
     ),
   });
-  const { form, error, loading, handleChange, handleSubmit, passwordsNoCoinciden } = useRegisterForm();
+  const {
+    form,
+    error,
+    loading,
+    handleChange,
+    handleSubmit,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    passwordsNoCoinciden,
+    avatarRef,
+    setAvatar,
+  } = useRegisterForm();
 
   return (
     <div className="container py-3" style={{ maxWidth: 820 }}>
@@ -22,7 +35,17 @@ const Register = () => {
           <h2 className="text-center mb-3"><i className="fas fa-user-plus me-2"></i>Crear cuenta</h2>
           {error && <div className="alert alert-danger py-2">{error}</div>}
           <form onSubmit={handleSubmit}>
-            <RegisterFormFields form={form} handleChange={handleChange} passwordsNoCoinciden={passwordsNoCoinciden} />
+            <RegisterFormFields
+              form={form}
+              handleChange={handleChange}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+              passwordsNoCoinciden={passwordsNoCoinciden}
+              avatarRef={avatarRef}
+              setAvatar={setAvatar}
+            />
             <button type="submit" className="btn btn-primary w-100 mt-3" disabled={loading}>
               {loading ? 'Creando...' : 'Crear cuenta'}
             </button>

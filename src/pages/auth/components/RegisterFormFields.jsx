@@ -16,7 +16,7 @@ const soloNumeros = (handleChange) => (e) => {
   handleChange({ target: { name: e.target.name, value: e.target.value.replace(/\D/g, '') } });
 };
 
-const RegisterFormFields = ({ form, handleChange, passwordsNoCoinciden }) => (
+const RegisterFormFields = ({ form, handleChange, password, setPassword, confirmPassword, setConfirmPassword, passwordsNoCoinciden, avatarRef, setAvatar }) => (
   <div className="row g-2">
     <div className="col-md-4">
       <label className="form-label">Nombres *</label>
@@ -85,23 +85,22 @@ const RegisterFormFields = ({ form, handleChange, passwordsNoCoinciden }) => (
 
     <div className="col-md-6">
       <label className="form-label">Contraseña *</label>
-      <PasswordInput name="password" required minLength={8} placeholder="Mínimo 8 caracteres" value={form.password} onChange={handleChange} />
+      <PasswordInput required minLength={8} placeholder="Mínimo 8 caracteres" value={password} onChange={(e) => setPassword(e.target.value)} />
     </div>
     <div className="col-md-6">
       <label className="form-label">Confirmar contraseña *</label>
       <PasswordInput
-        name="confirmPassword"
         required
         minLength={8}
         invalid={passwordsNoCoinciden}
-        value={form.confirmPassword}
-        onChange={handleChange}
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
       />
       {passwordsNoCoinciden && <div className="invalid-feedback d-block">Las contraseñas no coinciden</div>}
     </div>
 
     <div className="col-12">
-      <ImageUploadField label="Foto de perfil (opcional)" folder="avatares" publico name="avatar" value={form.avatar} onChange={handleChange} />
+      <ImageUploadField ref={avatarRef} label="Foto de perfil (opcional)" folder="avatares" publico value={form.avatar} onValueChange={setAvatar} />
     </div>
   </div>
 );

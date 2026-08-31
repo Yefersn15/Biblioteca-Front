@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getBannerById, updateBanner } from './services/bannersService';
 import { useBannerForm } from './hooks/useBannerForm';
@@ -17,6 +17,7 @@ const BannerEdit = () => {
   const { form, setForm, errors, setLayout, setImageUrl, setField, setContentType, validate } = useBannerForm(null);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
+  const imageRefs = useRef([]);
 
   useEffect(() => {
     (async () => {
@@ -28,7 +29,7 @@ const BannerEdit = () => {
       setForm({
         layout: banner.layout,
         contentType: banner.contentType || 'IMAGENES',
-        images: banner.images?.length ? banner.images : [{ slot: 0, url: '' }],
+        images: banner.images?.length ? banner.images : [{ slot: 0, url: '', publicId: null }],
         refIds: banner.refIds || [],
         titulo: banner.titulo || '',
         texto: banner.texto || '',
@@ -46,7 +47,19 @@ const BannerEdit = () => {
 
     setLoading(true);
     try {
-      await updateBanner(id, form);
+      let payload = form;
+      if (form.contentType === 'IMAGENES') {
+        const resultados = await Promise.all(imageRefs.current.map((r) => r?.resolverPendiente()));
+        if (resultados.some((r) => r?.ok === false)) {
+          setLoading(false);
+          return;
+        }
+        const images = form.images.map((img, i) => (
+          resultados[i]?.changed ? { slot: img.slot, url: resultados[i].url, publicId: resultados[i].publicId } : img
+        ));
+        payload = { ...form, images };
+      }
+      await updateBanner(id, payload);
       navigate('/admin/banners');
     } catch (err) {
       toast.error('Error al actualizar banner: ' + (err.message || err));
@@ -87,6 +100,7 @@ const BannerEdit = () => {
               setImageUrl={setImageUrl}
               setField={setField}
               setContentType={setContentType}
+              imageRefs={imageRefs}
             />
 
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">

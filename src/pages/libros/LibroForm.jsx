@@ -26,6 +26,7 @@ const LibroForm = () => {
     intentoEnviar,
     toggleEnLista,
     handleSubmit,
+    portadaRef,
   } = useLibroForm();
 
   if (cargando) {
@@ -47,6 +48,7 @@ const LibroForm = () => {
               editando={editando}
               toggleEnLista={toggleEnLista}
               intentoEnviar={intentoEnviar}
+              portadaRef={portadaRef}
             />
 
             <div className="mt-4 d-flex gap-2">

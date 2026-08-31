@@ -1,5 +1,5 @@
 // src/pages/home/hooks/useConfiguracionForm.js
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useConfiguracion } from '../../../context/ConfiguracionContext';
 import { guardarConfigLocal } from '../../../utils/configuracionLocal';
 import { useToast } from '../../../context/ToastContext';
@@ -13,6 +13,7 @@ export const useConfiguracionForm = () => {
   const toast = useToast();
   const [form, setForm] = useState(null);
   const [guardando, setGuardando] = useState(false);
+  const logoRef = useRef(null);
 
   useEffect(() => {
     if (!config.loading) {
@@ -34,7 +35,13 @@ export const useConfiguracionForm = () => {
     e.preventDefault();
     setGuardando(true);
     try {
-      guardarConfigLocal(form);
+      const resuelto = await logoRef.current?.resolverPendiente();
+      if (resuelto?.ok === false) {
+        setGuardando(false);
+        return;
+      }
+      const formFinal = resuelto?.changed ? { ...form, logoUrl: resuelto.url } : form;
+      guardarConfigLocal(formFinal);
       await config.recargar();
       toast.success('Configuración actualizada (guardada en este navegador)');
     } catch (err) {
@@ -44,5 +51,5 @@ export const useConfiguracionForm = () => {
     }
   };
 
-  return { form, setForm, guardando, handleSubmit };
+  return { form, setForm, guardando, handleSubmit, logoRef };
 };

@@ -79,6 +79,7 @@ const Rutas = () => (
       <Route path="banners/nuevo" element={<BannerCreate />} />
       <Route path="banners/editar/:id" element={<BannerEdit />} />
       <Route path="usuarios" element={<UsuariosAdmin />} />
+      <Route path="usuarios/nuevo" element={<UsuarioForm />} />
       <Route path="usuarios/editar/:id" element={<UsuarioForm />} />
       <Route path="configuracion" element={<ConfiguracionAdmin />} />
     </Route>

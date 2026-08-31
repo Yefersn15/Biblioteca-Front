@@ -1,14 +1,21 @@
 import PasswordRequisitos from '../../../components/PasswordRequisitos';
 import PasswordInput from '../../../components/PasswordInput';
 
-// La contraseña es opcional: dejarla vacía significa "no cambiarla". Solo se
-// valida en tiempo real (checklist + confirmación) cuando sí se escribe algo.
+const ROLES = [
+  ['USUARIO', 'Usuario'],
+  ['BIBLIOTECARIO', 'Bibliotecario'],
+  ['ADMIN', 'Administrador'],
+];
+
+// Al editar, la contraseña es opcional: dejarla vacía significa "no
+// cambiarla". Al crear (`editando` false) es obligatoria, el correo pasa a
+// ser editable y aparece el selector de rol (el registro público, en
+// cambio, siempre crea cuentas con rol USUARIO).
 // `bloqueada`: la cuenta del administrador principal (npm run seed:db) no
 // puede cambiar su contraseña desde la app, así que aquí se oculta el campo
 // en vez de mostrarlo y dejar que el backend lo rechace.
-const SeguridadForm = ({ email, password, setPassword, confirmPassword, setConfirmPassword, bloqueada }) => {
+const SeguridadForm = ({ editando = true, email, setEmail, rol, setRol, password, setPassword, confirmPassword, setConfirmPassword, noCoinciden, bloqueada }) => {
   const escribiendoPassword = password.length > 0;
-  const noCoinciden = escribiendoPassword && confirmPassword.length > 0 && password !== confirmPassword;
 
   return (
     <div className="card">
@@ -17,9 +24,25 @@ const SeguridadForm = ({ email, password, setPassword, confirmPassword, setConfi
       </div>
       <div className="card-body">
         <div className="mb-3">
-          <label className="form-label">Correo</label>
-          <input type="email" className="form-control" value={email} disabled />
+          <label className="form-label">Correo {!editando && '*'}</label>
+          <input
+            type="email"
+            className="form-control"
+            required={!editando}
+            maxLength={150}
+            readOnly={editando}
+            value={email}
+            onChange={editando ? undefined : (e) => setEmail(e.target.value)}
+          />
         </div>
+        {!editando && (
+          <div className="mb-3">
+            <label className="form-label">Rol *</label>
+            <select className="form-select" value={rol} onChange={(e) => setRol(e.target.value)}>
+              {ROLES.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+            </select>
+          </div>
+        )}
         {bloqueada ? (
           <small className="text-muted">
             <i className="fas fa-circle-info me-1"></i>
@@ -28,15 +51,21 @@ const SeguridadForm = ({ email, password, setPassword, confirmPassword, setConfi
         ) : (
           <>
             <div className="mb-2">
-              <label className="form-label">Nueva contraseña</label>
-              <PasswordInput placeholder="Dejar vacío para no cambiarla" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <label className="form-label">{editando ? 'Nueva contraseña' : 'Contraseña *'}</label>
+              <PasswordInput
+                required={!editando}
+                placeholder={editando ? 'Dejar vacío para no cambiarla' : 'Mínimo 8 caracteres'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
               {escribiendoPassword && <PasswordRequisitos password={password} />}
             </div>
             <div>
-              <label className="form-label">Verificar nueva contraseña</label>
+              <label className="form-label">{editando ? 'Verificar nueva contraseña' : 'Verificar contraseña *'}</label>
               <PasswordInput
+                required={!editando}
                 invalid={noCoinciden}
-                placeholder="Repite la nueva contraseña"
+                placeholder="Repite la contraseña"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />

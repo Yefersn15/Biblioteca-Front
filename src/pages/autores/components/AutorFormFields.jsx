@@ -1,6 +1,6 @@
 import ImageUploadField from '../../../components/upload/ImageUploadField';
 
-const AutorFormFields = ({ form, setField, setRedSocial, toggleEnLista, categorias, librosPropios, editando }) => (
+const AutorFormFields = ({ form, setField, setRedSocial, toggleEnLista, categorias, librosPropios, editando, fotografiaRef }) => (
   <div className="row g-3">
     <div className="col-md-6">
       <label className="form-label">Nombre *</label>
@@ -44,10 +44,14 @@ const AutorFormFields = ({ form, setField, setRedSocial, toggleEnLista, categori
 
     <div className="col-12">
       <ImageUploadField
+        ref={fotografiaRef}
         label="Fotografía"
         folder="autores"
         value={form.fotografiaUrl}
-        onValueChange={(url) => setField('fotografiaUrl', url)}
+        onValueChange={(url, publicId) => {
+          setField('fotografiaUrl', url);
+          setField('fotografiaPublicId', publicId);
+        }}
       />
     </div>
 

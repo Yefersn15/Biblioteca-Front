@@ -21,7 +21,7 @@ const ConfiguracionAdmin = () => {
       </>
     ),
   });
-  const { form, setForm, guardando, handleSubmit } = useConfiguracionForm();
+  const { form, setForm, guardando, handleSubmit, logoRef } = useConfiguracionForm();
 
   if (!form) {
     return <div className="text-center py-5"><div className="spinner-border" role="status"></div></div>;
@@ -59,6 +59,7 @@ const ConfiguracionAdmin = () => {
 
               <div className="col-12">
                 <ImageUploadField
+                  ref={logoRef}
                   label="Logo"
                   folder="logo"
                   value={form.logoUrl}
