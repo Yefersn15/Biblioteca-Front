@@ -66,7 +66,7 @@ const AutoresAdmin = () => {
         onCambiarPagina={setPagina}
       >
         {itemsPagina.map((a) => (
-          <AutorRow key={a.id} autor={a} onEliminar={handleEliminar} toggleEstado={toggleEstado} />
+          <AutorRow key={a.id} autor={a} categorias={categorias} onEliminar={handleEliminar} toggleEstado={toggleEstado} />
         ))}
       </AdminTable>
     </div>
