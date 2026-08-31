@@ -5,7 +5,6 @@ import { useConfiguracion } from '../context/ConfiguracionContext';
 import { useAdminLayoutPrefs } from '../hooks/useAdminLayoutPrefs';
 import Navbar from './header/Navbar';
 import TopBar from './header/TopBar';
-import ThemeToggleButton from './header/ThemeToggleButton';
 import UserMenu from './header/UserMenu';
 import MenuPersonalizarLayout from './header/MenuPersonalizarLayout';
 import BrandIcon from './BrandIcon';
@@ -54,11 +53,14 @@ const AdminLayout = () => {
   );
 
   const controlesLayout = (
-    <MenuPersonalizarLayout esLateral={esLateral} compacto={compacto} setPosicion={setPosicion} toggleCompacto={toggleCompacto} />
-  );
-
-  const botonModoOscuro = (
-    <ThemeToggleButton modoOscuro={modoOscuro} toggleModoOscuro={toggleModoOscuro} className="btn btn-sm tema-encabezado-link border-0" />
+    <MenuPersonalizarLayout
+      modoOscuro={modoOscuro}
+      toggleModoOscuro={toggleModoOscuro}
+      esLateral={esLateral}
+      compacto={compacto}
+      setPosicion={setPosicion}
+      toggleCompacto={toggleCompacto}
+    />
   );
 
   const menuUsuario = (
@@ -84,7 +86,6 @@ const AdminLayout = () => {
 
   const controles = (
     <>
-      {botonModoOscuro}
       {controlesLayout}
       {menuUsuario}
     </>

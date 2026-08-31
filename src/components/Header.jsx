@@ -1,11 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useConfiguracion } from '../context/ConfiguracionContext';
-import ThemeToggleButton from './header/ThemeToggleButton';
+import MenuPreferenciasPublico from './header/MenuPreferenciasPublico';
 import UserMenu from './header/UserMenu';
 import BrandIcon from './BrandIcon';
 
-const Header = () => {
+const Header = ({ vistaLlamativa, setVistaLlamativa }) => {
   const { user, isStaff, logout } = useAuth();
   const { nombreInstitucion, logoUrl, temaResuelto, modoOscuro, toggleModoOscuro } = useConfiguracion();
   const navigate = useNavigate();
@@ -44,7 +44,12 @@ const Header = () => {
 
           <ul className="navbar-nav align-items-lg-center">
             <li className="nav-item">
-              <ThemeToggleButton modoOscuro={modoOscuro} toggleModoOscuro={toggleModoOscuro} className="nav-link btn btn-link" />
+              <MenuPreferenciasPublico
+                modoOscuro={modoOscuro}
+                toggleModoOscuro={toggleModoOscuro}
+                vistaLlamativa={vistaLlamativa}
+                setVistaLlamativa={setVistaLlamativa}
+              />
             </li>
             {user ? (
               <li className="nav-item">
