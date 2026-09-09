@@ -1,0 +1,21 @@
+/* Marco de la página (navbar público, navbar+sidebar admin, footer): toman
+   el color de "encabezado" del tema. Las superficies de contenido (.card,
+   .table, formularios) también combinan con la paleta — ver
+   buttons-cards.css/forms-tables-badges.css. */
+.tema-encabezado {
+  background-color: var(--tema-encabezado) !important;
+  color: var(--tema-encabezado-texto) !important;
+}
+
+.tema-encabezado .nav-link,
+.tema-encabezado .navbar-brand,
+.tema-encabezado .tema-encabezado-link {
+  color: inherit !important;
+}
+
+/* Bootstrap fija text-muted a un gris que no se adapta al tema — en modo
+   oscuro queda casi invisible sobre superficies oscuras. Se deriva del
+   texto legible de la superficie en vez de un gris fijo. */
+.text-muted {
+  color: color-mix(in srgb, var(--tema-superficie-texto) 62%, transparent) !important;
+}

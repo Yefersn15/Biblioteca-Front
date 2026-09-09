@@ -1,0 +1,95 @@
+/* Acentos de marca: botones primarios, enlaces, elementos decorativos.
+   Los botones semánticos (btn-success/danger/warning/info) NO se tocan. */
+.btn-primary {
+  background-color: var(--tema-acento);
+  border-color: var(--tema-acento);
+  color: var(--tema-acento-texto);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--tema-acento);
+  border-color: var(--tema-acento);
+  color: var(--tema-acento-texto);
+  filter: brightness(0.92);
+}
+
+/* Sin !important a propósito: un enlace con una clase de color explícita
+   (text-dark, text-white, text-muted, nav-link dentro de .tema-encabezado...)
+   debe poder seguir ganando esa decisión de diseño puntual. */
+a:not(.btn):not(.nav-link):not(.navbar-brand):not(.tema-encabezado-link) {
+  color: var(--tema-acento);
+}
+
+.text-primary,
+.text-tema-acento {
+  color: var(--tema-acento) !important;
+}
+
+.tema-acento-bg {
+  background-color: var(--tema-acento) !important;
+  color: var(--tema-acento-texto) !important;
+}
+
+/* Segundo acento: botones outline y resaltados de menor jerarquía que el
+   acento principal. Los botones semánticos (outline-danger/success/etc.)
+   NO se tocan, solo outline-primary. */
+.btn-outline-primary {
+  border-color: var(--tema-secundario);
+  color: var(--tema-secundario);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  background-color: var(--tema-secundario);
+  border-color: var(--tema-secundario);
+  color: var(--tema-secundario-texto);
+}
+
+.text-tema-secundario {
+  color: var(--tema-secundario) !important;
+}
+
+.tema-secundario-bg {
+  background-color: var(--tema-secundario) !important;
+  color: var(--tema-secundario-texto) !important;
+}
+
+/* Superficies de contenido (cards, tablas, formularios, menús, modales):
+   toman el tono de "superficie" del tema — un paso más marcado que el
+   fondo general de la página, para que se note como una capa propia pero
+   siga combinando con la paleta. El texto usa el contraste calculado sobre
+   esa superficie, así que sigue siendo legible sea cual sea el color
+   elegido. !important porque varias de estas superficies llevan `bg-white`
+   fijo en el markup. */
+.card,
+.card-header,
+.card-body,
+.card-footer,
+.table,
+.modal-content,
+.dropdown-menu {
+  background-color: var(--tema-superficie) !important;
+  border-color: color-mix(in srgb, var(--tema-encabezado) 18%, var(--tema-superficie));
+}
+
+.card,
+.card-body,
+.card-footer,
+.modal-content,
+.form-label {
+  color: var(--tema-superficie-texto);
+}
+
+.dropdown-item {
+  color: var(--tema-superficie-texto);
+}
+
+.table {
+  --bs-table-bg: var(--tema-superficie);
+  --bs-table-color: var(--tema-superficie-texto);
+  --bs-table-striped-bg: color-mix(in srgb, var(--tema-encabezado) 6%, var(--tema-superficie));
+  --bs-table-hover-bg: color-mix(in srgb, var(--tema-encabezado) 10%, var(--tema-superficie));
+}

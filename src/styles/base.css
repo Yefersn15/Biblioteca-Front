@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--tema-fondo);
+  color: var(--tema-fondo-texto);
+}
+
+.min-vh-content {
+  min-height: calc(100vh - 220px);
+}

@@ -45,7 +45,7 @@ export const resolverTema = (tema, modoOscuro = false) => {
   };
 };
 
-// Aplica el tema resuelto como variables CSS en :root, consumidas por index.css.
+// Aplica el tema resuelto como variables CSS en :root, consumidas por App.css.
 export const aplicarTemaCss = (temaResuelto) => {
   const root = document.documentElement.style;
   root.setProperty('--tema-fondo', temaResuelto.fondo);

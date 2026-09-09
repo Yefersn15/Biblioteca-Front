@@ -1,0 +1,22 @@
+/* Variables de tema: colores de marca personalizables desde Configuración
+   (ver src/utils/tema.js) más algunos tokens fijos que el proyecto también
+   usa directo. Los valores --tema-* de aquí son el "lienzo en blanco": sin
+   personalizar, el sitio se ve igual que antes de que existiera esta
+   funcionalidad. */
+:root {
+  --border: #dee2e6;
+  --border2: #ced4da;
+  --accent: #0d6efd;
+  --surface3: #e9ecef;
+
+  --tema-fondo: #ffffff;
+  --tema-fondo-texto: #212529;
+  --tema-superficie: #ffffff;
+  --tema-superficie-texto: #212529;
+  --tema-encabezado: #ffffff;
+  --tema-encabezado-texto: #212529;
+  --tema-acento: #0d6efd;
+  --tema-acento-texto: #ffffff;
+  --tema-secundario: #6c757d;
+  --tema-secundario-texto: #ffffff;
+}
