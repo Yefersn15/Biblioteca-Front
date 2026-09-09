@@ -1,7 +1,9 @@
-// Ícono de marca (Folio): un libro abierto reducido a dos hojas curvas y un
-// pliegue central. Usa currentColor a propósito, igual que el ícono
-// genérico que reemplaza, para heredar el color de texto del encabezado
-// (cambia con el tema claro/oscuro/personalizado sin necesitar variantes).
+// Ícono de marca genérico (un libro abierto reducido a dos hojas curvas y un
+// pliegue central), usado solo como respaldo si Configuración no tiene un
+// logo propio cargado (ver DEFECTO.logoUrl en utils/configuracionLocal.js).
+// Usa currentColor a propósito para heredar el color de texto del
+// encabezado (cambia con el tema claro/oscuro/personalizado sin necesitar
+// variantes).
 const BrandIcon = ({ size = 22, className = '' }) => (
   <svg width={size} height={size} viewBox="0 0 96 96" fill="none" className={className} aria-hidden="true">
     <path

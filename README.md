@@ -2,6 +2,12 @@
 
 Cliente web del proyecto Biblioteca: React 19 + Vite + React Router, consumiendo la API de [Biblioteca-Back](../Biblioteca-Back).
 
+## Integrantes — Tecno Software
+
+- [Yeferson Andrés Moreno Granda](https://yefersonmoreno-miportafolios.vercel.app/)
+- Esmeralda Valencia
+- Elisa Lidueña
+
 ## Primer arranque
 
 1. Instala dependencias:
@@ -26,7 +32,7 @@ Otros scripts: `npm run build` (build de producción), `npm run preview` (sirve 
 src/
   components/          compartido entre ≥2 módulos: Layout, AdminLayout, Rutas,
                         PrivateRoute, AdminTable, Pagination, PasswordRequisitos,
-                        BrandIcon (ícono de marca, "Folio")...
+                        BrandIcon (ícono de marca genérico, respaldo si no hay logo configurado)...
     header/             Navbar, TopBar, ThemeToggleButton, UserMenu,
                         MenuPersonalizarLayout (usados por Header.jsx y AdminLayout.jsx)
     upload/             ImageUploadField y afines

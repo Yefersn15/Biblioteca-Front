@@ -6,8 +6,8 @@
 const CLAVE_STORAGE = 'biblioteca:configuracion';
 
 export const DEFECTO = {
-  nombreInstitucion: 'Folio',
-  logoUrl: '',
+  nombreInstitucion: 'TecnoSoftware',
+  logoUrl: '/brand/tecno-software-128.png',
   descripcion: '',
   direccion: '',
   telefono: '',

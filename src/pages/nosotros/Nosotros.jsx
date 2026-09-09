@@ -2,6 +2,12 @@ import { Link } from 'react-router-dom';
 import { useConfiguracion } from '../../context/ConfiguracionContext';
 import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 
+const INTEGRANTES = [
+  { nombre: 'Yeferson Andrés Moreno Granda', link: 'https://yefersonmoreno-miportafolios.vercel.app/' },
+  { nombre: 'Esmeralda Valencia' },
+  { nombre: 'Elisa Lidueña' },
+];
+
 const VALORES = [
   {
     icon: 'fa-door-open',
@@ -71,6 +77,19 @@ const Nosotros = () => {
               medianoche, sin depender del horario de atención.
             </p>
           </div>
+        </div>
+
+        <div className="text-center mb-5">
+          <h2 className="mb-3"><i className="fas fa-users me-2 text-tema-acento"></i>Integrantes — Tecno Software</h2>
+          <ul className="list-unstyled d-inline-block text-start mb-0">
+            {INTEGRANTES.map((persona) => (
+              <li className="mb-1" key={persona.nombre}>
+                {persona.link ? (
+                  <a href={persona.link} target="_blank" rel="noopener noreferrer">{persona.nombre}</a>
+                ) : persona.nombre}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <h2 className="text-center mb-4">Lo que no negociamos</h2>
