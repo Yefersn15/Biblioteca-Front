@@ -8,20 +8,7 @@ import TopBar from './header/TopBar';
 import UserMenu from './header/UserMenu';
 import MenuPersonalizarLayout from './header/MenuPersonalizarLayout';
 import BrandIcon from './BrandIcon';
-
-const ENLACES_BASE = [
-  { to: '/admin/dashboard', label: 'Inicio', icon: 'fa-gauge', end: true },
-  { to: '/admin/libros', label: 'Libros', icon: 'fa-book' },
-  { to: '/admin/autores', label: 'Autores', icon: 'fa-feather' },
-  { to: '/admin/editoriales', label: 'Editoriales', icon: 'fa-building' },
-  { to: '/admin/categorias', label: 'Categorías', icon: 'fa-tags' },
-  { to: '/admin/prestamos', label: 'Préstamos', icon: 'fa-right-left' },
-  { to: '/admin/banners', label: 'Banners', icon: 'fa-images' },
-];
-const ENLACES_ADMIN = [
-  { to: '/admin/usuarios', label: 'Usuarios', icon: 'fa-users' },
-  { to: '/admin/configuracion', label: 'Configuración', icon: 'fa-gear' },
-];
+import { ENLACES_ADMIN_BASE, ENLACES_SOLO_ADMIN } from './header/adminNavConfig';
 
 // El logo por defecto (DEFECTO.logoUrl en utils/configuracionLocal.js) es el
 // escudo completo con el texto "TECNO SOFTWARE" en el anillo — legible en el
@@ -39,7 +26,7 @@ const AdminLayout = () => {
   const { posicion, compacto, setPosicion, toggleCompacto } = useAdminLayoutPrefs();
   const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
   const navigate = useNavigate();
-  const enlaces = isAdmin ? [...ENLACES_BASE, ...ENLACES_ADMIN] : ENLACES_BASE;
+  const enlaces = isAdmin ? [...ENLACES_ADMIN_BASE, ...ENLACES_SOLO_ADMIN] : ENLACES_ADMIN_BASE;
   const esLateral = posicion === 'lateral';
   const esOscuro = temaResuelto.encabezadoTexto === '#ffffff';
   const resaltadoActivo = esOscuro ? 'rgba(255,255,255,.15)' : 'rgba(0,0,0,.06)';

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { formatAutores } from '../../../utils/formatAutores';
 
-const LibroRow = ({ libro, onEliminar }) => (
+const LibroRow = ({ libro, toggleEstado, onEliminar }) => (
   <tr>
     <td>
       {libro.portadaUrl && (
@@ -13,9 +13,13 @@ const LibroRow = ({ libro, onEliminar }) => (
     <td>{libro.tipo}</td>
     <td>{libro.copiasDisponibles} / {libro.copiasTotales}</td>
     <td>
-      <span className={`badge ${libro.estado ? 'bg-success' : 'bg-secondary'}`}>
-        {libro.estado ? 'Activo' : 'Inactivo'}
-      </span>
+      <button
+        className={`btn btn-sm ${libro.estado ? 'btn-outline-warning' : 'btn-outline-success'}`}
+        onClick={() => toggleEstado(libro)}
+        title={libro.estado ? 'Desactivar' : 'Activar'}
+      >
+        <i className={`fas fa-toggle-${libro.estado ? 'off' : 'on'}`}></i>
+      </button>
     </td>
     <td>
       <Link to={`/admin/libros/editar/${libro.id}`} className="btn btn-sm btn-outline-primary me-1" title="Editar">

@@ -5,7 +5,6 @@ import { useAyudaPagina } from '../../hooks/useAyudaPagina';
 const INTEGRANTES = [
   { nombre: 'Yeferson Andrés Moreno Granda', link: 'https://yefersonmoreno-miportafolios.vercel.app/' },
   { nombre: 'Esmeralda Valencia' },
-  { nombre: 'Elisa Lidueña' },
 ];
 
 const VALORES = [
@@ -32,7 +31,7 @@ const VALORES = [
 ];
 
 const Nosotros = () => {
-  const { nombreInstitucion, descripcion } = useConfiguracion();
+  const { nombreInstitucion, descripcion, logoUrl } = useConfiguracion();
 
   useAyudaPagina({
     titulo: 'Nosotros',
@@ -43,6 +42,9 @@ const Nosotros = () => {
     <div>
       <div className="tema-acento-bg py-5">
         <div className="container text-center" style={{ maxWidth: 720 }}>
+          {logoUrl && (
+            <img src={logoUrl} alt={nombreInstitucion} height={96} className="mb-3" style={{ objectFit: 'contain' }} />
+          )}
           <div className="small text-uppercase fw-semibold mb-2" style={{ letterSpacing: '0.08em' }}>Nosotros</div>
           <h1 className="mb-3">Detrás de {nombreInstitucion}</h1>
           <p className="mb-0 fs-5">

@@ -30,6 +30,7 @@ const LibrosAdmin = () => {
     editoriales,
     hayFiltros,
     limpiarFiltros,
+    toggleEstado,
     handleEliminar,
   } = useLibrosAdmin();
   const { pagina, setPagina, totalPaginas, itemsPagina } = usePaginacion(libros, 5, [search, editorialId, tipo, estadoFiltro]);
@@ -67,7 +68,7 @@ const LibrosAdmin = () => {
         onCambiarPagina={setPagina}
       >
         {itemsPagina.map((libro) => (
-          <LibroRow key={libro.id} libro={libro} onEliminar={handleEliminar} />
+          <LibroRow key={libro.id} libro={libro} toggleEstado={toggleEstado} onEliminar={handleEliminar} />
         ))}
       </AdminTable>
     </div>

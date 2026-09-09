@@ -1,6 +1,6 @@
 // src/pages/libros/hooks/useLibrosAdmin.js
 import { useState, useEffect } from 'react';
-import { getLibros, eliminarLibro } from '../services/librosService';
+import { getLibros, actualizarLibro, eliminarLibro } from '../services/librosService';
 import { getAll as getEditoriales } from '../../../services/api/editoriales.api';
 import { useToast } from '../../../context/ToastContext';
 import { useConfirm } from '../../../context/ConfirmContext';
@@ -44,6 +44,15 @@ export const useLibrosAdmin = () => {
 
   useEffect(() => { cargar(); }, [search, editorialId, tipo, estadoFiltro]);
 
+  const toggleEstado = async (libro) => {
+    try {
+      await actualizarLibro(libro.id, { estado: !libro.estado });
+      cargar();
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   const handleEliminar = async (libro) => {
     if (!(await confirm(`¿Eliminar "${libro.titulo}"? Esta acción no se puede deshacer.`))) return;
     try {
@@ -78,6 +87,7 @@ export const useLibrosAdmin = () => {
     editoriales,
     hayFiltros,
     limpiarFiltros,
+    toggleEstado,
     handleEliminar,
   };
 };
