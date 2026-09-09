@@ -23,6 +23,16 @@ const ENLACES_ADMIN = [
   { to: '/admin/configuracion', label: 'Configuración', icon: 'fa-gear' },
 ];
 
+// El logo por defecto (DEFECTO.logoUrl en utils/configuracionLocal.js) es el
+// escudo completo con el texto "TECNO SOFTWARE" en el anillo — legible en el
+// header normal, pero ilegible reducido al tamaño de un ícono cuando el menú
+// admin está en modo compacto. Para ESE logo puntual existe una variante
+// "corto" (solo el monograma TS). Si el admin sube un logo propio desde
+// Configuración, no hay forma de saber si tiene un equivalente compacto, así
+// que se sigue mostrando el mismo logo también en modo compacto.
+const LOGO_TECNO_SOFTWARE = '/brand/tecno-software-original.png';
+const LOGO_TECNO_SOFTWARE_CORTO = '/brand/tecno-software-corto.png';
+
 const AdminLayout = () => {
   const { user, isAdmin, logout } = useAuth();
   const { nombreInstitucion, logoUrl, temaResuelto, modoOscuro, toggleModoOscuro } = useConfiguracion();
@@ -33,6 +43,7 @@ const AdminLayout = () => {
   const esLateral = posicion === 'lateral';
   const esOscuro = temaResuelto.encabezadoTexto === '#ffffff';
   const resaltadoActivo = esOscuro ? 'rgba(255,255,255,.15)' : 'rgba(0,0,0,.06)';
+  const logoMostrado = compacto && logoUrl === LOGO_TECNO_SOFTWARE ? LOGO_TECNO_SOFTWARE_CORTO : logoUrl;
 
   const handleLogout = () => {
     logout();
@@ -43,8 +54,8 @@ const AdminLayout = () => {
 
   const marca = (
     <Link to="/" className="tema-encabezado-link d-flex align-items-center text-decoration-none fw-bold overflow-hidden" style={{ minWidth: 0 }}>
-      {logoUrl ? (
-        <img src={logoUrl} alt="" height={28} style={{ objectFit: 'contain' }} />
+      {logoMostrado ? (
+        <img src={logoMostrado} alt="" height={28} style={{ objectFit: 'contain' }} />
       ) : (
         <BrandIcon size={24} />
       )}
