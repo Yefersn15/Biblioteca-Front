@@ -54,9 +54,9 @@ const Header = ({ vistaLlamativa, setVistaLlamativa }) => {
             {user ? (
               <li className="nav-item">
                 <UserMenu label={user.nombres} botonClassName="nav-link dropdown-toggle btn btn-link" onLogout={handleLogout}>
-                  <li><Link className="dropdown-item" to="/mis-prestamos"><i className="fas fa-right-left me-2"></i>Mis préstamos</Link></li>
+                  <li><Link className="dropdown-item d-flex align-items-center" to="/mis-prestamos"><i className="fas fa-right-left me-2"></i>Mis préstamos</Link></li>
                   {isStaff && (
-                    <li><Link className="dropdown-item" to="/admin/dashboard"><i className="fas fa-gauge me-2"></i>Administración</Link></li>
+                    <li><Link className="dropdown-item d-flex align-items-center" to="/admin/dashboard"><i className="fas fa-gauge me-2"></i>Administración</Link></li>
                   )}
                 </UserMenu>
               </li>

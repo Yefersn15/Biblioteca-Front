@@ -42,7 +42,7 @@ const AdminLayout = () => {
   const cerrarMenuMovil = () => setMenuMovilAbierto(false);
 
   const marca = (
-    <Link to="/" className="tema-encabezado-link d-flex align-items-center text-decoration-none fw-bold">
+    <Link to="/" className="tema-encabezado-link d-flex align-items-center text-decoration-none fw-bold overflow-hidden" style={{ minWidth: 0 }}>
       {logoUrl ? (
         <img src={logoUrl} alt="" height={28} style={{ objectFit: 'contain' }} />
       ) : (
@@ -69,7 +69,7 @@ const AdminLayout = () => {
       botonClassName="btn btn-link tema-encabezado-link text-decoration-none dropdown-toggle"
       onLogout={handleLogout}
     >
-      <li><Link className="dropdown-item" to="/"><i className="fas fa-globe me-2"></i>Ver sitio público</Link></li>
+      <li><Link className="dropdown-item d-flex align-items-center" to="/"><i className="fas fa-globe me-2"></i>Ver sitio público</Link></li>
     </UserMenu>
   );
 
